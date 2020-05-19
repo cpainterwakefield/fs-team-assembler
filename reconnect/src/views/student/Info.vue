@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <h1>This is a home page</h1>
+    <h1>Field Session Team Assembler Information</h1>
+    <center>
+      This is some text`
+    </center>
   </div>
 </template>
 
