@@ -1,16 +1,21 @@
 <template>
   <v-app>
-    <v-app-bar app color="indigo darken-4" dark class=my-tb>
-      <v-app-bar-title class="headline smetallic--text text-uppercase font-weight-light">Reconnect</v-app-bar-title>
-      <v-spacer/>
-      <v-btn flat padding=1 to="/student/">Profile</v-btn>
-      <v-btn flat padding=1 to="/student/edit">Edit</v-btn>
-      <v-btn flat to="/student/info">Info</v-btn> 
-    </v-app-bar>
+  <v-app-bar app color="indigo darken-4" dark class=my-tb>
+    <v-app-bar-title class="headline smetallic--text text-uppercase font-weight-light">Reconnect</v-app-bar-title>
+    <v-spacer/>
+    <v-btn flat to="/student/">Profile</v-btn>
+    <v-btn flat to="/student/edit">Edit</v-btn>
+  </v-app-bar>
+  <v-content class="content">
+    <router-view/>
+  </v-content>
+  <footer padding=10px>
+    <span>
+      Colorado School of Mines 2020
+    </span>
+  </footer>
+        
 
-    <v-content>
-      <router-view/>
-    </v-content>
   </v-app>
 </template>
 
@@ -20,9 +25,24 @@ export default {
   name: 'App',
 
   components: {
-  },
-
-  data: () => ({
-    //
-  }),
+  }
 };
+</script>
+
+<style>
+  footer {
+    padding: 15px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    background-color: Navy;
+    color: white;
+    text-align: center;
+}
+
+  .content {
+    padding: 15px;
+  }
+</style>
