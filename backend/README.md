@@ -1,3 +1,8 @@
+## installing
+'''
+$ npm install
+'''
+
 ## Running
 ```
 $ npm run start  
