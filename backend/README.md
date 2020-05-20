@@ -1,4 +1,7 @@
-To run type  
+## Running
 '''  
-npm run start  
+$ npm run start  
 '''  
+
+## Files:
+* server.js - the "main"
