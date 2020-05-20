@@ -1,8 +1,8 @@
 module.exports = {
-    HOST: "HOST",
-    USER: "User1",
+    HOST: "127.0.0.1",
+    USER: "postgres",
     PASSWORD: "UwU",
-    DB: "SomeDB",
+    DB: "somedb",
     dialect: "postgres",
     pool:{
         //Max num of connections in pool
