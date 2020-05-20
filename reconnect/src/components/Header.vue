@@ -12,4 +12,4 @@
   export default {
     name: 'Header'
   }
-</script?
+</script>
