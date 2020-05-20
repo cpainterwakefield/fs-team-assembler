@@ -1,0 +1,21 @@
+{
+    "name": "reconnect-backend",
+    "version": "0.1.0",
+    "description": "The backend for CS@Mines Reconnect.",
+    "main": "main.js",
+    "contributors": [
+        "Jeremiah Nevarro",
+        "Jesus Nunez",
+        "Josephine Westarp",
+        "Michael Humphrey",
+        "Miles Claver"
+    ],
+    "scripts": {
+        "build": "webpack",
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "express": "~4.16.1",
+        "http-errors": "~1.6.3"
+    }
+}
