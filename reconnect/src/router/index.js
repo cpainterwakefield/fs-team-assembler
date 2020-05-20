@@ -9,11 +9,11 @@ import AdminRun from '../views/admin/Run.vue'
 Vue.use(VueRouter)
 
   const routes = [
-  { path: '/student/', name: 'Profile', component: StudentProfile },
-  { path: '/student/edit', name: 'Edit', component: StudentEdit },
-  { path: '/admin', name: 'Profile', component: AdminProfile },
-  { path: '/admin/edit', name: 'Edit', component: AdminEdit },
-  { path: '/admin/run', name: 'Run', component: AdminRun }
+  { path: '/student/', name: 'Profile', component: StudentProfile, meta: {title: 'Profile'} },
+  { path: '/student/edit', name: 'Edit', component: StudentEdit, meta: {title: 'Edit'} },
+  { path: '/admin', name: 'Profile', component: AdminProfile, meta: {title:'Profile'} },
+  { path: '/admin/edit', name: 'Edit', component: AdminEdit, meta: {title: 'Edit'} },
+  { path: '/admin/run', name: 'Run', component: AdminRun, meta: {title: 'Run'} }
   
 ]
 
