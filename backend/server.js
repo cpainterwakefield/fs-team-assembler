@@ -1,11 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const db = require("./app/models");
+const cors = require("cors");
 
 const app = express();
 
 var corsOptions = {
   origin: "http://localhost:8081"
 };
+
+app.use(cors(corsOptions));
+
+require("./app/routes/client.routes")(app);
+
+db.sequelize.sync();
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
@@ -23,3 +31,6 @@ const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+
+// To send client queries: 
+// curl -H "Content-Type: application/json" -X POST -d '{"name":"test"}' http://localhost:8081/api/clients
