@@ -31,9 +31,9 @@
                 </div>
               </v-flex>
               <v-flex>
-                <h3> Team Preferences </h3>
+                <h3 class="h3_1"> Team Preferences </h3>
                 <div class="pref1">
-                  <v-list flat dense max-height=105px class="overflow-y-auto" width="150">
+                  <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
                     <h5><u>Preferred Team</u></h5>
                     <v-list-item v-for="(pref, i) in team_pref" :key="i">
                       <v-list-item-title v-text="pref"></v-list-item-title>
@@ -41,7 +41,7 @@
                   </v-list>
                 </div>
                 <div class="pref1">
-                  <v-list flat dense max-height=105px class="overflow-y-auto" width="150">
+                  <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
                     <h5><u>Avoid Team</u></h5>
                     <v-list-item v-for="(avoid, i) in team_avoid" :key="i">
                       <v-list-item-title v-text="avoid"></v-list-item-title>
@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       preference: "Doesn't Matter",
-      projects: ['dummy1'],
+      projects: ['dummy1 qwertyuiopasdfghjklzxcvbnm,.'],
       students: ['john doe', 'jane doe'],
       firstProj: "test1",
       secondProj: "test2",
@@ -90,7 +90,8 @@ export default {
   body { font-family: sans-serif; }
 
   .pref1 {
-    margin: 10px;
+    margin-bottom: 20px;
+    margin-left: 160px;
   }
 
   h5 {
@@ -114,6 +115,10 @@ export default {
     text-align: left;
     color: black;
     font-weight: bold;
+  }
+
+  .h3_1 {
+    margin-left: 160px;
   }
 
   p {
@@ -157,6 +162,7 @@ export default {
 
   .project_pref {
     width: 90%;
+    margin: 10px;
   }
 
   .bottom {
@@ -164,7 +170,7 @@ export default {
   }
 
   .experience {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
   }
 </style>

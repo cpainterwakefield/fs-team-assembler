@@ -32,15 +32,15 @@
               <v-flex>
                 <div class="project_pref">
                   <h3> Project Preferences </h3>
-                  <v-select :rules="[v => !!v || 'This is required']" required label="First Preference" outlined background-color="white" :items=projects v-model="firstProj"></v-select>
-                  <v-select :rules="[v => !!v || 'This is required']" required label="Second Preference" outlined background-color="white" :items=projects v-model="secondProj"></v-select>
-                  <v-select :rules="[v => !!v || 'This is required']" required label="Third Preference" outlined background-color="white" :items=projects v-model="thirdProj"></v-select>
+                  <v-select class="sel1" :rules="[v => !!v || 'This is required']" required label="First Preference" outlined background-color="white" :items=projects v-model="firstProj"></v-select>
+                  <v-select class="sel1" :rules="[v => !!v || 'This is required']" required label="Second Preference" outlined background-color="white" :items=projects v-model="secondProj"></v-select>
+                  <v-select class="sel1" :rules="[v => !!v || 'This is required']" required label="Third Preference" outlined background-color="white" :items=projects v-model="thirdProj"></v-select>
                 </div>
               </v-flex>
               <v-flex>
                 <div class="teammate_pref">
                   <h3> Team Preferences </h3>
-                  <v-select multiple label="Prefer Teammates" outlined background-color="white" :items=students v-model="team_pref"></v-select>
+                  <v-select width=50px multiple label="Prefer Teammates" outlined background-color="white" :items=students v-model="team_pref"></v-select>
                   <v-select multiple label="Avoid Teammates" outlined background-color="white" :items=students v-model="team_avoid"></v-select>
                 </div>
               </v-flex>
@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       preference: "Doesn't Matter",
-      projects: ['dummy1'],
+      projects: ['dummy1 qwertyuiopasdfghjklzxcvbnm,.'],
       students: ['john doe', 'jane doe'],
       firstProj: "",
       secondProj: "",
@@ -115,6 +115,10 @@ export default {
   center {
     padding: 25px;
   }
+
+  .sel1 {
+    width: 520px;
+  }
   
   .v-card-text1 {
     background: #D3D3D3;
@@ -152,6 +156,7 @@ export default {
 
   .bottom {
     margin: 10px; 
+    width: 90%;
   }
 
   .experience {
