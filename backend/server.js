@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const db = require("./app/models");
+const db = require("./models");
 const cors = require("cors");
 
 const app = express();
@@ -10,8 +10,6 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-require("./app/routes/client.routes")(app);
 
 db.sequelize.sync();
 
@@ -26,8 +24,10 @@ app.get("/", (req, res) => {
   res.json({ message: "UwU hewow" });
 });
 
+require("./routes/client.routes")(app);
+
 // set port, listen for requests
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

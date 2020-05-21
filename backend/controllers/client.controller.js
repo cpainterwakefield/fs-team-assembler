@@ -42,7 +42,7 @@ exports.findAll = (req, res) => {
     let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
     var condition = title ? conditionResult : null;
 
-    Tutorial.findAll({ where: condition })
+    Client.findAll({ where: condition })
         .then(data => {
             res.send(data);
         })
