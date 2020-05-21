@@ -12,7 +12,7 @@ project_id: int
 */
 exports.create = (req, res) => {
     if (!req.body.name) {
-        // If there is no name, then there's no point in storing a Client.
+        // If there is no name, then there's no point in storing a Student.
         res.status(400).send({
             message: "Name cannot be empty."
         });
@@ -38,7 +38,7 @@ exports.create = (req, res) => {
     // Create a Student from the JSON object client.
     Student.create(student)
         .then(data => {
-            // Send the actual client data as a response.
+            // Send the actual student data as a response.
             res.send(data);
         })
         .catch(err => {
