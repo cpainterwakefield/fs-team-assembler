@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
         },
 
         projectId: {
-            type: Sequelize.BIGINT
+            type: Sequelize.ARRAY(Sequelize.INTEGER), defaultValue: null
         }
     });
 
