@@ -89,25 +89,18 @@ exports.findOne = (req, res) => {
 // Update a single Client via its ID
 exports.update = (req, res) => {
     const id = req.params.id;
-
+    //UPDATE STUDENT DATA BELOW
     Student.update(req.body, {
         where: { id: id }
     })
     .then(num => {
-        if (num == 1) {
-            res.send({
-                message: "Client was updated successfully."
-            });
-        } else {
-            res.send({
-                message: `Cannot update Client with id=${id}.`
-            });
+        if (num == 1){
+            //
         }
+        
     })
     .catch(err => {
-        res.status(500).send({
-            message: "Error updating Client with id=" + id
-        });
+        
     });
 };
 
