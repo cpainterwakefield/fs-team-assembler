@@ -18,7 +18,7 @@
                 <div class="right-pref">
                   <v-radio-group v-model="preference" label="I Prefer" mandatory>
                     <v-radio name="preference" label="Doesn't Matter" value="2"></v-radio>                
-                    <v-radio name="preference" label="My Chosen Projects"> value="0"></v-radio>
+                    <v-radio name="preference" label="My Chosen Projects" value="0"></v-radio>
                     <v-radio name="preference" label="My Chosen Teammates" value="1"></v-radio>                
                   </v-radio-group>
                 </div>
