@@ -95,8 +95,14 @@ exports.update = (req, res) => {
         where: { id: id }
     })
     .then(num => {
-        if (num == 1){
-            //
+        if (num == 1) {
+            res.send({
+                message: "Client was updated successfully."
+            });
+        } else {
+            res.send({
+                message: `Cannot update Client with id=${id}.`
+            });
         }
         
     })
