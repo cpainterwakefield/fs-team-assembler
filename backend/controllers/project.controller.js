@@ -4,7 +4,7 @@ const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
     if (!req.body.name) {
-        // If there is no name, then there's no point in storing a Student.
+        // If there is no name, then there's no point in storing a Project.
         res.status(400).send({
             message: "Name cannot be empty."
         });
@@ -20,7 +20,7 @@ exports.create = (req, res) => {
         max_students: req.body.max_students
     };
 
-    // Create a Student from the JSON object client.
+    // Create a Project from the JSON object project.
     Project.create(project)
         .then(data => {
             // Send the actual student data as a response.
@@ -36,7 +36,7 @@ exports.create = (req, res) => {
         });
 };
 
-// Get all the Clients from the database
+// Get all the Project from the database
 exports.findAll = (req, res) => {
     const title = req.query.title;
 
@@ -56,7 +56,7 @@ exports.findAll = (req, res) => {
         });
 };
 
-// Get a single Client from the database
+// Get a single Project from the database
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
@@ -71,10 +71,10 @@ exports.findOne = (req, res) => {
         });
 };
 
-// Update a single Client via its ID
+// Update a single Project via its ID
 exports.update = (req, res) => {
     const id = req.params.id;
-    //UPDATE STUDENT DATA BELOW
+    //UPDATE Project DATA BELOW
     Project.update(req.body, {
         where: { id: id }
     })
