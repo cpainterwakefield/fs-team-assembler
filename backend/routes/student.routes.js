@@ -3,22 +3,22 @@ module.exports = app => {
 
     var router = require("express").Router();
 
-    // Create a new client
+    // Create a new student 
     router.post("/", students.create);
 
-    // Get all the clients
+    // Get all the students 
     router.get("/", students.findAll);
 
-    // Find a client by a certain ID
+    // Find a student by a certain ID
     router.get("/:id", students.findOne);
 
-    // Update a client via a certain ID
+    // Update a student via a certain ID
     router.put("/:id", students.update);
 
-    // Delete a client with the given ID
+    // Delete a student with the given ID
     router.delete("/:id", students.delete);
 
-    // Delete all clients (ooo!)
+    // Delete all students (ooo!)
     router.delete("/", students.deleteAll);
 
     app.use('/api/students', router);

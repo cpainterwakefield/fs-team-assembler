@@ -21,7 +21,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "UwU hewow" });
+  // Echoes back the request body as a response
+  res.send([req.body]);
 });
 
 require("./routes/client.routes")(app);
