@@ -1,6 +1,5 @@
 <template>
 <center>
-  <Header />
   <div class="profile">
     <div class="add">
       <div class="add_element">
@@ -64,13 +63,9 @@
 </template>
 
 <script>
-
-import Header from '@/components/HeaderAdmin.vue'
-
 export default {
   name: 'Profile',
   components: {
-    Header
   },
   data() {
     return {

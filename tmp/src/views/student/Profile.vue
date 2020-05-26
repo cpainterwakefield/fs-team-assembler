@@ -1,6 +1,5 @@
 <template>
 <center>
-<Header />
   <div class="profile_main">
     <h1>Profile </h1>
     <hr>
@@ -64,12 +63,9 @@
 
 <script>
 
-import Header from '@/components/HeaderStudent.vue'
-
 export default {
   name: 'Home',
   components: {
-    Header
   },
   data() {
     return {
