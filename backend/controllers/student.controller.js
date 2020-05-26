@@ -10,6 +10,7 @@ name: String
 username: String
 project_id: int
 */
+
 exports.create = (req, res) => {
     if (!req.body.name) {
         // If there is no name, then there's no point in storing a Student.
