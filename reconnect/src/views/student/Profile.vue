@@ -8,13 +8,14 @@
             <v-layout wrap>
               <v-flex>
                 <div class="left-questions">
+                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Preferred Name" :placeholder="name"></v-text-field>
                   <v-text-field class="text" readonly background-color="white" filled color="black" label="Minor" :placeholder="minor"></v-text-field>
                   <v-text-field class="text" readonly background-color="white" filled color="black" label="GPA" :placeholder="gpa"></v-text-field>
                 </div>
               </v-flex>
               <v-flex>
                 <div class="right-pref">
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Preference" :placeholder="preference"></v-text-field> 
+                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Project/Team Preference" :placeholder="preference"></v-text-field> 
                 </div>
               </v-flex>
             </v-layout>
@@ -32,24 +33,25 @@
                 </div>
               </v-flex>
               <v-flex>
-                <h3 class="h3_1"> Team Preferences </h3>
-                <div class="pref1">
-                  <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
-                    <h5><u>Preferred Team</u></h5>
-                    <v-list-item v-for="(pref, i) in team_pref" :key="i">
-                      <v-list-item-title v-text="pref"></v-list-item-title>
-                    </v-list-item>  
-                  </v-list>
+                <div class="teams">
+                  <h3 class="h3_1"> Team Preferences </h3>
+                  <div class="pref1">
+                    <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
+                      <h5><u>Preferred Team</u></h5>
+                      <v-list-item v-for="(pref, i) in team_pref" :key="i">
+                        <v-list-item-title v-text="pref"></v-list-item-title>
+                      </v-list-item>  
+                    </v-list>
+                  </div>
+                  <div class="pref1">
+                    <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
+                      <h5><u>Avoid Team</u></h5>
+                      <v-list-item v-for="(avoid, i) in team_avoid" :key="i">
+                        <v-list-item-title v-text="avoid"></v-list-item-title>
+                      </v-list-item>  
+                    </v-list>
+                  </div>
                 </div>
-                <div class="pref1">
-                  <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
-                    <h5><u>Avoid Team</u></h5>
-                    <v-list-item v-for="(avoid, i) in team_avoid" :key="i">
-                      <v-list-item-title v-text="avoid"></v-list-item-title>
-                    </v-list-item>  
-                  </v-list>
-                </div>
-
               </v-flex>
             </v-layout>
           </div>
@@ -84,7 +86,8 @@ export default {
       valid: true,
       minor: "test",
       gpa: "test",
-      experience: "experience test"
+      experience: "experience test",
+      name: "Preferred Name"
     }
   }
 }
@@ -95,7 +98,6 @@ export default {
 
   .pref1 {
     margin-bottom: 20px;
-    margin-left: 160px;
   }
 
   h5 {
@@ -122,7 +124,7 @@ export default {
   }
 
   .h3_1 {
-    margin-left: 160px;
+    margin-left: 50px;
   }
 
   p {
@@ -176,5 +178,11 @@ export default {
   .experience {
     margin-left: 30px;
     margin-right: 30px;
+  }
+
+  .teams {
+    width: 40%;
+    margin-left: 160px;
+    margin-top: 10px;
   }
 </style>

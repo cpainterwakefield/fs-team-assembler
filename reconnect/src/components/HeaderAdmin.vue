@@ -3,6 +3,7 @@
     <v-app-bar-title class="headline smetallic--text text-uppercase font-weight-light">Reconnect</v-app-bar-title>
     <v-spacer/>
     <v-btn class="btn1" flat to="/admin/">Profile</v-btn>
+    <v-btn class="btn1" flat to="/admin/edit">Edit</v-btn>
     <v-btn class="btn1" flat to="/admin/run">Run</v-btn>
     <v-btn class="btn1" flat href="http://cs-courses.mines.edu/csci370/FS2020S/ProjectList2020S.html" target="_blank">Projects</v-btn>
     <v-btn class="btn1" flat>Logout</v-btn>

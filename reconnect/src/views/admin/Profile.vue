@@ -2,62 +2,34 @@
 <center>
   <Header />
   <div class="profile">
-    <div class="add">
-      <div class="add_element">
-        <v-card>
-          <v-card-text class="v-card-text1">
-            <v-form v-model="valid">
-              <v-file-input label="Add Student (JSON)" outlined accept=".txt" background-color="white" multiple></v-file-input>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn flat color="primary">Submit</v-btn>
-          </v-card-actions>
-        </v-card>
-      </div>
-      <div class="add_element">
-        <v-card>
-          <v-card-text class="v-card-text1">
-            <v-form v-model="valid">
-              <v-file-input label="Add Project (JSON)" outlined accept=".txt" background-color="white" multiple></v-file-input>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn flat color="primary">Submit</v-btn>
-          </v-card-actions>
-        </v-card>
-      </div>
+    <div class="left">
+      <v-text-field background-color="white" label="Search a Student to View Profile" outlined v-model="student"></v-text-field>
     </div>
-    <div class="profiles">
-      <div class="left">
-        <v-text-field background-color="white" label="Search a Student to View Profile" outlined v-model="student"></v-text-field>
-      </div>
-      <div class="right">
-        <v-btn color="primary" flat>Submit</v-btn>
-      </div>
-        <v-text-field class="text" readonly background-color="white" filled color="black" label="Name"></v-text-field>
-        <v-text-field class="text" readonly background-color="white" filled color="black" label="Email"></v-text-field>
-        <v-text-field class="text" readonly background-color="white" filled color="black" label="Minor"></v-text-field>     
-        <v-text-field class="text" readonly background-color="white" filled color="black" label="GPA"></v-text-field>     
-        <v-text-field class="text" readonly background-color="white" filled color="black" label="First Preference" :placeholder="firstProj"></v-text-field>
-        <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :placeholder="secondProj"></v-text-field>
-        <v-text-field class="text" readonly background-color="white" filled color="black" label="Third Preference" :placeholder="thirdProj"></v-text-field>
-        <div class="pref1">
-          <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
-            <h5><u>Preferred Team</u></h5>
-            <v-list-item v-for="(pref, i) in team_pref" :key="i">
-              <v-list-item-title v-text="pref"></v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </div>
-        <div class="pref1">
-          <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
-            <h5><u>Avoid Team</u></h5>
-            <v-list-item v-for="(avoid, i) in team_avoid" :key="i">
-              <v-list-item-title v-text="avoid"></v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </div>
+    <div class="right">
+      <v-btn color="primary" flat>Submit</v-btn>
+    </div>
+    <v-text-field class="text" readonly background-color="white" filled color="black" label="Name"></v-text-field>
+    <v-text-field class="text" readonly background-color="white" filled color="black" label="Email"></v-text-field>
+    <v-text-field class="text" readonly background-color="white" filled color="black" label="Minor"></v-text-field>     
+    <v-text-field class="text" readonly background-color="white" filled color="black" label="GPA"></v-text-field>     
+    <v-text-field class="text" readonly background-color="white" filled color="black" label="First Preference" :placeholder="firstProj"></v-text-field>
+    <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :placeholder="secondProj"></v-text-field>
+    <v-text-field class="text" readonly background-color="white" filled color="black" label="Third Preference" :placeholder="thirdProj"></v-text-field>
+    <div class="pref1">
+      <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
+        <h5><u>Preferred Team</u></h5>
+        <v-list-item v-for="(pref, i) in team_pref" :key="i">
+          <v-list-item-title v-text="pref"></v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </div>
+    <div class="pref1">
+      <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
+        <h5><u>Avoid Team</u></h5>
+        <v-list-item v-for="(avoid, i) in team_avoid" :key="i">
+          <v-list-item-title v-text="avoid"></v-list-item-title>
+        </v-list-item>
+      </v-list>
     </div>
   </div>
 </center>
@@ -108,7 +80,7 @@ export default {
     margin-bottom: 50px;
   }
 
-  .profiles {
+  .profile {
     border: 2px solid black;
     border-radius: 10px;
     width: 90%;
@@ -119,5 +91,6 @@ export default {
   
   .pref1 {
     display: inline-block;
+    margin: 20px;
   }
 </style>

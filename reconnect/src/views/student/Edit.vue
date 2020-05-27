@@ -11,6 +11,7 @@
             <v-layout wrap>
               <v-flex>
                 <div class="left-questions">
+                  <v-text-field class="text" v-model="name" background-color="white" outlined label="Preferred Name"></v-text-field>
                   <v-text-field class="text" v-model="minor" :rules="[v => !!v || 'This is required']" required background-color="white" outlined label="Minor"></v-text-field>
                   <v-text-field class="text" v-model="gpa" :rules="[v => !!v || 'This is required']" required background-color="white" outlined label="GPA" ></v-text-field>
                 </div>
@@ -42,7 +43,7 @@
                 <div class="teammate_pref">
                   <h3> Team Preferences </h3>
                   <v-select width=50px multiple label="Prefer Teammates" outlined background-color="white" :items=students v-model="team_pref"></v-select>
-                  <v-select multiple label="Avoid Teammates" outlined background-color="white" :items=students v-model="team_avoid"></v-select>
+                  <v-select width=50px multiple label="Avoid Teammates" outlined background-color="white" :items=students v-model="team_avoid"></v-select>
                 </div>
               </v-flex>
             </v-layout>
