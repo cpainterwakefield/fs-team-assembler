@@ -8,7 +8,7 @@ import AdminEdit from '../views/admin/Edit.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
+const routes = [
   { path: '/student/', name: 'Profile', component: StudentProfile, meta: {title: 'Profile'} },
   { path: '/student/Edit', name: 'Edit', component: StudentEdit, meta: {title: 'Edit'} },
   { path: '/admin', name: 'Profile', component: AdminProfile, meta: {title:'Profile'} },
