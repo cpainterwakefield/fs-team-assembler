@@ -26,7 +26,7 @@ CREATE TABLE project(
     min_students INTEGER,
     max_students INTEGER
     FOREIGN KEY (advisor_id) REFERENCES advisor(id),
-    FOREIGN KEY (client_id) REFERENCES client(id),
+    FOREIGN KEY (client_id) REFERENCES client(id)
 );
 
 CREATE TABLE prefer_project_xref(
