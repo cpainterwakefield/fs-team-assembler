@@ -15,10 +15,8 @@ passport.use(new GoogleStrategy({
   clientSecret: keys.google.clientSecret,
   callbackURL: "/auth/google/callback"
 },
-function(token, tokenSecret, profale, done){
-  URLSearchParams.findOrCreate({googleId: profile.id}, function(err, user) {
-    return done(err, user);
-  });
+function(accessToken, refreshToken, profile, done) {
+  console.log(profile);
 }
 ));
 module.exports = app => {
@@ -27,8 +25,11 @@ module.exports = app => {
   //   request.  The first step in Google authentication will involve
   //   redirecting the user to google.com.  After authorization, Google
   //   will redirect the user back to this application at /auth/google/callback
+  // IMPORTANT: WHATEVER IS IN SIDE THE CLOSED BRACKETS AFTER SCOPE: BELOW IS THE INFORMATION WE GET BACK
   app.get('/auth/google',
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+  passport.authenticate('google', { 
+    scope: ['profile'] 
+  }));
   
   // GET /auth/google/callback
   //   Use passport.authenticate() as route middleware to authenticate the
@@ -36,9 +37,9 @@ module.exports = app => {
   //   login page.  Otherwise, the primary route function function will be called,
   //   which, in this example, will redirect the user to the home page.
   app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
+  passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
-    res.redirect('/');
+    res.send('you have logged in ^_^')
   });
   }
 

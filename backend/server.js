@@ -19,15 +19,17 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+require("./routes/routes.google")(app);
+require("./routes/client.routes")(app);
+require("./routes/student.routes")(app);
+require("./routes/project.routes")(app);
+
 // simple route
 app.get("/", (req, res) => {
   // Echoes back the request body as a response
   res.send([req.body]);
 });
-require("./routes/routes.google")(app);
-require("./routes/client.routes")(app);
-require("./routes/student.routes")(app);
-require("./routes/project.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
