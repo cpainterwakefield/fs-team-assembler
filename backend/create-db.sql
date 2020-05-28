@@ -3,6 +3,7 @@ CREATE TABLE student(
     name TEXT,
     username TEXT NOT NULL,
     project_id INTEGER,
+    selection_preference BOOLEAN, -- TRUE = teammates, FALSE = project, NULL = ambivalent
     FOREIGN KEY (project_id) REFERENCES project(id)
 );
 
