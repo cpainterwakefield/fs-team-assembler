@@ -3,43 +3,15 @@
   <Header />
   <div class="edit">
     <div class="add">
-      <h2 class="h2_1">Add Student(s)</h2>
+      <h2 class="h2_1">Add Student(s)/Project(s)</h2>
       <div class="add_element">
         <v-card>
           <v-card-text class="v-card-text1">
             <v-form v-model="valid">
-              <v-file-input label="Add All Students (JSON)" outlined accept=".txt" background-color="white" multiple></v-file-input>
+              <v-file-input label="Add Students (JSON)" outlined accept=".txt" background-color="white" multiple></v-file-input>
             </v-form>
           </v-card-text>
-          <v-card-actions>
-            <v-btn flat color="primary">Submit</v-btn>
-          </v-card-actions>
-        </v-card>
-      </div>
-      <div class="add_element">
-        <v-card>
-          <v-card-text class="v-card-text1">
-            <v-form v-model="valid">
-              <v-file-input label="Add Single Student (JSON)" outlined accept=".txt" background-color="white" multiple></v-file-input>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn flat color="primary">Submit</v-btn>
-          </v-card-actions>
-        </v-card>
-      </div>
-
-      <hr>
- 
-      <h2 class="h2_1">Add Project(s)</h2>
-       <div class="add_element">
-        <v-card>
-          <v-card-text class="v-card-text1">
-            <v-form v-model="valid">
-              <v-file-input label="Add All Projects (JSON)" outlined accept=".txt" background-color="white" multiple></v-file-input>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="c1">
             <v-btn flat color="primary">Submit</v-btn>
           </v-card-actions>
         </v-card>
@@ -48,15 +20,14 @@
         <v-card>
           <v-card-text class="v-card-text1">
             <v-form v-model="valid">
-              <v-file-input label="Add Single Project (JSON)" outlined accept=".txt" background-color="white" multiple></v-file-input>
+              <v-file-input label="Add Projects (JSON)" outlined accept=".txt" background-color="white" multiple></v-file-input>
             </v-form>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="c1">
             <v-btn flat color="primary">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </div>
-
       <hr>
 
       <h2 class="h2_1">Delete Students/Projects</h2>
@@ -67,7 +38,7 @@
               <v-select multiple label="Delete Student(s)" outlined background-color="white" :items=students v-model="team_pref"></v-select>
             </v-form>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="c1">
             <v-btn flat color="primary">Submit</v-btn>
           </v-card-actions>
         </v-card>
@@ -79,11 +50,16 @@
               <v-select multiple label="Delete Project(s)" outlined background-color="white" :items=projects v-model="team_pref"></v-select>
             </v-form>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="c1">
             <v-btn flat color="primary">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </div>
+    </div>
+    <hr>
+    <div class="link">
+      <v-text-field class="bot" label="New Projects Link" v-model="link" background-color="white" filled /> 
+      <v-btn class="primary" flat>Submit</v-btn>
     </div>
     <hr>
     <div class="btn1">
@@ -108,7 +84,8 @@ export default {
       valid: true,
       students: ['s1', 's2'],
       student: "",
-      projects: ['p1', 'p2']
+      projects: ['p1', 'p2'],
+      link: ""
     }
   }
 }
@@ -167,5 +144,26 @@ export default {
 
   .error {
     margin: 10px;
+  }
+
+  .c1 {
+    height: 50px;
+  }
+    
+  .v-card-text1 {
+    height: 90px;
+  }
+
+  .link {
+    display: inline;
+    width: 90%;
+  }
+  
+  .bot {
+    display: inline-block;
+    width: 80%;
+  }
+  
+  .primary {
   }
 </style>
