@@ -39,7 +39,7 @@
                     <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
                       <h5><u>Preferred Team</u></h5>
                       <v-list-item v-for="(pref, i) in team_pref" :key="i">
-                        <v-list-item-title v-text="pref"></v-list-item-title>
+                        <v-list-item-title class="element" v-text="pref"></v-list-item-title>
                       </v-list-item>  
                     </v-list>
                   </div>
@@ -47,7 +47,7 @@
                     <v-list flat dense max-height=105px class="overflow-y-auto" width="250">
                       <h5><u>Avoid Team</u></h5>
                       <v-list-item v-for="(avoid, i) in team_avoid" :key="i">
-                        <v-list-item-title v-text="avoid"></v-list-item-title>
+                        <v-list-item-title class="element" v-text="avoid"></v-list-item-title>
                       </v-list-item>  
                     </v-list>
                   </div>

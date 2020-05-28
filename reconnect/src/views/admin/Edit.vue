@@ -85,6 +85,11 @@
         </v-card>
       </div>
     </div>
+    <hr>
+    <div class="btn1">
+     <v-btn class="error" flat>CLEAR STUDENTS</v-btn> 
+     <v-btn class="error" flat>CLEAR PROJECTS</v-btn> 
+    </div>
   </div>
 </center>
 </template>
@@ -158,5 +163,9 @@ export default {
     margin-bottom: 50px;
     padding: 20px;
     width: 90%;
+  }
+
+  .error {
+    margin: 10px;
   }
 </style>

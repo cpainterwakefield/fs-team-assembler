@@ -2,28 +2,21 @@
 <center>
   <Header />
   <div class="run">
-    <v-btn class="primary" flat>Run Algorithm</v-btn>
-    <v-btn class="primary" flat>Submit</v-btn>
+    <v-btn class="error" flat to="/admin/teams/edit">Edit</v-btn>
     <hr>
     <div class="left-list">
-      <h2 class="h2_1">Remaining</h2>
-      <draggable v-model="students_left" group="projects">
-        <div class="element" v-for="(student, i) in students_left" :key="i">
-          <v-app-bar-nav-icon />
-          {{student}}
-        </div>
-      </draggable>
+      <h2 class="h2_2">Remaining</h2>
+      <div class="element" v-for="(student, i) in students_left" :key="i">
+        <span class="p1">{{student}}</span>
+      </div>
     </div>
     <div class="right-list">
       <span class="proj1" v-for="project in projects" :key="project.name">
-        <h2>{{project.name}}</h2>
+        <h2 class="h2_2">{{project.name}}</h2>
         <hr>
-        <draggable v-model="project.students" group="projects">
-          <div class="element" v-for="(student, i) in project.students" :key="i">
-            <v-app-bar-nav-icon></v-app-bar-nav-icon>
-            {{student}}
-          </div>
-        </draggable>
+        <div class="element" v-for="(student, i) in project.students" :key="i">
+          <span class="p1">{{student}}</span>
+        </div>
       </span>
     </div>
   </div>
@@ -34,13 +27,11 @@
 <script>
 
 import Header from '@/components/HeaderAdmin.vue'
-import draggable from 'vuedraggable'
 
 export default {
-  name: 'Profile',
+  name: 'Teams',
   components: {
     Header,
-    draggable
   },
   data() {
     return {
@@ -80,31 +71,28 @@ export default {
 
 <style>
 
-  .run {
-    border: 2px solid black;
-    border-radius: 10px;
-    width: 90%;
-    background: #D3D3D3;
-    margin-bottom: 50px;
-    height: 100%;
-    overflow: auto;
-  }
-
   .proj1 {
     display: inline-block;
-    margin: 10px;
+    margin-top: 5x;
+    margin-bottom: 5px;
+    margin-left: 3px;
+    margin-right: 3px;
     border: 2px solid black;
     border-radius: 10px;
     padding: 10px;
     background: white;
-    max-width: 45%;
-    word-wrap: break-word
+    width: 18%;
+    word-wrap: break-word;
+    height: 200px;
+    overflow: auto;
   }
 
   .element {
-    border-bottom: 1px solid black;
+    border: 1px solid grey;
     margin: 5px;
     text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 
   .left-list {
@@ -113,7 +101,7 @@ export default {
     border: 2px solid black;
     border-radius: 10px;
     background: white;
-    width: 20%;
+    width: 15%;
     margin: 15px;
   }
 
@@ -124,11 +112,19 @@ export default {
     text-align: top;
     border: 2px solid black;
     border-radius: 10px;
-    width: 75%;
+    width: 80%;
   }
     
   .primary {
     margin: 15px;
+  }
+
+  .p1 {
+    font-size: 12px;
+  }
+
+  .h2_2 {
+    font-size: 15px;
   }
 
 </style>
