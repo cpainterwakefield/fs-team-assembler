@@ -23,7 +23,7 @@ exports.create = (req, res) => {
     // Create a Project from the JSON object project.
     Project.create(project)
         .then(data => {
-            // Send the actual student data as a response.
+            // Send the actual project data as a response.
             res.send(data);
         })
         .catch(err => {
@@ -31,7 +31,7 @@ exports.create = (req, res) => {
             // or generic error message.
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating a Client."
+                    err.message || "Some error occurred while creating a Project."
             });
         });
 };
