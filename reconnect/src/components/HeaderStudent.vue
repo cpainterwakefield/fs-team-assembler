@@ -4,13 +4,18 @@
     <v-spacer/>
     <v-btn class="btn1" flat to="/student/">Profile</v-btn>
     <v-btn class="btn1" flat to="/student/edit">Edit</v-btn>
-    <v-btn class="btn1" flat href="http://cs-courses.mines.edu/csci370/FS2020S/ProjectList2020S.html" target="_blank">Projects</v-btn>
+    <v-btn class="btn1" flat :href=projLink target="_blank" >Projects</v-btn>
     <v-btn class="btn1" flat>Logout</v-btn>
   </v-app-bar>
 </template>
 
 <script>
   export default {
-    name: 'Header'
+    name: 'Header',
+    data() {
+      return {
+        projLink: "http://cs-courses.mines.edu/csci370/FS2020S/ProjectList2020S.html"
+      }
+    }
   }
 </script>

@@ -3,6 +3,7 @@
   <Header />
   <div class="run">
     <v-btn class="error" flat to="/admin/teams/edit">Edit</v-btn>
+    <v-btn class="primary" flat>Export</v-btn>
     <hr>
     <div class="left-list">
       <h2 class="h2_2">Remaining</h2>
