@@ -4,6 +4,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var SamlStrategy = require('passport-saml').Strategy;
 var expressSession = require('express-session');
 const keys = require('../config/keys');
+const students = require('../models/student.model');
 
 // Use the GoogleStrategy within Passport.
 //   Strategies in passport require a `verify` function, which accept
@@ -16,7 +17,26 @@ passport.use(new GoogleStrategy({
   callbackURL: "/auth/google/callback"
 },
 function(accessToken, refreshToken, profile, done) {
-  console.log(profile);
+  console.log(profile._json.email);
+  //check if user exists in DB
+  students.findOne({id: profile._json.sub}).then((studentExists) => {
+    if(studentExists){
+      //Student is part of the course and they can log in
+      //Student info is in studentExists
+      students.update({
+        name: profile._json.name,
+        username: profile._json.email,
+        authid: profile._json.sub
+      })
+    }
+    else{
+      //If not in the db then say they are not part of the course
+      //If that is a mistake email CPW
+
+
+    }
+  })
+
 }
 ));
 module.exports = app => {
@@ -28,7 +48,7 @@ module.exports = app => {
   // IMPORTANT: WHATEVER IS IN SIDE THE CLOSED BRACKETS AFTER SCOPE: BELOW IS THE INFORMATION WE GET BACK
   app.get('/auth/google',
   passport.authenticate('google', { 
-    scope: ['profile'] 
+    scope: ['profile', 'email'] 
   }));
   
   // GET /auth/google/callback
@@ -39,7 +59,7 @@ module.exports = app => {
   app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/' }),
   function(req, res) {
-    res.send('you have logged in ^_^')
+    console.log('you have logged in ^_^')
   });
   }
 
