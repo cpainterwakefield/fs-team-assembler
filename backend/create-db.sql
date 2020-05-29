@@ -33,9 +33,16 @@ CREATE TABLE project(
     advisor_id INTEGER,
     client_id INTEGER,
     min_students INTEGER,
-    max_students INTEGER
+    max_students INTEGER,
     FOREIGN KEY (advisor_id) REFERENCES advisor(id),
     FOREIGN KEY (client_id) REFERENCES client(id)
+);
+
+CREATE TABLE student(
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    username TEXT NOT NULL,
+    project_id INTEGER REFERENCES project(id)
 );
 
 CREATE TABLE prefer_project_xref(
@@ -51,7 +58,7 @@ CREATE TABLE prefer_teammate_xref(
     preferree_id INTEGER,
     PRIMARY KEY (preferrer_id, preferree_id),
     FOREIGN KEY (preferrer_id) REFERENCES student(id),
-    FOREIGN KEY (preferee_id) REFERENCES student(id)
+    FOREIGN KEY (preferree_id) REFERENCES student(id)
 );
 
 CREATE TABLE avoid_teammate_xref(

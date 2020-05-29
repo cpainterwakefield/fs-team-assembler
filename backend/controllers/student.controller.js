@@ -52,27 +52,27 @@ exports.create = (req, res) => {
         });
 };
 
-// Get all the Clients from the database
+// Get all the Student from the database
 exports.findAll = (req, res) => {
     const title = req.query.title;
 
     // !!! THIS could be where SQL injections happen--check for security here !!!
-    let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
-    var condition = title ? conditionResult : null;
+    // let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
+    // var condition = title ? conditionResult : null;
 
-    Student.findAll({ where: condition })
+    Student.findAll()
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving Clients."
+                    err.message || "Some error occurred while retrieving Students."
             });
         });
 };
 
-// Get a single Client from the database
+// Get a single Student from the database using id given by shibboleth
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
@@ -82,7 +82,7 @@ exports.findOne = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error retrieving Client with id=" + id
+                message: "Error retrieving Student with id=" + id
             });
         });
 };
@@ -97,7 +97,7 @@ exports.update = (req, res) => {
     .then(num => {
         if (num == 1) {
             res.send({
-                message: "Client was updated successfully."
+                message: "Student was updated successfully."
             });
         } else {
             res.send({

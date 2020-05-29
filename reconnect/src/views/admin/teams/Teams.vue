@@ -4,6 +4,7 @@
   <div class="run">
     <v-btn class="error" flat to="/admin/teams/edit">Edit</v-btn>
     <v-btn class="primary" flat>Export</v-btn>
+    <v-btn class="primary" flat>RUN</v-btn>
     <hr>
     <div class="left-list">
       <h2 class="h2_2">Remaining</h2>
@@ -13,7 +14,7 @@
     </div>
     <div class="right-list">
       <span class="proj1" v-for="project in projects" :key="project.name">
-        <h2 class="h2_2">{{project.name}}</h2>
+        <h2 class="h2_2">{{project.name}} ({{project.min}}, {{project.max}})</h2>
         <hr>
         <div class="element" v-for="(student, i) in project.students" :key="i">
           <span class="p1">{{student}}</span>
@@ -38,30 +39,8 @@ export default {
     return {
       students_left: ['John Doe', 'Adam Smith','Donald Duck', 'Mickey Mouse','Pluto Dog', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2'],
       projects: [
-        {name: 'p1qpifhpasdua;shdfak;sdjfha;kdsjhf;aksdjhflskdjhfjsdh', students: ['s1', 's2']},
-        {name: 'p2qiufaaksjdfkjshdfkjshadfkjshfajshdflakjsdhflakjsdhflaksj', students: ['s3', 's4']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']}
+        {name: 'p1qpifhpasdua;shdfak;sdjfha;kdsjhf;aksdjhflskdjhfjsdh', students: ['s1', 's2'], min: 2, max: 5},
+        {name: 'p2qiufaaksjdfkjshdfkjshadfkjshfajshdflakjsdhflakjsdhflaksj', students: ['s3', 's4'], min: 2, max: 5},
       ]
       
     }
