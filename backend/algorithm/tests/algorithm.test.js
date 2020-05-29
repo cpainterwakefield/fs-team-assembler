@@ -100,8 +100,7 @@ var testProjectNormal = {
         testStudentsNormal.thirdStudent, testStudentsNormal.fourthStudent]
 };
 
-/**
- * Tests made with JestJS:
+/*
 test('Nobody should get paired with anyone that they avoid.', () => {
     // TODO: Write test
 });
@@ -120,6 +119,7 @@ test('If someone is ambivalent, they should have at least one or another conditi
     () => {
     // TODO: Write test
 });
+*/
 
 test('Team scoring w/ project preference should be accurate.', () => {
     // Should be 1
@@ -153,4 +153,3 @@ test('Team scoring for whole projects should be accurate.', () => {
     // Should be 25
     expect(algorithm.scoreProject(testProjectClique)).toBe(25);
 })
-*/
