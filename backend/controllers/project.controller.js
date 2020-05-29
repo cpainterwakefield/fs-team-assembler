@@ -16,8 +16,8 @@ exports.create = (req, res) => {
     const project = {
         name: req.body.name,
         description: req.body.description,
-        min_students: req.body.min_students,
-        max_students: req.body.max_students,
+        min_Students: req.body.min_students,
+        max_Students: req.body.max_students,
         client_Id: req.body.client_id,
         advisor_Id: req.body.advisor_id
     };
