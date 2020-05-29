@@ -4,7 +4,7 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var SamlStrategy = require('passport-saml').Strategy;
 var expressSession = require('express-session');
 const keys = require('../config/keys');
-const students = require('../models/student.model');
+const Users = require('../models/users.model');
 
 // Use the GoogleStrategy within Passport.
 //   Strategies in passport require a `verify` function, which accept
@@ -19,19 +19,20 @@ passport.use(new GoogleStrategy({
 function(accessToken, refreshToken, profile, done) {
   console.log(profile._json.email);
   //check if user exists in DB
-  students.findOne({id: profile._json.sub}).then((studentExists) => {
+  users.findOne({id: profile._json.sub}).then((studentExists) => {
     if(studentExists){
       //Student is part of the course and they can log in
       //Student info is in studentExists
-      students.update({
+      Users.update({
         name: profile._json.name,
-        username: profile._json.email,
-        authid: profile._json.sub
+        email: profile._json.email,
+        auth_id: profile._json.sub
       })
     }
     else{
       //If not in the db then say they are not part of the course
       //If that is a mistake email CPW
+      //TODO: find out what to do here....
 
 
     }

@@ -17,7 +17,9 @@ exports.create = (req, res) => {
         name: req.body.name,
         description: req.body.description,
         min_students: req.body.min_students,
-        max_students: req.body.max_students
+        max_students: req.body.max_students,
+        client_id: req.body.client_id,
+        advisor_id: req.body.advisor_id
     };
 
     // Create a Project from the JSON object project.

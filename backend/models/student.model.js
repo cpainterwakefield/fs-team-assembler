@@ -20,7 +20,9 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true
         },
         gpa: {
-            type: Sequelize.DECIMAL(3)
+            type: Sequelize.DECIMAL(3),
+            defaultValue: null,
+            allowNull: true
 
         }
     });
