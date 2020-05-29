@@ -56,17 +56,19 @@ export default {
       ],
     }
   },
-  get: function() {
+  mounted() {
     var self=this;
-    axios.get('localhost:8080/api/projects/')
+    axios.get('localhost:8080/api/projects')
     .then(response => {
-      console.log(response.data)
+      console.log(response)
       // JSON responses are automatically parsed.
       self.projects = response.data
+      
     })
     .catch(e => {
       self.errors.push(e)
     })
+    console.log("HERE")
   }
 }
 
