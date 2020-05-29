@@ -1,5 +1,6 @@
 CREATE TABLE student(
     id INTEGER PRIMARY KEY,
+    auth_id INTEGER UNIQUE,
     name TEXT,
     username TEXT NOT NULL,
     project_id INTEGER,
