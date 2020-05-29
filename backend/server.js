@@ -38,4 +38,4 @@ app.listen(PORT, () => {
 });
 
 // To send client queries: 
-// curl -H "Content-Type: application/json" -X POST -d '{"name":"test"}' http://localhost:8081/api/clients
+// curl -H "Content-Type: application/json" -X POST -d '{"name":"test", "description":"uwu", "min_students":"69"}' http://localhost:8080/api/projects

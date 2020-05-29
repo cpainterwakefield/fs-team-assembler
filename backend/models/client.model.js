@@ -7,6 +7,11 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: null,
             allowNull: true
         },
+        contact_email: {
+            type: Sequelize.STRING,
+            defaultValue: null,
+            allowNull: true
+        }
     });
     return Client;
 };

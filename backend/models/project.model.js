@@ -12,22 +12,22 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true
         },
 
-        advisor_Id: {
+        advisor_id: {
             type: Sequelize.INTEGER,
             allowNull: true
         },
 
-        client_Id: {
+        client_id: {
             type: Sequelize.INTEGER,
             allowNull: true
         },
 
-        min_Students: {
+        min_students: {
             type: Sequelize.INTEGER,
             allowNull: true
         },
 
-        max_Students: {
+        max_students: {
             type: Sequelize.INTEGER,
             allowNull: true
         }
