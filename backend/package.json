@@ -13,7 +13,7 @@
     "scripts": {
         "build": "webpack",
         "start": "node server.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "jest"
     },
     "dependencies": {
         "body-parser": "^1.19.0",
@@ -27,5 +27,8 @@
         "pg": "^8.2.1",
         "pg-hstore": "^2.3.3",
         "sequelize": "^5.21.10"
+    },
+    "devDependencies": {
+        "jest": "^26.0.1"
     }
 }
