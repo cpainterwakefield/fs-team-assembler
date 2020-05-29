@@ -15,7 +15,7 @@
     </div>
     <div class="right-list">
       <span class="proj1" v-for="project in projects" :key="project.name">
-        <h2 class="h2_2">{{project.name}}</h2>
+        <h2 class="h2_2">{{project.name}} ({{project.min}}, {{project.max}})</h2>
         <hr>
         <draggable v-model="project.students" group="projects">
           <div class="element" v-for="(student, i) in project.students" :key="i">
@@ -45,30 +45,8 @@ export default {
     return {
       students_left: ['John Doe', 'Adam Smith','Donald Duck', 'Mickey Mouse','Pluto Dog', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2'],
       projects: [
-        {name: 'p1qpifhpasdua;shdfak;sdjfha;kdsjhf;aksdjhflskdjhfjsdh', students: ['s1', 's2']},
-        {name: 'p2qiufaaksjdfkjshdfkjshadfkjshfajshdflakjsdhflakjsdhflaksj', students: ['s3', 's4']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']},
-        {name: 'p1', students: ['s1', 's2']}
+        {name: 'p1qpifhpasdua;shdfak;sdjfha;kdsjhf;aksdjhflskdjhfjsdh', students: ['s1', 's2'], min: 2, max: 5},
+        {name: 'p2qiufaaksjdfkjshdfkjshadfkjshfajshdflakjsdhflakjsdhflaksj', students: ['s3', 's4'], min:2, max: 5},
       ]
       
     }

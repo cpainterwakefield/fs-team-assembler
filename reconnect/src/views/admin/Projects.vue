@@ -11,12 +11,13 @@
       <h3 class="head2">Min</h3> 
       <h3 class="head2">Max</h3> 
       <hr>
-      <div class="row" v-for="project in projects" :key="project.companyName">
+      <v-btn @click="get()">get</v-btn>
+      <div class="row" v-for="(project, i) in projects" :key="i">
         <div class="panel1">
           <div class="list1">{{project.companyName}}</div>
         </div>
         <div class="panel1">
-          <div class="list1">{{project.projectName}}</div>
+          <div class="list1">{{project.name}}</div>
         </div>
         <div class="panel1">
           <div class="list1">{{project.contactName}}</div>
@@ -39,6 +40,7 @@
 <script>
 
 import Header from '@/components/HeaderAdmin.vue'
+import axios from 'axios'
 
 export default {
   name: 'Projects',
@@ -49,11 +51,23 @@ export default {
     return {
       valid: true,
       projects: [
-        {companyName: 'Company1', projectName: 'Project1', contactName: 'contact1', contactEmail: 'contact1@gmail.com', min: 2, max: 5},
-        {companyName: 'Company2', projectName: 'Project2', contactName: 'contact2', contactEmail: 'contact2@gmail.com', min: 2, max: 5},
+//        {companyName: 'Company1', projectName: 'Project1', contactName: 'contact1', contactEmail: 'contact1@gmail.com', min: 2, max: 5},
+//        {companyName: 'Company2', projectName: 'Project2', contactName: 'contact2', contactEmail: 'contact2@gmail.com', min: 2, max: 5},
       ],
     }
   },
+  get: function() {
+    var self=this;
+    axios.get('localhost:8080/api/projects/')
+    .then(response => {
+      console.log(response.data)
+      // JSON responses are automatically parsed.
+      self.projects = response.data
+    })
+    .catch(e => {
+      self.errors.push(e)
+    })
+  }
 }
 
 </script>
