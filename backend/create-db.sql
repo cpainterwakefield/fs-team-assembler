@@ -1,17 +1,24 @@
-CREATE TABLE student(
+CREATE TABLE users(
     id INTEGER PRIMARY KEY,
     auth_id INTEGER UNIQUE,
+    email TEXT,
     name TEXT,
-    username TEXT NOT NULL,
+    is_admin BOOLEAN NOT NULL
+);
+
+CREATE TABLE student(
+    users_id INTEGER,
     project_id INTEGER,
     selection_preference BOOLEAN, -- TRUE = teammates, FALSE = project, NULL = ambivalent
+    gpa NUMERIC(4, 3), -- 4 digits total, 3 decimal places
+    major TEXT,
+    FOREIGN KEY (users_id) REFERENCES users(id),
     FOREIGN KEY (project_id) REFERENCES project(id)
 );
 
 CREATE TABLE advisor(
-    id INTEGER PRIMARY KEY,
-    name TEXT,
-    username TEXT
+    users_id INTEGER,
+    FOREIGN KEY (users_id) REFERENCES users(id)
 );
 
 CREATE TABLE client(
