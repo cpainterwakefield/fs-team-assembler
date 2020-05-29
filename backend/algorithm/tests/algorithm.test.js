@@ -6,9 +6,6 @@ const algorithm = require('../algorithm');
  * (will not generate a "perfect score" so-to-speak), but avoidances
  * essentially are.
  */
-
-// devon: 5; clive: 6; bob: 7; alice: 7
-// total: 25
 var testStudentsClique = {
     firstStudent : {
         name: "Devon",
