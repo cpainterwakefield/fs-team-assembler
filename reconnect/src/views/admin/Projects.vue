@@ -11,7 +11,6 @@
       <h3 class="head2">Min</h3> 
       <h3 class="head2">Max</h3> 
       <hr>
-      <v-btn @click="get()">get</v-btn>
       <div class="row" v-for="(project, i) in projects" :key="i">
         <div class="panel1">
           <div class="list1">{{project.companyName}}</div>
@@ -58,7 +57,7 @@ export default {
   },
   mounted() {
     var self=this;
-    axios.get('localhost:8080/api/projects')
+    axios.get('http://localhost:8080/api/projects')
     .then(response => {
       console.log(response)
       // JSON responses are automatically parsed.
