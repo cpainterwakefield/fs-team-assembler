@@ -35,7 +35,7 @@
         <v-card>
           <v-card-text class="v-card-text1">
             <v-form v-model="valid">
-              <v-select multiple label="Delete Student(s)" outlined background-color="white" :items=students v-model="team_pref"></v-select>
+              <v-select multiple label="Delete Student(s)" outlined background-color="white" :items=students item-text="name" item-value="name" v-model="del_stud"></v-select>
             </v-form>
           </v-card-text>
           <v-card-actions class="c1">
@@ -47,7 +47,7 @@
         <v-card>
           <v-card-text class="v-card-text1">
             <v-form v-model="valid">
-              <v-select multiple label="Delete Project(s)" outlined background-color="white" :items=projects v-model="team_pref"></v-select>
+              <v-select multiple label="Delete Project(s)" outlined background-color="white" :items=projects item-text="name" item-value="name" v-model="del_proj"></v-select>
             </v-form>
           </v-card-text>
           <v-card-actions class="c1">
@@ -73,6 +73,7 @@
 <script>
 
 import Header from '@/components/HeaderAdmin.vue'
+import axios from 'axios'
 
 export default {
   name: 'Profile',
@@ -82,13 +83,51 @@ export default {
   data() {
     return {
       valid: true,
-      students: ['s1', 's2'],
+      students: [],
       student: "",
-      projects: ['p1', 'p2'],
+      projects: [],
       link: ""
     }
-  }
+  },
+  mounted() {
+    var self=this;
+    const requestStud = axios.get('http://localhost:8080/api/students');
+    const requestProj = axios.get('http://localhost:8080/api/projects');
+
+    axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
+      const responseStud = responses[0]
+      const responseProj = responses[1]
+      // use/access the results 
+      self.students = responseStud.data
+      self.projects = responseProj.data
+    }))
+    .catch(e => {
+      // react on errors.
+      self.errors.push(e)
+    })
+/*    axios.get('http://localhost:8080/api/students')
+    .then(response => {
+      console.log(response)
+      // JSON responses are automatically parsed.
+      self.students = response.data
+
+    })
+    .catch(e => {
+      self.errors.push(e)
+    })
+
+    axios.get('http://localhost:8080/api/students')
+    .then(response=> {
+      console.log(response)
+      // JSON responses are automatically parsed.
+      self.projects = response.data
+    })
+    .catch(e => {
+      self.errors.push(e)
+    })
+*/  }
 }
+
 
 </script>
 
