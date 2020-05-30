@@ -35,11 +35,11 @@
         <v-card>
           <v-card-text class="v-card-text1">
             <v-form v-model="valid">
-              <v-select multiple label="Delete Student(s)" outlined background-color="white" :items=students item-text="name" item-value="name" v-model="del_stud"></v-select>
+              <v-select @change="updateStudents()" multiple label="Delete Student(s)" outlined background-color="white" :items=students item-text="name" item-value="id" v-model="del_stud"></v-select>
             </v-form>
           </v-card-text>
           <v-card-actions class="c1">
-            <v-btn flat color="primary">Submit</v-btn>
+            <v-btn @click="deleteStudent(del_stud)" flat color="primary">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </div>
@@ -47,7 +47,7 @@
         <v-card>
           <v-card-text class="v-card-text1">
             <v-form v-model="valid">
-              <v-select multiple label="Delete Project(s)" outlined background-color="white" :items=projects item-text="name" item-value="name" v-model="del_proj"></v-select>
+              <v-select multiple label="Delete Project(s)" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="del_proj"></v-select>
             </v-form>
           </v-card-text>
           <v-card-actions class="c1">
@@ -86,6 +86,8 @@ export default {
       students: [],
       student: "",
       projects: [],
+      del_stud: "",
+      del_proj: "",
       link: ""
     }
   },
@@ -105,27 +107,31 @@ export default {
       // react on errors.
       self.errors.push(e)
     })
-/*    axios.get('http://localhost:8080/api/students')
-    .then(response => {
-      console.log(response)
-      // JSON responses are automatically parsed.
-      self.students = response.data
+  },
 
-    })
-    .catch(e => {
-      self.errors.push(e)
-    })
+  methods: {
+    deleteStudent: function (s_id) {
+      axios.delete('http://localhost:8080/api/students/' + s_id)
+      .catch(e => {
+        this.errors.push(e)
+      })
+      this.del_student=""
+    },
+    updateStudents: function() {
+      var self=this;
+      axios.get('http://localhost:8080/api/students')
+      .then(response => {
+        console.log(response)
+        // JSON responses are automatically parsed.
+        self.students = response.data
 
-    axios.get('http://localhost:8080/api/students')
-    .then(response=> {
-      console.log(response)
-      // JSON responses are automatically parsed.
-      self.projects = response.data
-    })
-    .catch(e => {
-      self.errors.push(e)
-    })
-*/  }
+      })
+      .catch(e => {
+        self.errors.push(e)
+      })
+    }
+
+  }
 }
 
 
