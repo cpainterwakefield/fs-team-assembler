@@ -17,8 +17,18 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true
         },
 
-        client_id: {
-            type: Sequelize.INTEGER,
+        client_name: {
+            type: Sequelize.STRING,
+            allowNull: true
+        },
+
+        client_email: {
+            type: Sequelize.STRING,
+            allowNull: true
+        },
+
+        client_company: {
+            type: Sequelize.STRING,
             allowNull: true
         },
 

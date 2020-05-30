@@ -136,6 +136,8 @@ export default {
     text-align: center;
     background: #D3D3D3; 
     margin: 35px;
+    overflow: auto;
+    height: 100%;
   }
 
   .left-questions {

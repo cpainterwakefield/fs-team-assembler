@@ -18,7 +18,9 @@ exports.create = (req, res) => {
         description: req.body.description,
         min_students: req.body.min_students,
         max_students: req.body.max_students,
-        client_id: req.body.client_id,
+        client_name: req.body.client_name,
+        client_email: req.body.client_email,
+        client_company: req.body.client_company,
         advisor_id: req.body.advisor_id
     };
 
