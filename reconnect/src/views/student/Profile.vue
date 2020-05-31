@@ -67,6 +67,7 @@
 <script>
 
 import Header from '@/components/HeaderStudent.vue'
+import axios from 'axios'
 
 export default {
   name: 'Home',
@@ -87,10 +88,24 @@ export default {
       minor: "test",
       gpa: "test",
       experience: "experience test",
-      name: "Preferred Name"
+      name: ""
     }
-  }
+  },
+    mounted() {
+      var self=this;
+      axios.get('http://localhost:8080/api/students')
+      .then(response => {
+        console.log(response)
+        // JSON responses are automatically parsed.
+        self.students = response.data
+
+      })
+      .catch(e => {
+        self.errors.push(e)
+      })
+    }
 }
+
 </script>
 
 <style type="text/css">

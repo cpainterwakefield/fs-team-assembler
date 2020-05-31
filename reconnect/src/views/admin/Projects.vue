@@ -13,22 +13,22 @@
       <hr>
       <div class="row" v-for="(project, i) in projects" :key="i">
         <div class="panel1">
-          <div class="list1">{{project.companyName}}</div>
+          <div class="list1">{{project.client_company}}</div>
         </div>
         <div class="panel1">
           <div class="list1">{{project.name}}</div>
         </div>
         <div class="panel1">
-          <div class="list1">{{project.contactName}}</div>
+          <div class="list1">{{project.client_name}}</div>
         </div>
         <div class="panel1">
-          <div class="list1">{{project.contactEmail}}</div>
+          <div class="list1">{{project.client_email}}</div>
         </div>
         <div class="panel1">
-          <div class="list1">{{project.min}}</div>
+          <div class="list1">{{project.min_students}}</div>
         </div>
         <div class="panel1">
-          <div class="list1">{{project.max}}</div>
+          <div class="list1">{{project.max_students}}</div>
         </div>
       </div>
     </div>

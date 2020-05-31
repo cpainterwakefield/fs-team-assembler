@@ -31,6 +31,8 @@
     <div class="table">
       <h3 class="head1">Name</h3> 
       <h3 class="head1">Email</h3> 
+      <h3 class="head1">Minor</h3> 
+      <h3 class="head1">GPA</h3> 
       <h3 class="head1">P/T</h3> 
       <h3 class="head1">Projects</h3> 
       <h3 class="head1">Prefers</h3> 
@@ -43,6 +45,12 @@
         </div>
         <div class="panel">
           <div class="list1">{{student.email}}</div>
+        </div>
+        <div class="panel">
+          <div class="list1">{{student.minor}}</div>
+        </div>
+        <div class="panel">
+          <div class="list1">{{student.gpa}}</div>
         </div>
         <div class="panel">
           <div class="list1">{{student.pt}}</div>
@@ -78,7 +86,7 @@
 <script>
 
 import Header from '@/components/HeaderAdmin.vue'
-
+import axios from 'axios'
 
 export default {
   name: 'Students',
@@ -89,8 +97,8 @@ export default {
     return {
       valid: true,
       students: [
-        {name: 'John Doe', email: 'johndoe@gmail.com', pt: 'proj', proj: ['p1', 'p2', 'p3'], pref: ['Mickey Mouse', 'Donald Duck', 'Goofy Dog'], avoid: ['Pluto Dog'], assigned: 'p3'},
-        {name: 'John Doe', email: 'johndoe@gmail.com', pt: 'team', proj: ['p4', 'p5', 'p6'], pref: ['Mickey Mouse', 'Donald Duck'], avoid: ['Pluto Dog'], assigned: null},
+//        {name: 'John Doe', email: 'johndoe@gmail.com', pt: 'proj', proj: ['p1', 'p2', 'p3'], pref: ['Mickey Mouse', 'Donald Duck', 'Goofy Dog'], avoid: ['Pluto Dog'], assigned: 'p3'},
+//        {name: 'John Doe', email: 'johndoe@gmail.com', pt: 'team', proj: ['p4', 'p5', 'p6'], pref: ['Mickey Mouse', 'Donald Duck'], avoid: ['Pluto Dog'], assigned: null},
       ],
       totalStudents: 100,
       totalSubmitted: 95,
@@ -106,7 +114,21 @@ export default {
     
     }
   },
+  mounted() {
+    var self=this;
+    axios.get('http://localhost:8080/api/students')
+    .then(response => {
+      console.log(response)
+      // JSON responses are automatically parsed.
+      self.students = response.data
+
+    })
+    .catch(e => {
+      self.errors.push(e)
+    })
+  }
 }
+
 
 </script>
 
@@ -169,12 +191,12 @@ export default {
     border-right: 1px solid grey;
     height: 50px;
     overflow: auto;
-    width: 11%;
+    width: 8%;
   }
    
   .head1 {
     display: inline-block;
-    width: 11%;
+    width: 8%;
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 10px;

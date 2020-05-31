@@ -23,8 +23,27 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DECIMAL(3),
             defaultValue: null,
             allowNull: true
+        },
 
+        // EDITED BELOW BY Michael -- can be reverted if needed
+        minor: {
+            type: Sequelize.STRING,
+            defaultValue: null,
+            allowNull: true
+        },
+
+        experience: {
+            type: Sequelize.STRING,
+            defaultValue: null,
+            allowNull: true
+        },
+      
+        email: {
+            type: Sequelize.STRING,
+            defaultValue: null,
+            allowNull: true
         }
+      
     });
 
     return Student;

@@ -1,10 +1,44 @@
 /*
- * repr.js
+ * algorithm.js
  * 
  * Contains the representation of each project and person object for the algorithm.
  * Since we'll be returning our results in JSON, those results may be modeled here.
- * 
  */
+
+const students = require('../models/student.model');
+const projects = require('../models/project.model');
+
+function getAllStudents() {
+    let allStudentsJSON;
+
+    students.findAll().then((studentExists) => {
+        if (studentExists) {
+            allStudentsJSON;
+            console.log(studentExists);
+        } else {
+            // No students are in the DB :(
+            console.log("No students in the DB");
+        }
+    });
+
+    return allStudentsJSON;
+}
+
+function getAllProjects() {
+    let allProjectsJSON;
+
+    projects.findAll().then((projectExists) => {
+        if (projectExists) {
+            allProjectsJSON = projectExists;
+            console.log(projectExists);
+        } else {
+            // No projects are in the DB :(
+            console.log("No projects in the DB");
+        }
+    });
+
+    return allProjectsJSON;
+}
 
 /**
  * Creates a random number between 0 and 1 using a seed.

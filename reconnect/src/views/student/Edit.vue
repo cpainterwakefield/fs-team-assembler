@@ -4,9 +4,7 @@
   <div class="edit_main">
     <h1>Edit Your Profile </h1>
     <hr>
-    <v-card>
-      <v-card-text class="v-card-text1">
-        <v-form v-model="valid"> 
+      <v-form v-model="valid">
           <div class="top">
             <v-layout wrap>
               <v-flex>
@@ -55,12 +53,8 @@
             <p> Note: This is simply read by an advisor, not by clients or potential employers. </p>
             <v-text-field background-color="white" outlined v-model="experience" label="Experience/Rationale"></v-text-field>
           </div>
-        </v-form>
-      </v-card-text>
-      <v-card-actions class="v-card-text1">
-        <v-btn color="primary" :disabled="!valid">Submit</v-btn>
-      </v-card-actions>
-    </v-card>
+        <v-btn class="primary" :disabled="!valid">Submit</v-btn>
+    </v-form>
   </div>
 </center>
 </template>
@@ -129,17 +123,17 @@ export default {
   }
 
   .edit_main {
-    display: inline-block;
     width: 90%;
     border: 2px solid black;
     border-radius: 10px;
     text-align: center;
     background: #D3D3D3; 
     margin: 35px;
+    height: 100%;
+    overflow: visible;
   }
 
   .left-questions {
-    float: left;
     width: 90%;
     display: inline-block;
     padding: 10px;
@@ -147,7 +141,6 @@ export default {
   }
 
   .right-pref {
-    float: right;
     width: 90%;
     display: inline-block;
     padding: 10px;
@@ -166,5 +159,9 @@ export default {
   .experience {
     margin-left: 10px;
     margin-right: 10px;
+  }
+
+  .card0 {
+    height: 90%;
   }
 </style>
