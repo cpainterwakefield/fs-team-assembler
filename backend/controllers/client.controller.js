@@ -16,7 +16,8 @@ exports.create = (req, res) => {
 
     const client = {
         name: req.body.name,
-        contact_email: req.body.contact_email
+        contact_email: req.body.contact_email,
+        company_name: req.body.company_name
     };
 
     // Create a client from the JSON object client.

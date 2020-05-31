@@ -14,11 +14,15 @@ module.exports = (sequelize, Sequelize) => {
 
         advisor_id: {
             type: Sequelize.INTEGER,
+            references: 'advisor',
+            referencesKey: 'id',
             allowNull: true
         },
 
         client_id: {
             type: Sequelize.INTEGER,
+            references: 'client',
+            referencesKey: 'id',
             allowNull: true
         },
 

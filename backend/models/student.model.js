@@ -14,7 +14,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true
         },
 
-        projectId: {
+        project_id: {
             type: Sequelize.BOOLEAN,
             defaultValue: null,
             allowNull: true

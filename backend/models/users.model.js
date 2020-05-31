@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, Sequelize) => {
-    const User = sequelize.define("student", {
+    const User = sequelize.define("users", {
         name: {
             type: Sequelize.STRING,
             defaultValue: null,
@@ -10,15 +10,16 @@ module.exports = (sequelize, Sequelize) => {
         auth_id: {
             type: Sequelize.BIGINT,
             defaultValue: null,
-            allowNull: true
+            allowNull: true,
+            unique: true
         },
         email: {
             type: Sequelize.STRING,
             defaultValue: null,
             allowNull: true
         },
-        isAdmin: {
-            type: Sequelize.BIGINT,
+        is_admin: {
+            type: Sequelize.BOOLEAN,
             defaultValue: 0
         }
 

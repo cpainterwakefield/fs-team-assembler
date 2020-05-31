@@ -24,7 +24,8 @@ CREATE TABLE advisor(
 CREATE TABLE client(
     id INTEGER PRIMARY KEY,
     name TEXT,
-    contact_email TEXT
+    contact_email TEXT,
+    company_name TEXT
 );
 
 CREATE TABLE project(
