@@ -106,7 +106,7 @@ function greedySeedInitial(students, projects, populationSize) {
         // For each student, add random student to proper project
         while (numSelected < students.length) {
             // Gets a random student index from the students array
-            studentIndex = Math.floor(seededRandom(j) * students.length);
+            studentIndex = Math.floor(seededRandom(studentSeed) * students.length);
 
             if (students[studentIndex].projectPreferences.length == 0 && selected[studentIndex] == false) {
                 let projectIndex = Math.floor(seededRandom((i + 1) * (j + 1)) * projects.length);
@@ -348,7 +348,49 @@ function scoreAllProjects(projects) {
     return totalScore;
 }
 
+/**
+ * The heart of the genetic algorithm.
+ * 
+ * To make reading this function easier, it helps to understand the map between GP nomenclature and
+ * team-selection nomenclature. In our case, we are looking to find a list of projects that satisfy
+ * all constraints specified, while generating the largest possible score for our scoring function.
+ * 
+ *  - A "population" in this context is a list of individuals.
+ *  - An "individual" in this context is a list of projects, with students assigned to each.
+ *      - Note that projects hold students in an array, and those students are swapped in evolution.
+ *  - A "project" is a single project, which holds a list of students. In initial seeding, these students
+ *    may not prefer these projects whatsoever (though greedySeedInitial should prevent these conflicts).
+ *      - Projects, of course, hold the `maxStudents`, `minStudents` and `name` fields, etc.
+ *  - A "student" is a single student, which may hold a list of student or project *names* to prefer or
+ *    avoid, in the case of students only. Note that these are *names* and not actual project nor student
+ *    objects. This prevents circular references and the like.
+ * 
+ * That said, this function utilizes each of these components to eventually arrive at an optimal population.
+ * Since this algorithm is genetic, it follows the following process:
+ * 
+ *  1. Create an initial population via function `greedySeedInitial()`.
+ *  2. For each generation of the algorithm,
+ *      a. Select the highest scoring individual.
+ *      b. Randomly swap students between projects in the highest scoring individual, and
+ *         then insert those into the new generation until that generation is full.
+ *      c. "Mutate" some individuals by randomly moving around students in the new generation.
+ *  3. Once we see little demonstrable change in the top scoring individual, return the top scoring individual.
+ *     a. (This could mean that the score is sufficiently high, say, above 100, and hasn't changed by 1).
+ *  
+ * This algorithm should be sufficient to generate a high-scoring set of teams. Even if the result is not
+ * perfect, a site admin has privileges to make sure that all the teams are ideal.
+ * 
+ * That said, the scoring function may need to be tweaked to adequately provide scoring against avoids
+ * and for prefers. As of (6/1/2020), scoring returns undefined if constraints aren't met, which may
+ * prove to be unrealistic.
+ * @param {The population to be evolved.} population 
+ */
+function evolvePopulation(population) {
+
+}
+
 /* Exports for testing ONLY: */
 exports.scoreProjectPreferences = scoreProjectPreferences;
 exports.scorePersonPreferences = scorePersonPreferences;
 exports.scoreProject = scoreProject;
+exports.scoreAllProjects = scoreAllProjects;
