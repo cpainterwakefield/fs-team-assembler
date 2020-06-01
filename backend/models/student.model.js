@@ -19,6 +19,7 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: null,
             allowNull: true
         },
+
         gpa: {
             type: Sequelize.DECIMAL(3),
             defaultValue: null,
