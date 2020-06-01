@@ -12,7 +12,7 @@
             </v-form>
           </v-card-text>
           <v-card-actions class="c1">
-            <v-btn flat color="primary">Submit</v-btn>
+            <v-btn color="primary">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </div>
@@ -24,7 +24,7 @@
             </v-form>
           </v-card-text>
           <v-card-actions class="c1">
-            <v-btn flat color="primary">Submit</v-btn>
+            <v-btn color="primary">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </div>
@@ -35,11 +35,11 @@
         <v-card>
           <v-card-text class="v-card-text1">
             <v-form v-model="valid">
-              <v-select @change="updateStudents()" multiple label="Delete Student(s)" outlined background-color="white" :items=students item-text="name" item-value="id" v-model="del_stud"></v-select>
+              <v-select label="Delete Student" outlined background-color="white" :items=students item-text="name" item-value="id" v-model="del_stud"></v-select>
             </v-form>
           </v-card-text>
           <v-card-actions class="c1">
-            <v-btn @click="deleteStudent(del_stud)" flat color="primary">Submit</v-btn>
+            <v-btn @click="deleteStudent(del_stud)" color="primary">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </div>
@@ -47,11 +47,11 @@
         <v-card>
           <v-card-text class="v-card-text1">
             <v-form v-model="valid">
-              <v-select multiple label="Delete Project(s)" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="del_proj"></v-select>
+              <v-select label="Delete Project" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="del_proj"></v-select>
             </v-form>
           </v-card-text>
           <v-card-actions class="c1">
-            <v-btn flat color="primary">Submit</v-btn>
+            <v-btn @click="deleteProject(del_proj)" color="primary">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </div>
@@ -59,12 +59,12 @@
     <hr>
     <div class="link">
       <v-text-field class="bot" label="New Projects Link" v-model="link" background-color="white" filled /> 
-      <v-btn class="primary" flat>Submit</v-btn>
+      <v-btn class="primary" >Submit</v-btn>
     </div>
     <hr>
     <div class="btn1">
-     <v-btn class="error" flat>CLEAR STUDENTS</v-btn> 
-     <v-btn class="error" flat>CLEAR PROJECTS</v-btn> 
+     <v-btn class="error" @click="clearStudents()">CLEAR STUDENTS</v-btn> 
+     <v-btn class="error" @click="clearProjects()">CLEAR PROJECTS</v-btn> 
     </div>
   </div>
 </center>
@@ -111,30 +111,35 @@ export default {
 
   methods: {
     deleteStudent: function (s_id) {
+      var self=this;
       axios.delete('http://localhost:8080/api/students/' + s_id)
       .catch(e => {
-        this.errors.push(e)
+        self.errors.push(e)
       })
-      this.del_student=""
     },
-    updateStudents: function() {
+    deleteProject: function (p_id) {
       var self=this;
-      axios.get('http://localhost:8080/api/students')
-      .then(response => {
-        console.log(response)
-        // JSON responses are automatically parsed.
-        self.students = response.data
-
+      axios.delete('http://localhost:8080/api/projects/' + p_id)
+      .catch(e => {
+        self.errors.push(e)
       })
+    },
+    clearProjects: function() {
+      var self=this;
+      axios.delete('http://localhost:8080/api/projects/')
+      .catch(e => {
+        self.errors.push(e)
+      })
+    },
+    clearStudents: function() {
+      var self=this;
+      axios.delete('http://localhost:8080/api/students/')
       .catch(e => {
         self.errors.push(e)
       })
     }
-
-  }
+  },
 }
-
-
 </script>
 
 <style>

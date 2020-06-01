@@ -2,25 +2,29 @@
 <center>
   <Header />
   <div class="run">
-    <v-btn class="primary" flat>Submit</v-btn>
+    <v-btn class="primary" >Submit</v-btn>
     <hr>
     <div class="left-list">
       <h2 class="h2_2">Remaining</h2>
-      <draggable v-model="students_left" group="projects">
-        <div class="element" v-for="(student, i) in students_left" :key="i">
-          <v-app-bar-nav-icon small class="icon1"></v-app-bar-nav-icon>
-          <span class="p1">{{student}}</span>
+      <hr>
+      <draggable group="projects">
+        <div class="element" v-for="(student, i) in students" :key="i">  
+          <span class="p2" v-if="student.projectId == null"><hr></span> 
+          <v-app-bar-nav-icon small class="icon1" v-if="student.projectId == null"></v-app-bar-nav-icon>
+          <span class="p2" v-if="student.projectId == null">{{student.name}}<hr></span>
         </div>
       </draggable>
     </div>
     <div class="right-list">
       <span class="proj1" v-for="project in projects" :key="project.name">
-        <h2 class="h2_2">{{project.name}} ({{project.min}}, {{project.max}})</h2>
+        <h2 class="h2_2">{{project.name}} ({{project.min_students}}, {{project.max_students}})</h2>
         <hr>
-        <draggable v-model="project.students" group="projects">
-          <div class="element" v-for="(student, i) in project.students" :key="i">
-            <v-app-bar-nav-icon small class="icon1"></v-app-bar-nav-icon>
-            <span class="p1">{{student}}</span>
+        <draggable class="drag1" group="projects">
+          <div class="element" v-for="(student, i) in students" :key="i">
+          <span class="p2" v-if="student.projectId == project.id"><hr></span> 
+            <v-app-bar-nav-icon small class="icon1" v-if="student.projectId == project.id"></v-app-bar-nav-icon>
+            <span class="p2" v-if="student.projectId == project.id" >{{student.name}} <hr></span>
+            <span class="p2" v-else></span>
           </div>
         </draggable>
       </span>
@@ -34,6 +38,7 @@
 
 import Header from '@/components/HeaderAdmin.vue'
 import draggable from 'vuedraggable'
+import axios from 'axios'
 
 export default {
   name: 'Profile',
@@ -43,13 +48,31 @@ export default {
   },
   data() {
     return {
-      students_left: ['John Doe', 'Adam Smith','Donald Duck', 'Mickey Mouse','Pluto Dog', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2'],
+      students: ['John Doe', 'Adam Smith','Donald Duck', 'Mickey Mouse','Pluto Dog', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2'],
       projects: [
-        {name: 'p1qpifhpasdua;shdfak;sdjfha;kdsjhf;aksdjhflskdjhfjsdh', students: ['s1', 's2'], min: 2, max: 5},
+        {name: 'p2qpifhpasdua;shdfak;sdjfha;kdsjhf;aksdjhflskdjhfjsdh', students: ['s1', 's2'], min: 2, max: 5},
         {name: 'p2qiufaaksjdfkjshdfkjshadfkjshfajshdflakjsdhflakjsdhflaksj', students: ['s3', 's4'], min:2, max: 5},
       ]
       
     }
+  },
+  mounted() {
+    var self=this;
+    const requestStud = axios.get('http://localhost:8080/api/students');
+    const requestProj = axios.get('http://localhost:8080/api/projects');
+
+    axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
+      const responseStud = responses[0]
+      const responseProj = responses[1]
+      // use/access the results
+      self.students = responseStud.data
+      self.projects = responseProj.data
+    }))
+    .catch(e => {
+      // react on errors.
+      self.errors.push(e)
+    })
+
   }
 }
 
@@ -84,7 +107,6 @@ export default {
   }
 
   .element {
-    border: 1px solid grey;
     margin: 5px;
     text-align: left;
     padding-left: 5px;
@@ -99,6 +121,7 @@ export default {
     background: white;
     width: 15%;
     margin: 15px;
+    min-height: 100px;
   }
 
   .right-list {
@@ -115,7 +138,7 @@ export default {
     margin: 15px;
   }
 
-  .p1 {
+  .p2 {
     font-size: 12px;
   }
 
@@ -125,5 +148,9 @@ export default {
 
   .icon1 {
     
+  }
+
+  .drag1 {
+    height: 100%;
   }
 </style>

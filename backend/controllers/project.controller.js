@@ -127,5 +127,22 @@ exports.delete = (req, res) => {
 // Delete all Projects from the DB
 // Probably don't want this functionality for anything.
 exports.deleteAll = (req, res) => {
-
+    Project.destroy({where: {}})
+    .then(num => {
+        if (num == 1) {
+            res.send({
+                message: "Client was deleted successfully."
+            });
+        } else {
+            res.send({
+                message: "Cannot delete projects"
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Could not delete projects"
+        });
+        console.log(err)
+    });
 };

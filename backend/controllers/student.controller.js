@@ -37,7 +37,8 @@ exports.create = (req, res) => {
         gpa: req.body.gpa,
         minor: req.body.minor,
         experience: req.body.experience,
-        email: req.body.email
+        email: req.body.email,
+        projectId: req.body.projectId
     };
 
     // Create a Student from the JSON object client.
@@ -143,5 +144,22 @@ exports.delete = (req, res) => {
 // Delete all Students from the DB
 // Probably don't want this functionality for anything.
 exports.deleteAll = (req, res) => {
+    Student.destroy({where: {}})
+    .then(num => {
+        if (num == 1) {
+            res.send({
+                message: "Students were deleted successfully."
+            });
+        } else {
+            res.send({
+                message: `Cannot delete students.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Could not delete students"
+        });
+    });
 
 };
