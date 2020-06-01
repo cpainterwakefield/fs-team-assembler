@@ -2,22 +2,22 @@
 <center>
   <Header />
   <div class="run">
-    <v-btn class="error" flat to="/admin/teams/edit">Edit</v-btn>
-    <v-btn class="primary" flat>Export</v-btn>
-    <v-btn class="primary" flat>RUN</v-btn>
+    <v-btn class="error" to="/admin/teams/edit">Edit</v-btn>
+    <v-btn class="primary" >Export</v-btn>
+    <v-btn class="primary" >RUN</v-btn>
     <hr>
     <div class="left-list">
       <h2 class="h2_2">Remaining</h2>
-      <div class="element" v-for="(student, i) in students_left" :key="i">
-        <span class="p1">{{student}}</span>
+      <div class="element1" v-for="(student, i) in students" :key="i">
+        <span class="p1" v-if="student.projectId == null"><hr>{{student.name}}<hr></span>
       </div>
     </div>
     <div class="right-list">
       <span class="proj1" v-for="project in projects" :key="project.name">
-        <h2 class="h2_2">{{project.name}} ({{project.min}}, {{project.max}})</h2>
+        <h2 class="h2_2">{{project.name}} ({{project.min_students}}, {{project.max_students}})</h2>
         <hr>
-        <div class="element" v-for="(student, i) in project.students" :key="i">
-          <span class="p1">{{student}}</span>
+        <div class="element1" v-for="(student, i) in students" :key="i">
+          <div class="p1" v-if="student.projectId == project.id"><hr>{{student.name}}<hr></div>
         </div>
       </span>
     </div>
@@ -29,6 +29,7 @@
 <script>
 
 import Header from '@/components/HeaderAdmin.vue'
+import axios from 'axios'
 
 export default {
   name: 'Teams',
@@ -37,13 +38,29 @@ export default {
   },
   data() {
     return {
-      students_left: ['John Doe', 'Adam Smith','Donald Duck', 'Mickey Mouse','Pluto Dog', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2'],
-      projects: [
-        {name: 'p1qpifhpasdua;shdfak;sdjfha;kdsjhf;aksdjhflskdjhfjsdh', students: ['s1', 's2'], min: 2, max: 5},
-        {name: 'p2qiufaaksjdfkjshdfkjshadfkjshfajshdflakjsdhflakjsdhflaksj', students: ['s3', 's4'], min: 2, max: 5},
-      ]
+      students: [],
+      students_all: [],
+      students_left: [],
+      projects: []
       
     }
+  },
+  mounted() {
+    var self=this;
+    const requestStud = axios.get('http://localhost:8080/api/students');
+    const requestProj = axios.get('http://localhost:8080/api/projects');
+
+    axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
+      const responseStud = responses[0]
+      const responseProj = responses[1]
+      // use/access the results
+      self.students = responseStud.data
+      self.projects = responseProj.data
+    }))
+    .catch(e => {
+      // react on errors.
+      self.errors.push(e)
+    })
   }
 }
 
@@ -67,8 +84,7 @@ export default {
     overflow: auto;
   }
 
-  .element {
-    border: 1px solid grey;
+  .element1 {
     margin: 5px;
     text-align: left;
     padding-left: 5px;
@@ -101,6 +117,8 @@ export default {
 
   .p1 {
     font-size: 12px;
+    display: inline-block;
+    width: 100%;
   }
 
   .h2_2 {
