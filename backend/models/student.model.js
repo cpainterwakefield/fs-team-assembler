@@ -13,8 +13,12 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: null,
             allowNull: true
         },
+        selection_preference: {
+            type: Sequelize.BOOLEAN,
+            allowNull: true
+        },
 
-        projectId: {
+        project_id: {
             type: Sequelize.INTEGER,
             defaultValue: null,
             allowNull: true
@@ -25,7 +29,6 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: null,
             allowNull: true
         },
-
         // EDITED BELOW BY Michael -- can be reverted if needed
         minor: {
             type: Sequelize.STRING,
