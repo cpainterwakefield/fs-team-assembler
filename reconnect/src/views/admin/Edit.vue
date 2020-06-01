@@ -29,6 +29,41 @@
         </v-card>
       </div>
       <hr>
+  
+      <div class="addOne">
+        <h2 class="h2_1">Add Student</h2>
+        <div class="add_element">
+          <v-card>
+            <v-card-text class="v-card-text1">
+              <v-form v-model="valid">
+                <v-text-field label="Name" outlined background-color="white" v-model="studName"><v-text-field>
+                <v-text-field label="Email" outlined background-color="white" v-model="studEmail"><v-text-field>
+              </v-form>
+            </v-card-text>
+            <v-card-actions class="c1">
+              <v-btn color="primary">Submit</v-btn>
+            </v-card-actions>
+          </v-card>
+        </div>
+         <h2 class="h2_1">Add Student</h2>
+        <div class="add_element">
+          <v-card>
+            <v-card-text class="v-card-text1">
+              <v-form v-model="valid">
+                <v-text-field class="prompt1" label="Company Name" outlined background-color="white" v-model="compName"><v-text-field>
+                <v-text-field class="prompt1" label="Company Contact Name" outlined background-color="white" v-model="compContName"><v-text-field>
+                <v-text-field class="prompt1" label="Company Contact Email" outlined background-color="white" v-model="compContEmail"><v-text-field>
+                <v-text-field class="prompt1" label="Project Name" outlined background-color="white" v-model="compProj"><v-text-field>
+                <v-text-field class="prompt1" label="Min Students" outlined background-color="white" v-model="projMin"><v-text-field>
+                <v-text-field class="prompt1" label="Max Students" outlined background-color="white" v-model="projMax"><v-text-field>
+              </v-form>
+            </v-card-text>
+            <v-card-actions class="c1">
+              <v-btn color="primary">Submit</v-btn>
+            </v-card-actions>
+          </v-card>
+        </div>
+      </div>
 
       <h2 class="h2_1">Delete Students/Projects</h2>
        <div class="add_element">
@@ -88,7 +123,9 @@ export default {
       projects: [],
       del_stud: "",
       del_proj: "",
-      link: ""
+      link: "",
+      studName: "",
+      studEmail: ""
     }
   },
   mounted() {
@@ -214,6 +251,7 @@ export default {
     width: 80%;
   }
   
-  .primary {
+  .prompt1 {
+    width: 30%;
   }
 </style>
