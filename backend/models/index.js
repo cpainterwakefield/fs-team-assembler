@@ -23,5 +23,9 @@ db.sequelize = sequelize;
 db.clients = require("./client.model.js")(sequelize, Sequelize);
 db.students = require("./student.model.js")(sequelize, Sequelize);
 db.projects = require("./project.model.js")(sequelize,Sequelize);
+db.prefer_teammate = require("./prefer_teammate.model.js")(sequelize, Sequelize);
+db.prefer_project = require("./prefer_project.model.js")(sequelize, Sequelize);
+db.users = require("./users.model.js")(sequelize, Sequelize);
+db.avoid_teammate = require("./avoid_teammate.model")(sequelize, Sequelize);
 
 module.exports = db;
