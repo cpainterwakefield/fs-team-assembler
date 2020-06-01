@@ -11,6 +11,11 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             defaultValue: null,
             allowNull: true
+        },
+        company_name: {
+            type: Sequelize.STRING,
+            defaultValue: null,
+            allowNull: true
         }
     });
     return Client;

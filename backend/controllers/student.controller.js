@@ -34,11 +34,15 @@ exports.create = (req, res) => {
     const student = {
         name: req.body.name,
         username: req.body.username,
+        contact_email: req.body.contact_email,
+        company_name: req.body.company_name,
         gpa: req.body.gpa,
         minor: req.body.minor,
         experience: req.body.experience,
         email: req.body.email,
         projectId: req.body.projectId
+        email: req.body.email
+
     };
 
     // Create a Student from the JSON object client.
