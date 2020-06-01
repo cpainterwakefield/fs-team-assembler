@@ -14,11 +14,12 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true
         },
 
-        project_id: {
-            type: Sequelize.BOOLEAN,
+        projectId: {
+            type: Sequelize.INTEGER,
             defaultValue: null,
             allowNull: true
         },
+
         gpa: {
             type: Sequelize.DECIMAL(3),
             defaultValue: null,
