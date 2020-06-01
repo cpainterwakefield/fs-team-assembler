@@ -25,12 +25,6 @@ require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 
-// simple route
-app.get("/", (req, res) => {
-  // Echoes back the request body as a response
-  res.send([req.body]);
-});
-
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
