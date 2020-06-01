@@ -5,19 +5,26 @@ module.exports = (sequelize, Sequelize) => {
         preferrer_id: {
             type: Sequelize.INTEGER,
             defaultValue: null,
-            references: 'student',
-            referencesKey: 'id',
             allowNull: true
         },
 
         project_id: {
             type: Sequelize.INTEGER,
             defaultValue: null,
-            references: 'project',
-            referencesKey: 'id',
             allowNull: true
         }
     });
+    PreferProjectXref.associates = function(models) {
+        //declare associates here
+        PreferProjectXref.hasOne(models.students, {
+            foreignKey: 'preferrer_id',
+            as: "student"
+        });
+        PreferProjectXref.hasMany(models.projects, {
+            foreignKey: 'project_id',
+            as: "project"
+        })
+    }
 
     return PreferProjectXref;
 };

@@ -14,9 +14,7 @@ module.exports = (sequelize, Sequelize) => {
 
         advisor_id: {
             type: Sequelize.INTEGER,
-            references: 'advisor',
-            referencesKey: 'id',
-            allowNull: true
+            allowNULL: false
         },
 
         client_name: {
@@ -44,6 +42,13 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true
         }
     });
+    Project.associate = function(models) {
+        //declare associations here
+        Project.hasOne(models.advisor, {
+            foreignKey: 'advisor_id',
+            as: 'advisor'
+        });
+    }
 
     return Project;
 };
