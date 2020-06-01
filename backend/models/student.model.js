@@ -29,7 +29,9 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: null,
             allowNull: true
         },
+        
         // EDITED BELOW BY Michael -- can be reverted if needed
+
         minor: {
             type: Sequelize.STRING,
             defaultValue: null,
