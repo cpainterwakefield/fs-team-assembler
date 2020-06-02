@@ -347,6 +347,24 @@ function scoreAllProjects(projects) {
 
     return totalScore;
 }
+/**
+ * 
+ * @param {List of project lists} generation 
+ * @return {One set of projects}
+ */
+function generationSelction(generation) {
+    let fittest = 0;
+    let fitProject;
+    for (let projectList of generation) {
+        if (scoreAllProjects(projectList) > fittest) {
+             fittest = scoreAllProjects(projectList);
+             fitProject = projectList;
+        }
+    }
+    return fitProject;
+}
+
+
 
 /**
  * The heart of the genetic algorithm.
@@ -395,3 +413,4 @@ exports.scoreProjectPreferences = scoreProjectPreferences;
 exports.scorePersonPreferences = scorePersonPreferences;
 exports.scoreProject = scoreProject;
 exports.scoreAllProjects = scoreAllProjects;
+exports.generationSelction = generationSelction;

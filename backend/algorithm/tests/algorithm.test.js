@@ -97,6 +97,92 @@ var testProjectNormal = {
         testStudentsNormal.thirdStudent, testStudentsNormal.fourthStudent]
 };
 
+var testStudentsNormal2 = {
+    firstStudent : {
+        name: "Devon",
+        prefersTeam: false,
+        projectPreferences: ["first", "second", "third"],
+        personPreferences: ["Alice", "Bob"],
+        personAvoidances: [] 
+    },
+
+    secondStudent : {
+        name: "Clive",
+        prefersTeam: true,
+        projectPreferences: ["second", "third"],
+        personPreferences: ["Devon"],
+        personAvoidances: ["Bob"]
+    },
+
+    thirdStudent : {
+        name: "Bob",
+        prefersTeam: undefined,
+        projectPreferences: ["first", "second"],
+        personPreferences: ["Alice", "Clive", "Devon"],
+        personAvoidances: ["Duncan"]
+    },
+
+    fourthStudent : {
+        name: "Alice",
+        prefersTeam: true,
+        projectPreferences: ["second"],
+        personPreferences: ["Clive"],
+        personAvoidances: ["Bob"]
+    }
+};
+var testProjectNormal2 = {
+    projectName: "second",
+    minPeople: 4,
+    maxPeople: 5,
+    people: [testStudentsNormal2.firstStudent, testStudentsNormal2.secondStudent,
+        testStudentsNormal2.thirdStudent, testStudentsNormal2.fourthStudent]
+};
+
+var testStudentsNormal3 = {
+    firstStudent : {
+        name: "Devon",
+        prefersTeam: false,
+        projectPreferences: ["first", "second", "third"],
+        personPreferences: ["Alice", "Bob"],
+        personAvoidances: [] 
+    },
+
+    secondStudent : {
+        name: "Clive",
+        prefersTeam: true,
+        projectPreferences: ["second", "third"],
+        personPreferences: ["Devon", "Bob"],
+        personAvoidances: ["Bea"]
+    },
+
+    thirdStudent : {
+        name: "Bob",
+        prefersTeam: undefined,
+        projectPreferences: ["first", "second"],
+        personPreferences: ["Alice", "Clive", "Devon"],
+        personAvoidances: ["Duncan"]
+    },
+
+    fourthStudent : {
+        name: "Alice",
+        prefersTeam: true,
+        projectPreferences: ["second"],
+        personPreferences: ["Clive", "Bob"],
+        personAvoidances: ["Cathy"]
+    }
+};
+
+var testProjectNormal3 = {
+    projectName: "second",
+    minPeople: 4,
+    maxPeople: 5,
+    people: [testStudentsNormal3.firstStudent, testStudentsNormal3.secondStudent,
+        testStudentsNormal3.thirdStudent, testStudentsNormal3.fourthStudent]
+};
+
+var generation1 = [[testProjectNormal], [testProjectNormal2], [testProjectNormal3]]
+
+
 /*
 test('Nobody should get paired with anyone that they avoid.', () => {
     // TODO: Write test
@@ -150,3 +236,8 @@ test('Team scoring for projects should be accurate.', () => {
     // Should be 25
     expect(algorithm.scoreProject(testProjectClique)).toBe(25);
 });
+
+test('Generation selction function selects best fit project list.', () => {
+    // Should select testProjectNormal
+    expect(algorithm.generationSelction(generation1)).toEqual([testProjectNormal3]);
+})

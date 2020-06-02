@@ -40,7 +40,7 @@ exports.create = (req, res) => {
         minor: req.body.minor,
         experience: req.body.experience,
         email: req.body.email,
-        projectId: req.body.projectId,
+        project_id: req.body.project_id,
 
     };
 
