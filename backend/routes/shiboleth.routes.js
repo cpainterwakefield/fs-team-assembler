@@ -1,4 +1,34 @@
-module.exports = function (app, config, passport) {
+var passport = require('passport');
+const SamlStrategy = require('passport-saml').Strategy;
+const config = require('../config/shib_config');
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+passport.use(new SamlStrategy(
+  {
+    path: config.development.passport.saml.path,
+    entryPoint: config.development.passport.saml.entryPoint,
+    issuer: config.development.passport.saml.issuer,
+    cert: config.development.passport.saml.cert
+  },
+  function (profile, done) {
+    return done(null,
+      {
+        id: profile.uid,
+        email: profile.email,
+        displayName: profile.cn,
+        firstName: profile.givenName,
+        lastName: profile.sn
+      });
+  })
+);
+
+
+module.exports = app => {
 
   app.get('/student', function (req, res) {
     if (req.isAuthenticated()) {
@@ -14,7 +44,7 @@ module.exports = function (app, config, passport) {
     }
   });
 
-  app.get('/',
+  app.get('/auth/shibboleth',
     passport.authenticate(config.passport.strategy,
       {
         successRedirect: '/',

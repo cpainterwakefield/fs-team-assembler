@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const db = require("./models");
 const cors = require("cors");
-
+const passport = require("passport");
 const app = express();
 
 var corsOptions = {
@@ -20,14 +20,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
-app.get("/", (req, res) => {
-  res.json({message: "UwU is back."});
-});
+
 
 require("./routes/routes.google")(app);
+//require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

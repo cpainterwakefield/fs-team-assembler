@@ -11,12 +11,12 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: true
         },
-
+/*
         advisor_id: {
             type: Sequelize.INTEGER,
-            allowNULL: false
+            allowNull: false
         },
-
+*/
         client_name: {
             type: Sequelize.STRING,
             allowNull: true
