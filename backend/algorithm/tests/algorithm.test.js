@@ -1,5 +1,7 @@
 const algorithm = require('../algorithm');
 
+
+
 /**
  * A object encoding four students in a 4-clique of preferences.
  * Project preferences are not in an ideal clique (this set of students)
@@ -182,10 +184,10 @@ var testProjectNormal3 = {
 
 var generation1 = [[testProjectNormal], [testProjectNormal2], [testProjectNormal3]]
 
+checkDeepCopy()
 
-/*
 test('Nobody should get paired with anyone that they avoid.', () => {
-    // TODO: Write test
+
 });
 
 test('If someone prefers projects over teammates, they should be on a project \
@@ -202,7 +204,6 @@ test('If someone is ambivalent, they should have at least one or another conditi
     () => {
     // TODO: Write test
 });
-*/
 
 test('Team scoring w/ project preference should be accurate.', () => {
     // Should be 1

@@ -5,47 +5,43 @@
  * Since we'll be returning our results in JSON, those results may be modeled here.
  */
 
-const students = require('../models/student.model');
-const projects = require('../models/project.model');
+var _ = require('lodash');
+
+const db = require("../models");
+
+/* Quick "hello world" function that tries to get some JSON from the DB.
+ * TODO: Should be a test instead.
+ */
+async function helloPostgres() {
+    console.log('Hello Postgres');
+    try {
+        await db.sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+    } catch (error) {
+        console.error('Unable to connect to the database', error);
+    }
+}
 
 /**
  * Gets all the students from the DB.
  * The DB model uses JSON, so we get the response as JSON.
  */
-function getAllStudents() {
-    let allStudentsJSON;
-
-    students.findAll().then((studentExists) => {
-        if (studentExists) {
-            allStudentsJSON;
-            console.log(studentExists);
-        } else {
-            // No students are in the DB :(
-            console.log("No students in the DB");
-        }
-    });
-
-    return allStudentsJSON;
+async function getAllStudents() {
+    //console.log('getAllStudents() was called');
+    let theStudents = await db.students.findAll();
+    //console.log(theStudents);
+    return theStudents;
 }
 
 /**
  * Gets all the projects from the DB.
  * The DB model uses JSON, so we get the response as JSON.
  */
-function getAllProjects() {
-    let allProjectsJSON;
-
-    projects.findAll().then((projectExists) => {
-        if (projectExists) {
-            allProjectsJSON = projectExists;
-            console.log(projectExists);
-        } else {
-            // No projects are in the DB :(
-            console.log("No projects in the DB");
-        }
-    });
-
-    return allProjectsJSON;
+async function getAllProjects() {
+    //console.log('getAllProjects() was called');
+    let theProjects = await db.projects.findAll();
+    //console.log(theProjects);
+    return theProjects;
 }
 
 /**
@@ -96,81 +92,125 @@ function seededRandom(seed) {
  * @return {The initial generation, as a list of project JSON objects.}
  */
 function greedySeedInitial(students, projects, populationSize) {
-    // List of sets of projects
     let projectPopulation = [];
-    // Loop for creating each set of projects.
-    for (let i = 0; i < populationSize; i++) {
-        // Index should be different for each iteration, so we seed with index
-        let studentIndex = Math.floor(seededRandom(i) * students.length);
 
-        // List of projects
-        let projectList = [];
-        let selected = new Array(students.length).fill(false);
+    for (let popIndex = 0; popIndex < populationSize; popIndex++) {
+        // We don't want to modify the original students array so we clone it.
+        let currentStudents = _.cloneDeep(students);
 
-        // Tracker variables for random population generation
-        let numSelected = 0;
-        let studentSeed = 0;
+        // console.log(currentStudents);
 
-        // For each student, add random student to proper project
-        while (numSelected < students.length) {
-            // Gets a random student index from the students array
-            studentIndex = Math.floor(seededRandom(studentSeed) * students.length);
+        // The index for the initial student being selected from the students list.
+        let studentIndex = Math.floor(seededRandom(popIndex));
 
-            if (students[studentIndex].projectPreferences.length == 0 && selected[studentIndex] == false) {
-                let projectIndex = Math.floor(seededRandom((i + 1) * (j + 1)) * projects.length);
-                selected[studentIndex] = true;
-                projects[projectIndex].people.push(Object.assign({}, students[studentIndex]));
+        // A deep copy of the list of projects for assigning to the project list.
+        let currentProjectList = _.cloneDeep(projects);
 
-                // Add project to project list if full
-                if (projects[projectIndex].people.length == projects[projectIndex].maxPeople){
-                    projectList.push(Object.assign({}, projects[projectIndex]));
-                }
+        // A list of populated projects.
+        let popProjectList = [];
+
+        // The seed which picks random students from the array.
+        let studentSeed = popIndex;
+
+        while (currentStudents.length > 0) {
+            // Get a student from the list of current students.
+            let student = currentStudents[studentIndex];
+
+            // Remove student at studentIndex from the currentStudents array
+            currentStudents.splice(studentIndex, 1);
+
+            // If the student has no project preferences, then give them
+            // the first random project that the PRNG can find.
+            if (student.projectPreferences.length == 0) {
+                // The strange seed here is to provide variety from
+                // students. By multiplying instead of adding, students
+                // are not added to projects in the same fashion as they
+                // are selected (which increases the randomness).
+                let projectIndex = Math.floor(
+                    seededRandom((studentSeed + 1) * (popIndex + 1))
+                    * currentProjectList.length);
                 
-                // Increment the number of students selected
-                numSelected++;
-            } // Add student to preferred project
-            else if (students[studentIndex].projectPreferences.length != 0 && selected[studentIndex] == false) {
-                for (var k = 0; k < students[studentIndex].length; k++) {
-                    for (var l = 0; l < projects.length; l++) {
-                        if (projects[l].projectName == initialStudent.projectPreferences[k]) {
-                            //If project is full, do nothing and increment to next project preference 
-                            if (projects[l].people.length < projects[l].maxPeople) {
-                                break;
-                            }
-                            else {
-                                projects[l].people.push(Object.assign({}, initialStudent));
-                                selected[l] = true;
-                                //Add project to project list if full
-                                if(projects[l].people.length == projects[l].maxPeople){
-                                    projectList.push(Object.assign({}, projects[l]));
-                                }
-                            }
+                // Put the student on the project.
+                currentProjectList[projectIndex].people.push(student);
+
+                // If the project is full, then push it to the
+                // resultant projects list.
+                if (currentProjectList[projectIndex].people.length
+                    == currentProjectList[projectIndex].maxPeople) {
+                    
+                    popProjectList.push(currentProjectList[projectIndex]);
+                    currentProjectList.splice(projectIndex, 1);
+                }
+            } else {
+                let inProject = false;
+                for (let preferredProject of student.projectPreferences) {
+                    if (currentProjectList.includes(preferredProject)) {
+                        // If the project list still has a project that the student
+                        // prefers, put them in that project.
+                        let projectIndex = currentProjectList.indexOf(preferredProject);
+                        currentProjectList[projectIndex].people.push(student);
+
+                        // If the project is full, then push to project list.
+                        if (currentProjectList[projectIndex].people.length
+                            == currentProjectList[projectIndex].maxPeople) {
+                            
+                            popProjectList.push(currentProjectList[projectIndex]);
+                            currentProjectList.splice(projectIndex, 1);
                         }
+
+                        // The student is in a project.
+                        inProject = true;
                     }
                 }
-                if(selected[l] == false){
-                    projectIndex = seededRandom(projects.length);
-                    selected[studentIndex] = true;
-                    projects[projectIndex].people.push(Object.assign({}, students[studentIndex])); 
-                    // Add project to project list if full
-                    if(projects[projectIndex].people.length == projects[projectIndex].maxPeople){
-                        projectList.push(Object.assign({}, projects[projectIndex]));
+
+                // If the student could not make it into a preferred project,
+                // then put them on a random project.
+                if (!inProject) {
+                    let projectIndex = Math.floor(
+                        seededRandom((studentSeed + 1) * (popIndex + 1))
+                        * currentProjectList.length);
+    
+                    // Put the student on the project.
+                    currentProjectList[projectIndex].people.push(student);
+                        
+                    // If the project is full, then push to project list.
+                    if (currentProjectList[projectIndex].people.length
+                        == currentProjectList[projectIndex].maxPeople) {
+                        
+                        popProjectList.push(currentProjectList[projectIndex]);
+                        currentProjectList.splice(projectIndex, 1);
                     }
                 }
             }
 
-            studentSeed++;
+            // Add popIndex to student seed to give a more random distribution
+            studentSeed += popIndex;
+
+            // Change student index to new value for next iteration
+            studentIndex = Math.floor(
+                seededRandom(studentSeed) * currentStudents.length);
         }
 
-        // Add project list to projectPopulation
-        projectPopulation.push(projectList);
+        // The only projects pushed in currentProjectList are projects
+        // that happen to be full. This gets the rest of them to the
+        // popProjectList which makes sure that all students are included.
+        for (let remainingProject of currentProjectList) {
+            // Since we don't need projects with zero members
+            // (this is an okay constraint), we only push if
+            // there are students in the project.
+            // console.log(remainingProject);
+
+            if (remainingProject.people.length > 0) {
+                popProjectList.push(remainingProject);
+            }
+        }
+
+        // Push a project list to the population list.
+        projectPopulation.push(popProjectList);
     }
-    
-    // Return the populated population
+
     return projectPopulation;
 }
-
-
 
 /** 
  * A function that checks project preferences on a person basis,
@@ -451,7 +491,9 @@ function evolvePopulation(population) {
 
 }
 
-/* Exports for testing ONLY: */
+exports.greedySeedInitial = greedySeedInitial;
+exports.gSI = gSI;
+
 exports.scoreProjectPreferences = scoreProjectPreferences;
 exports.scorePersonPreferences = scorePersonPreferences;
 exports.scoreProject = scoreProject;
