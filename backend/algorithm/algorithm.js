@@ -383,6 +383,7 @@ function scoreAllProjects(projects) {
  * That said, the scoring function may need to be tweaked to adequately provide scoring against avoids
  * and for prefers. As of (6/1/2020), scoring returns undefined if constraints aren't met, which may
  * prove to be unrealistic.
+ * 
  * @param {The population to be evolved.} population 
  */
 function evolvePopulation(population) {

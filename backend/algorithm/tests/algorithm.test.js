@@ -146,7 +146,7 @@ test('Team scoring w/ teammate preference should be accurate.', () => {
         testStudentsClique.fourthStudent, 2)).toBe(4);
 });
 
-test('Team scoring for whole projects should be accurate.', () => {
+test('Team scoring for projects should be accurate.', () => {
     // Should be 25
     expect(algorithm.scoreProject(testProjectClique)).toBe(25);
-})
+});
