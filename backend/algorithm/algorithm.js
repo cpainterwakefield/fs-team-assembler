@@ -374,6 +374,32 @@ function generationSelction(generation) {
     return fitProject;
 }
 
+/**
+ * 
+ * @param {Project list to create a new generation out of.} fittestProjectList 
+ * @return {New generation}
+ */
+function generateFromFittest(fittestProjectList) {
+    let generation = [];
+    let student1;
+    let student2;
+    let projIndex1;
+    let projIndex2;
+    let temp;
+
+    for(let i = 0; i < 1000; i++) {
+        projIndex1 = Math.random() * (fittestProjectList.length - 1);
+        projIndex2 = Math.random() * (fittestProjectList.length - 1);
+        student1 = fittestProjectList[projIndex1].people[Math.random() * (fittestProjectList[projIndex1].people.length)];
+        student2 = fittestProjectList[projIndex2].people[Math.random() * (fittestProjectList[projIndex2].people.length)];
+        temp = student1;
+        student1 = student2;
+        student2 = temp;
+        generation.push(fittestProjectList);
+    }
+    return generation;
+}
+
 
 
 /**
@@ -424,3 +450,4 @@ exports.scorePersonPreferences = scorePersonPreferences;
 exports.scoreProject = scoreProject;
 exports.scoreAllProjects = scoreAllProjects;
 exports.generationSelction = generationSelction;
+exports.generateFromFittest = generateFromFittest;
