@@ -2,7 +2,7 @@
 <center>
   <Header />
   <div class="run">
-    <v-btn class="primary" @click="buildModels()">BUILD -- REMOVE</v-btn>
+    <v-btn class="primary" @click="buildModels()">FUCK THIS</v-btn>
     <v-btn class="primary" @click="doSubmit()">Submit</v-btn>
     <hr>
     <div class="left-list">
@@ -17,14 +17,17 @@
       </draggable>
     </div>
     <div class="right-list">
-      <span class="proj1" v-for="model in models" :key="model.project.id">
-        <h2 class="h2_2">{{model.project.name}} ({{model.project.min_students}}, {{model.project.max_students}})</h2>
-        <draggable @change="log" v-model="model.students" class="drag1" group="projects">
-          <hr>
-          <div class="element" v-for="student in model.students" :key="student.id">
-            <span class="p2"><hr></span> 
-            <v-app-bar-nav-icon small class="icon1"></v-app-bar-nav-icon>
-            <span class="p2" >{{student.name}} <hr></span>
+      <span class="proj1" v-for="project in projects" :key="project.name">
+        <h2 class="h2_2">{{project.name}} ({{project.min_students}}, {{project.max_students}})</h2>
+        <draggable v-model="models" class="drag1" group="projects">
+        <hr>
+          <div class="element" v-for="(student, i) in models.students" :key="i">
+            <span class="p2" v-if="student.project_id == project.id"><hr></span> 
+            <span class="p2" v-else></span>
+            <v-app-bar-nav-icon small class="icon1" v-if="student.project_id == project.id "></v-app-bar-nav-icon>
+            <span class="p2" v-else></span>
+            <span class="p2" v-if="student.project_id == project.id" >{{student.name}} <hr></span>
+            <span class="p2" v-else></span>
           </div>
         </draggable>
       </span>
@@ -93,15 +96,12 @@ export default {
           if (st.project_id === pr.id)
             studList.push(st)
         }
-        this.models.push({project: pr, students:  studList})
+        this.models.push({id: pr.id, students:  studList})
       }
       console.log("mod: " + this.models)
     }
 
-  },
-      log: function(evt) {
-      window.console.log(evt);
-    }
+  }
 }
 
 </script>

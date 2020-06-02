@@ -82,6 +82,7 @@
          <div class="list1" v-else><font color="red">X</font></div> 
         </div>
       </div>
+      <hr>
     </div>
   </div>
 </center>
@@ -139,29 +140,6 @@ export default {
 
 <style>
 
-  .right {
-    margin-top: 25px;
-    display: inline-block;
-  }
-
-  .left {
-    display: inline-block;
-    width: 500px;
-    margin-right: 25px;
-  }
-
-  .add_element {
-    width: 40%;
-    display: inline-block;
-    margin-left: 50px;
-    margin-right: 50px;
-    background: white;
-  }
-
-  .add {
-    margin-bottom: 50px;
-  }
-
   .students {
     border: 2px solid black;
     border-radius: 10px;
@@ -216,15 +194,8 @@ export default {
   }
 
   .row {
-    height: 90px;
     width: 100%;
-    display: inline;
     border-bottom: 1px solid grey;
-  }
-
-  .tab {
-    padding-left: 5px;
-    padding-right: 5px;
   }
 
   .prompt {
