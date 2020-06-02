@@ -5,8 +5,24 @@
  * Since we'll be returning our results in JSON, those results may be modeled here.
  */
 
+// might not need these:
 const students = require('../models/student.model');
-const projects = require('../models/project.model');
+//const projects = require('../models/project.model');
+const db = require("../models");
+
+/* Quick "hello world" function that tries to get some JSON from the DB.
+ */
+async function helloPostgres() {
+    console.log('Hello Postgres');
+    try {
+        await db.sequelize.authenticate();
+        console.log('Connection has been established successfully.');
+        db.students.findAll();
+    } catch (error) {
+        console.error('Unable to connect to the database', error);
+    }
+}
+helloPostgres(); // comment me out once you know I work
 
 /**
  * Gets all the students from the DB.
