@@ -1,10 +1,11 @@
 
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var SamlStrategy = require('passport-saml').Strategy;
 var expressSession = require('express-session');
 const keys = require('../config/keys');
-const Users = require('../models/users.model');
+const db = require("../models");
+const User = db.users;
+const Op = db.Sequelize.Op;
 
 // Use the GoogleStrategy within Passport.
 //   Strategies in passport require a `verify` function, which accept
@@ -19,11 +20,14 @@ passport.use(new GoogleStrategy({
 function(accessToken, refreshToken, profile, done) {
   console.log(profile._json.email);
   //check if user exists in DB
-  users.findOne({id: profile._json.sub}).then((studentExists) => {
+  const title = profile._json.email;
+ 
+  User.findOne({where: {email: title}})
+    .then((studentExists) => {
     if(studentExists){
       //Student is part of the course and they can log in
       //Student info is in studentExists
-      Users.update({
+      User.update({
         name: profile._json.name,
         email: profile._json.email,
         auth_id: profile._json.sub

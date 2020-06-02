@@ -34,8 +34,6 @@ exports.create = (req, res) => {
     const student = {
         name: req.body.name,
         username: req.body.username,
-        contact_email: req.body.contact_email,
-        company_name: req.body.company_name,
         gpa: req.body.gpa,
         minor: req.body.minor,
         experience: req.body.experience,
@@ -65,10 +63,10 @@ exports.findAll = (req, res) => {
     const title = req.query.title;
 
     // !!! THIS could be where SQL injections happen--check for security here !!!
-    // let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
-    // var condition = title ? conditionResult : null;
+    let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
+    var condition = title ? conditionResult : null;
 
-    Student.findAll()
+    Student.findAll({where: condition})
         .then(data => {
             res.send(data);
         })
