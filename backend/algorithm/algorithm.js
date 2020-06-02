@@ -111,19 +111,23 @@ function greedySeedInitial(students, projects, populationSize) {
         let numSelected = 0;
         let studentSeed = 0;
 
+        // A deep copy of the list of projects for assigning to
+        // the project list.
+        let currentProjects = Object.assign({}, projects);
+
         // For each student, add random student to proper project
         while (numSelected < students.length) {
             // Gets a random student index from the students array
             studentIndex = Math.floor(seededRandom(studentSeed) * students.length);
 
             if (students[studentIndex].projectPreferences.length == 0 && selected[studentIndex] == false) {
-                let projectIndex = Math.floor(seededRandom((i + 1) * (j + 1)) * projects.length);
+                let projectIndex = Math.floor(seededRandom((i + 1) * (j + 1)) * currentProjects.length);
                 selected[studentIndex] = true;
-                projects[projectIndex].people.push(Object.assign({}, students[studentIndex]));
+                currentProjects[projectIndex].people.push(Object.assign({}, students[studentIndex]));
 
                 // Add project to project list if full
-                if (projects[projectIndex].people.length == projects[projectIndex].maxPeople){
-                    projectList.push(Object.assign({}, projects[projectIndex]));
+                if (currentProjects[projectIndex].people.length == currentProjects[projectIndex].maxPeople){
+                    projectList.push(Object.assign({}, currentProjects[projectIndex]));
                 }
                 
                 // Increment the number of students selected
@@ -132,29 +136,29 @@ function greedySeedInitial(students, projects, populationSize) {
             else if (students[studentIndex].projectPreferences.length != 0 && selected[studentIndex] == false) {
                 for (var k = 0; k < students[studentIndex].length; k++) {
                     for (var l = 0; l < projects.length; l++) {
-                        if (projects[l].projectName == initialStudent.projectPreferences[k]) {
+                        if (currentProjects[l].projectName == initialStudent.projectPreferences[k]) {
                             //If project is full, do nothing and increment to next project preference 
-                            if (projects[l].people.length < projects[l].maxPeople) {
+                            if (currentProjects[l].people.length < currentProjects[l].maxPeople) {
                                 break;
                             }
                             else {
-                                projects[l].people.push(Object.assign({}, initialStudent));
+                                currentProjects[l].people.push(Object.assign({}, initialStudent));
                                 selected[l] = true;
                                 //Add project to project list if full
-                                if(projects[l].people.length == projects[l].maxPeople){
-                                    projectList.push(Object.assign({}, projects[l]));
+                                if (currentProjects[l].people.length == currentProjects[l].maxPeople){
+                                    projectList.push(Object.assign({}, currentProjects[l]));
                                 }
                             }
                         }
                     }
                 }
-                if(selected[l] == false){
-                    projectIndex = seededRandom(projects.length);
+                if (selected[l] == false){
+                    projectIndex = seededRandom(currentProjects.length);
                     selected[studentIndex] = true;
-                    projects[projectIndex].people.push(Object.assign({}, students[studentIndex])); 
+                    currentProjects[projectIndex].people.push(Object.assign({}, students[studentIndex])); 
                     // Add project to project list if full
-                    if(projects[projectIndex].people.length == projects[projectIndex].maxPeople){
-                        projectList.push(Object.assign({}, projects[projectIndex]));
+                    if (currentProjects[projectIndex].people.length == currentProjects[projectIndex].maxPeople){
+                        projectList.push(Object.assign({}, currentProjects[projectIndex]));
                     }
                 }
             }
