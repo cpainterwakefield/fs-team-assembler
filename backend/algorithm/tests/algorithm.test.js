@@ -242,3 +242,9 @@ test('Generation selction function selects best fit project list.', () => {
     // Should select testProjectNormal
     expect(algorithm.generationSelction(generation1)).toEqual([testProjectNormal3]);
 })
+
+test('New generation is not the same as previous fit generation, and has 1000 project lists.', () => {
+    // Should select testProjectNormal
+    expect(algorithm.generateFromFittest(algorithm.generationSelction(generation1))).not.toBe(generation1);
+    expect(algorithm.generateFromFittest(algorithm.generationSelction(generation1)).length).toBe(1000);
+})
