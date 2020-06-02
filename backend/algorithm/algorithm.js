@@ -8,6 +8,10 @@
 const students = require('../models/student.model');
 const projects = require('../models/project.model');
 
+/**
+ * Gets all the students from the DB.
+ * The DB model uses JSON, so we get the response as JSON.
+ */
 function getAllStudents() {
     let allStudentsJSON;
 
@@ -24,6 +28,10 @@ function getAllStudents() {
     return allStudentsJSON;
 }
 
+/**
+ * Gets all the projects from the DB.
+ * The DB model uses JSON, so we get the response as JSON.
+ */
 function getAllProjects() {
     let allProjectsJSON;
 
@@ -111,11 +119,11 @@ function greedySeedInitial(students, projects, populationSize) {
             if (students[studentIndex].projectPreferences.length == 0 && selected[studentIndex] == false) {
                 let projectIndex = Math.floor(seededRandom((i + 1) * (j + 1)) * projects.length);
                 selected[studentIndex] = true;
-                projects[projectIndex].people.push(students[studentIndex]);
+                projects[projectIndex].people.push(Object.assign({}, students[studentIndex]));
 
                 // Add project to project list if full
                 if (projects[projectIndex].people.length == projects[projectIndex].maxPeople){
-                    projectList.push(projects[projectIndex]);
+                    projectList.push(Object.assign({}, projects[projectIndex]));
                 }
                 
                 // Increment the number of students selected
@@ -130,11 +138,11 @@ function greedySeedInitial(students, projects, populationSize) {
                                 break;
                             }
                             else {
-                                projects[l].people.push(initialStudent);
+                                projects[l].people.push(Object.assign({}, initialStudent));
                                 selected[l] = true;
                                 //Add project to project list if full
                                 if(projects[l].people.length == projects[l].maxPeople){
-                                    projectList.push(projects[l]);
+                                    projectList.push(Object.assign({}, projects[l]));
                                 }
                             }
                         }
@@ -143,10 +151,10 @@ function greedySeedInitial(students, projects, populationSize) {
                 if(selected[l] == false){
                     projectIndex = seededRandom(projects.length);
                     selected[studentIndex] = true;
-                    projects[projectIndex].people.push(students[studentIndex]); 
+                    projects[projectIndex].people.push(Object.assign({}, students[studentIndex])); 
                     // Add project to project list if full
                     if(projects[projectIndex].people.length == projects[projectIndex].maxPeople){
-                        projectList.push(projects[projectIndex]);
+                        projectList.push(Object.assign({}, projects[projectIndex]));
                     }
                 }
             }
@@ -355,12 +363,14 @@ function scoreAllProjects(projects) {
 function generationSelction(generation) {
     let fittest = 0;
     let fitProject;
+
     for (let projectList of generation) {
         if (scoreAllProjects(projectList) > fittest) {
              fittest = scoreAllProjects(projectList);
              fitProject = projectList;
         }
     }
+
     return fitProject;
 }
 
