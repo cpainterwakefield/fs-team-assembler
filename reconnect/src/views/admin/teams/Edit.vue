@@ -2,16 +2,16 @@
 <center>
   <Header />
   <div class="run">
-    <v-btn class="primary" >Submit</v-btn>
+    <v-btn class="primary" @click="doSubmit()">Submit</v-btn>
     <hr>
     <div class="left-list">
       <h2 class="h2_2">Remaining</h2>
       <hr>
       <draggable group="projects">
         <div class="element" v-for="(student, i) in students" :key="i">  
-          <span class="p2" v-if="student.projectId == null"><hr></span> 
-          <v-app-bar-nav-icon small class="icon1" v-if="student.projectId == null"></v-app-bar-nav-icon>
-          <span class="p2" v-if="student.projectId == null">{{student.name}}<hr></span>
+          <span class="p2" v-if="student.project_id == null"><hr></span> 
+          <v-app-bar-nav-icon small class="icon1" v-if="student.project_id == null"></v-app-bar-nav-icon>
+          <span class="p2" v-if="student.project_id == null">{{student.name}}<hr></span>
         </div>
       </draggable>
     </div>
@@ -19,11 +19,11 @@
       <span class="proj1" v-for="project in projects" :key="project.name">
         <h2 class="h2_2">{{project.name}} ({{project.min_students}}, {{project.max_students}})</h2>
         <hr>
-        <draggable class="drag1" group="projects">
+        <draggable @change="doIgnore()" v-model="students" class="drag1" group="projects">
           <div class="element" v-for="(student, i) in students" :key="i">
-          <span class="p2" v-if="student.projectId == project.id"><hr></span> 
-            <v-app-bar-nav-icon small class="icon1" v-if="student.projectId == project.id"></v-app-bar-nav-icon>
-            <span class="p2" v-if="student.projectId == project.id" >{{student.name}} <hr></span>
+          <span class="p2" v-if="student.project_id == project.id"><hr></span> 
+            <v-app-bar-nav-icon small class="icon1" v-if="student.project_id == project.id"></v-app-bar-nav-icon>
+            <span class="p2" v-if="student.project_id == project.id" >{{student.name}} <hr></span>
             <span class="p2" v-else></span>
           </div>
         </draggable>
@@ -48,11 +48,9 @@ export default {
   },
   data() {
     return {
-      students: ['John Doe', 'Adam Smith','Donald Duck', 'Mickey Mouse','Pluto Dog', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2', 's2','s1', 's2','s1', 's2','s1', 's2','s1', 's2'],
-      projects: [
-        {name: 'p2qpifhpasdua;shdfak;sdjfha;kdsjhf;aksdjhflskdjhfjsdh', students: ['s1', 's2'], min: 2, max: 5},
-        {name: 'p2qiufaaksjdfkjshdfkjshadfkjshfajshdflakjsdhflakjsdhflaksj', students: ['s3', 's4'], min:2, max: 5},
-      ]
+      students: [],
+      projects: [],
+      models: [],
       
     }
   },
@@ -73,6 +71,19 @@ export default {
       self.errors.push(e)
     })
 
+  },
+  methods: {
+    doSubmit: function() {
+      axios.put('http://localhost:8080/api/students', {
+       students: this.students  
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
   }
 }
 

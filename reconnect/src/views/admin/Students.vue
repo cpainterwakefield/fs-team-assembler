@@ -53,9 +53,9 @@
           <div class="list1">{{student.gpa}}</div>
         </div>
         <div class="panel">
-          <div class="list1" v-if="student.projPref == null">N/A</div>
+          <div class="list1" v-if="student.selection_preference == null">N/A</div>
           <div class="list1" v-else>
-            <div class="list1" v-if="student.projPref">T</div>
+            <div class="list1" v-if="student.selection_preference">T</div>
             <div class="list1" v-else>P</div>
           </div>
         </div>
