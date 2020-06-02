@@ -366,7 +366,8 @@ function generationSelction(generation) {
 
     for (let projectList of generation) {
         if (scoreAllProjects(projectList) > fittest) {
-             fittest = scoreAllProjects(projectList);
+            //If current is greater than the current fittest, make that the fittest 
+            fittest = scoreAllProjects(projectList);
              fitProject = projectList;
         }
     }
@@ -380,6 +381,7 @@ function generationSelction(generation) {
  * @return {New generation}
  */
 function generateFromFittest(fittestProjectList) {
+    //Create an empty generation to fill and return
     let generation = [];
     let student1;
     let student2;
@@ -387,14 +389,19 @@ function generateFromFittest(fittestProjectList) {
     let projIndex2;
     let temp;
 
+    //Repeat 1000 times
     for(let i = 0; i < 1000; i++) {
+        //Getting seeded random project indices to swap students from 
         projIndex1 = Math.floor(seededRandom(i*2) * (fittestProjectList.length - 1));
         projIndex2 = Math.floor(seededRandom(i*3) * (fittestProjectList.length - 1));
+        //Choosing two random students from each randomly chosen project to switch
         student1 = fittestProjectList[projIndex1].people[Math.floor(seededRandom(i*4) * (fittestProjectList[projIndex1].people.length))];
         student2 = fittestProjectList[projIndex2].people[Math.floor(seededRandom(i*5) * (fittestProjectList[projIndex2].people.length))];
+        //Swapping students
         temp = student1;
         student1 = student2;
         student2 = temp;
+        //Adding newly created project list to new generation
         generation.push(fittestProjectList);
     }
     return generation;
