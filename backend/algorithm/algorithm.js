@@ -11,57 +11,38 @@ const students = require('../models/student.model');
 const db = require("../models");
 
 /* Quick "hello world" function that tries to get some JSON from the DB.
+ * TODO: Should be a test instead.
  */
 async function helloPostgres() {
     console.log('Hello Postgres');
     try {
         await db.sequelize.authenticate();
         console.log('Connection has been established successfully.');
-        db.students.findAll();
     } catch (error) {
         console.error('Unable to connect to the database', error);
     }
 }
-helloPostgres(); // comment me out once you know I work
 
 /**
  * Gets all the students from the DB.
  * The DB model uses JSON, so we get the response as JSON.
  */
-function getAllStudents() {
-    let allStudentsJSON;
-
-    students.findAll().then((studentExists) => {
-        if (studentExists) {
-            allStudentsJSON;
-            console.log(studentExists);
-        } else {
-            // No students are in the DB :(
-            console.log("No students in the DB");
-        }
-    });
-
-    return allStudentsJSON;
+async function getAllStudents() {
+    //console.log('getAllStudents() was called');
+    let theStudents = await db.students.findAll();
+    //console.log(theStudents);
+    return theStudents;
 }
 
 /**
  * Gets all the projects from the DB.
  * The DB model uses JSON, so we get the response as JSON.
  */
-function getAllProjects() {
-    let allProjectsJSON;
-
-    projects.findAll().then((projectExists) => {
-        if (projectExists) {
-            allProjectsJSON = projectExists;
-            console.log(projectExists);
-        } else {
-            // No projects are in the DB :(
-            console.log("No projects in the DB");
-        }
-    });
-
-    return allProjectsJSON;
+async function getAllProjects() {
+    //console.log('getAllProjects() was called');
+    let theProjects = await db.projects.findAll();
+    //console.log(theProjects);
+    return theProjects;
 }
 
 /**
