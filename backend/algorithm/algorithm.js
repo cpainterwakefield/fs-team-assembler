@@ -388,10 +388,10 @@ function generateFromFittest(fittestProjectList) {
     let temp;
 
     for(let i = 0; i < 1000; i++) {
-        projIndex1 = Math.random() * (fittestProjectList.length - 1);
-        projIndex2 = Math.random() * (fittestProjectList.length - 1);
-        student1 = fittestProjectList[projIndex1].people[Math.random() * (fittestProjectList[projIndex1].people.length)];
-        student2 = fittestProjectList[projIndex2].people[Math.random() * (fittestProjectList[projIndex2].people.length)];
+        projIndex1 = Math.floor(seededRandom(i*2) * (fittestProjectList.length - 1));
+        projIndex2 = Math.floor(seededRandom(i*3) * (fittestProjectList.length - 1));
+        student1 = fittestProjectList[projIndex1].people[Math.floor(seededRandom(i*4) * (fittestProjectList[projIndex1].people.length))];
+        student2 = fittestProjectList[projIndex2].people[Math.floor(seededRandom(i*5) * (fittestProjectList[projIndex2].people.length))];
         temp = student1;
         student1 = student2;
         student2 = temp;
