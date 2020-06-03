@@ -121,7 +121,7 @@ export default {
   },    
   methods: {
     limiter: function(e) {
-      if(e.length > 5) {
+      if(e.length > 10) {
         e.pop()
       }
     },
