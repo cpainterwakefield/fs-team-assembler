@@ -3,9 +3,11 @@ const SamlStrategy = require('passport-saml').Strategy;
 const config = require('../config/shib_config');
 
 passport.serializeUser(function (user, done) {
+  
   done(null, user);
 });
 passport.deserializeUser(function (user, done) {
+  
   done(null, user);
 });
 passport.use(new SamlStrategy(
@@ -44,11 +46,11 @@ module.exports = app => {
     }
   });
 
-  app.get('/auth/shibboleth',
+  app.get('/auth/login',
     passport.authenticate(config.passport.strategy,
       {
-        successRedirect: '/',
-        failureRedirect: '/login'
+        successRedirect: '/student',
+        failureRedirect: '/notRegistered'
       })
   );
 

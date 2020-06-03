@@ -9,7 +9,7 @@
           <v-card>
             <v-card-text class="v-card-text1">
               <v-form v-model="valid">
-                <v-file-input label="Add Students (JSON)" outlined accept=".csv" background-color="white" multiple></v-file-input>
+                <v-file-input label="Add Students (CSV)" outlined accept=".csv" background-color="white" multiple></v-file-input>
               </v-form>
             </v-card-text>
             <v-card-actions class="c1">
@@ -21,7 +21,7 @@
           <v-card>
             <v-card-text class="v-card-text1">
               <v-form v-model="valid">
-                <v-file-input label="Add Projects (JSON)" outlined accept=".csv" background-color="white" multiple></v-file-input>
+                <v-file-input label="Add Projects (CSV)" outlined accept=".csv" background-color="white" multiple></v-file-input>
               </v-form>
             </v-card-text>
             <v-card-actions class="c1">
@@ -145,8 +145,8 @@ export default {
   },
   mounted() {
     var self=this;
-    const requestStud = axios.get('http://localhost:8080/api/students');
-    const requestProj = axios.get('http://localhost:8080/api/projects');
+    const requestStud = axios.get('http://localhost:8080/api/students', {withCredentials: true});
+    const requestProj = axios.get('http://localhost:8080/api/projects', {withCredentials: true});
 
     axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
       const responseStud = responses[0]

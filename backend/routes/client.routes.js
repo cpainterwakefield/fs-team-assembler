@@ -3,23 +3,33 @@ module.exports = app => {
 
     var router = require("express").Router();
 
+    const authcheck = (req,res,next)=>{
+        if(!req.user){
+            // if user is not logged in this executes
+            res.redirect("/auth/login");
+        }else{
+            //If they are logged in
+            next();
+        }
+    }
+
     // Create a new client
-    router.post("/", clients.create);
+    router.post("/", authcheck ,clients.create);
 
     // Get all the clients
-    router.get("/", clients.findAll);
+    router.get("/", authcheck, clients.findAll);
 
     // Find a client by a certain ID
-    router.get("/:id", clients.findOne);
+    router.get("/:id", authcheck, clients.findOne);
 
     // Update a client via a certain ID
-    router.put("/:id", clients.update);
+    router.put("/:id", authcheck, clients.update);
 
     // Delete a client with the given ID
-    router.delete("/:id", clients.delete);
+    router.delete("/:id", authcheck, clients.delete);
 
     // Delete all clients (ooo!)
-    router.delete("/", clients.deleteAll);
+    router.delete("/",authcheck, clients.deleteAll);
 
     app.use('/api/clients', router);
 }

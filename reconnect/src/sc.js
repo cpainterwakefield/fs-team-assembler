@@ -17,6 +17,7 @@ for (let pr of projects) {
       console.log("\tsid: " + st.id)
     }
   }
-for (let pr of projects){
-  console.log(models.find(function(id) {if (id.project.id == pr.id) return id}).students)
-}
+
+var pid = 2;
+console.log(projects.find(function(id) {if (id.id === pid) return id}).name)
+

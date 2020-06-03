@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 
 module.exports = (sequelize, Sequelize) => {
     const PreferTeammateXref = sequelize.define("prefer_teammate_xref", {
+        /*
         preferrer_id: {
             type: Sequelize.INTEGER
         },
@@ -9,6 +10,7 @@ module.exports = (sequelize, Sequelize) => {
         preferree_id: {
             type: Sequelize.INTEGER
         }
+        */
     });
     PreferTeammateXref.associate = function(models) {
         //declare associations here

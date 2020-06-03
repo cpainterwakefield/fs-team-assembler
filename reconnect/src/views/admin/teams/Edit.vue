@@ -19,7 +19,7 @@
     <div class="right-list">
       <span class="proj1" v-for="model in models" :key="model.project.id">
         <h2 class="h2_2">{{model.project.name}} ({{model.project.min_students}}, {{model.project.max_students}})</h2>
-        <draggable @change="log" v-model="model.students" class="drag1" group="projects">
+        <draggable :list="model.students" class="drag1" group="projects">
           <hr>
           <div class="element" v-for="student in model.students" :key="student.id">
             <span class="p2"><hr></span> 
@@ -57,8 +57,8 @@ export default {
   },
   mounted() {
     let self=this;
-    const requestStud = axios.get('http://localhost:8080/api/students');
-    const requestProj = axios.get('http://localhost:8080/api/projects');
+    const requestStud = axios.get('http://localhost:8080/api/students', {withCredentials: true});
+    const requestProj = axios.get('http://localhost:8080/api/projects', {withCredentials: true});
 
     axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
       const responseStud = responses[0]
@@ -99,9 +99,6 @@ export default {
     }
 
   },
-      log: function(evt) {
-      window.console.log(evt);
-    }
 }
 
 </script>

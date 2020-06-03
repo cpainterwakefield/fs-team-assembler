@@ -39,6 +39,10 @@ exports.create = (req, res) => {
         experience: req.body.experience,
         email: req.body.email,
         project_id: req.body.project_id,
+        first_project: req.body.first_project,
+        second_project: req.body.second_project,
+        third_project: req.body.third_project,
+        selection_preference: req.body.selection_preference
 
     };
 
@@ -53,7 +57,7 @@ exports.create = (req, res) => {
             // or generic error message.
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating a Client."
+                    err.message || "Some error occurred while creating a Student."
             });
         });
 };
