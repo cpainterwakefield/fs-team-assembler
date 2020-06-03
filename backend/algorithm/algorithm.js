@@ -422,9 +422,10 @@ function generationSelction(generation) {
 /**
  * 
  * @param {Project list to create a new generation out of.} fittestProjectList 
+ * @param {Amount of times to repeat generation.} numRepeats
  * @return {New generation}
  */
-function generateFromFittest(fittestProjectList) {
+function generateFromFittest(fittestProjectList, numRepeats) {
     //Create an empty generation to fill and return
     let generation = [];
     let student1;
@@ -434,7 +435,7 @@ function generateFromFittest(fittestProjectList) {
     let temp;
 
     // Repeat 1000 times
-    for(let i = 0; i < 1000; i++) {
+    for(let i = 0; i < numRepeats; i++) {
         // Clone fittest project list so that we're not editing the original
         let currentFittest = _.cloneDeep(fittestProjectList);
 

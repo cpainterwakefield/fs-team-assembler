@@ -184,7 +184,7 @@ var testProjectNormal3 = {
 
 var generation1 = [[testProjectNormal], [testProjectNormal2], [testProjectNormal3]]
 
-checkDeepCopy()
+// checkDeepCopy()
 
 test('Nobody should get paired with anyone that they avoid.', () => {
 
@@ -245,6 +245,6 @@ test('Generation selction function selects best fit project list.', () => {
 
 test('New generation is not the same as previous fit generation, and has 1000 project lists.', () => {
     // Should select testProjectNormal
-    expect(algorithm.generateFromFittest(algorithm.generationSelction(generation1))).not.toBe(generation1);
-    expect(algorithm.generateFromFittest(algorithm.generationSelction(generation1)).length).toBe(1000);
+    expect(algorithm.generateFromFittest(algorithm.generationSelction(generation1), 1000)).not.toBe(generation1);
+    expect(algorithm.generateFromFittest(algorithm.generationSelction(generation1), 1000).length).toBe(1000);
 })
