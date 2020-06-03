@@ -25,11 +25,14 @@ async function helloPostgres() {
 /**
  * Gets all the students from the DB.
  * The DB model uses JSON, so we get the response as JSON.
+ *
+ * You must use it like this, because findAll() is async:
+    (async () => {
+        console.log(await getAllStudents()) // or do whatever you're doing with it
+    })()
  */
 async function getAllStudents() {
-    //console.log('getAllStudents() was called');
-    let theStudents = await db.students.findAll();
-    //console.log(theStudents);
+    const theStudents = await db.students.findAll();
     return theStudents;
 }
 
@@ -38,9 +41,7 @@ async function getAllStudents() {
  * The DB model uses JSON, so we get the response as JSON.
  */
 async function getAllProjects() {
-    //console.log('getAllProjects() was called');
-    let theProjects = await db.projects.findAll();
-    //console.log(theProjects);
+    const theProjects = await db.projects.findAll();
     return theProjects;
 }
 
