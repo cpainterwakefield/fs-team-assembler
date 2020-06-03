@@ -17,14 +17,24 @@ app.use(cookieSession({
 }));
 
 var corsOptions = {
-  origin: ["http://localhost:8081", "https://accounts.google.com"],
+  origin: ["http://localhost:8081", "https://accounts.google.com:443"],
   methods: ["POST", "GET","PUT"],
   credentials: true,
   allowedHeaders: ["Origin", "Content-Type", "Authorization"]
 };
 
+
 app.use(cors(corsOptions));
 
+/*
+app.use(function(req,res,next){
+  res.header("Access-Control-Allow-Origin", "http://localhost:8081", "https://account.google.com:443", "http://localhost:8081");
+  res.header("Access-Control-Allow-Headers", "GET, PUT, POST, DELETE")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+})
+*/
 db.sequelize.sync();
 
 // parse requests of content-type - application/json

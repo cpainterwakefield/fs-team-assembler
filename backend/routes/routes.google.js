@@ -47,7 +47,6 @@ function(accessToken, refreshToken, profile, done) {
       done(null , studentExists);
     }
     else{
-      User.create({email: 'michaelhumphrey@mymail.mines.edu'})
       done();
     }
   })
