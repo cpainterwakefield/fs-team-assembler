@@ -118,10 +118,14 @@ export default {
   },
   mounted() {
     var self=this;
-    const requestStud = axios.get('http://localhost:8080/api/students', {withCredentials: true});
-    const requestProj = axios.get('http://localhost:8080/api/projects', {withCredentials: true});
+    const data = axios.create({
+      withCredentials: true,
+      baseURL: "http://localhost:8080/api/"
+    })
+    const requestStud = data.get("students");
+    const requestProj = data.get("projects");
     console.log("look here")
-    axios.get('http://localhost:8080/api/students', {withCredentials: true})
+    data.get("students")
     .then(response => {
       console.log(response)
       // JSON responses are automatically parsed.
