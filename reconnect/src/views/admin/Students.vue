@@ -122,7 +122,7 @@ export default {
   mounted() {
     var self=this;
     console.log("look here")
-    axios.get('http://' + location.hostname + ':8080/api/students')
+    axios.get('http://' + location.hostname + ':8080/api/students', {withCredentials: true})
     .then(response => {
       console.log(response)
       // JSON responses are automatically parsed.
