@@ -70,7 +70,7 @@ exports.findAll = (req, res) => {
     let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
     var condition = title ? conditionResult : null;
 
-    Student.findAll({where: condition})
+    Student.findAll()
         .then(data => {
             res.send(data);
         })
