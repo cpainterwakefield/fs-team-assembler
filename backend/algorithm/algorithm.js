@@ -433,21 +433,28 @@ function generateFromFittest(fittestProjectList) {
     let projIndex2;
     let temp;
 
-    //Repeat 1000 times
+    // Repeat 1000 times
     for(let i = 0; i < 1000; i++) {
-        //Getting seeded random project indices to swap students from 
-        projIndex1 = Math.floor(seededRandom(i*2) * (fittestProjectList.length - 1));
-        projIndex2 = Math.floor(seededRandom(i*3) * (fittestProjectList.length - 1));
-        //Choosing two random students from each randomly chosen project to switch
-        student1 = fittestProjectList[projIndex1].people[Math.floor(seededRandom(i*4) * (fittestProjectList[projIndex1].people.length))];
-        student2 = fittestProjectList[projIndex2].people[Math.floor(seededRandom(i*5) * (fittestProjectList[projIndex2].people.length))];
-        //Swapping students
+        // Clone fittest project list so that we're not editing the original
+        let currentFittest = _.cloneDeep(fittestProjectList);
+
+        // Getting seeded random project indices to swap students from 
+        projIndex1 = Math.floor(seededRandom(i*2) * (currentFittest.length - 1));
+        projIndex2 = Math.floor(seededRandom(i*3) * (currentFittest.length - 1));
+
+        // Choosing two random students from each randomly chosen project to switch
+        student1 = currentFittest[projIndex1].people[Math.floor(seededRandom(i*4) * (currentFittest[projIndex1].people.length))];
+        student2 = currentFittest[projIndex2].people[Math.floor(seededRandom(i*5) * (currentFittest[projIndex2].people.length))];
+
+        // Swapping students
         temp = student1;
         student1 = student2;
         student2 = temp;
-        //Adding newly created project list to new generation
-        generation.push(fittestProjectList);
+
+        // Adding newly created project list to new generation
+        generation.push(currentFittest);
     }
+
     return generation;
 }
 
