@@ -196,9 +196,6 @@ for (let individual of population) {
 }
 */
 
-// TODO: It looks like the greedy seed does not do well with respecting project
-// preferences. Fix this!
-
 console.log("PEOPLE:");
 for (let individual of population) {
     console.log(`Individual:`);
