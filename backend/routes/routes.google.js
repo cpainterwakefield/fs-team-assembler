@@ -7,6 +7,17 @@ const db = require("../models");
 const User = db.users;
 const Op = db.Sequelize.Op;
 
+passport.serializeUser((user,done) => {
+  done(null, user.id);
+});
+passport.deserializeUser((id,done) => {
+  User.findByPk(id).then((user) => {
+    done(null,user);
+  })
+
+});
+
+
 // Use the GoogleStrategy within Passport.
 //   Strategies in passport require a `verify` function, which accept
 //   credentials (in this case, a token, tokenSecret, and Google profile), and
@@ -21,24 +32,22 @@ function(accessToken, refreshToken, profile, done) {
   console.log(profile._json.email);
   //check if user exists in DB
   const title = profile._json.email;
- 
+  const id = profile._json.sub.toString();
   User.findOne({where: {email: title}})
     .then((studentExists) => {
     if(studentExists){
       //Student is part of the course and they can log in
       //Student info is in studentExists
-      User.update({
-        name: profile._json.name,
-        email: profile._json.email,
-        auth_id: profile._json.sub
-      })
+      if(studentExists.name != null){
+        studentExists.update({
+          name: profile._json.name,
+          auth_id: id
+        })
+      }
+      done(null , studentExists);
     }
     else{
-      //If not in the db then say they are not part of the course
-      //If that is a mistake email CPW
-      //TODO: find out what to do here....
-
-
+      done();
     }
   })
 
@@ -51,7 +60,7 @@ module.exports = app => {
   //   redirecting the user to google.com.  After authorization, Google
   //   will redirect the user back to this application at /auth/google/callback
   // IMPORTANT: WHATEVER IS IN SIDE THE CLOSED BRACKETS AFTER SCOPE: BELOW IS THE INFORMATION WE GET BACK
-  app.get('/auth/google',
+  app.get('/auth/login',
   passport.authenticate('google', { 
     scope: ['profile', 'email'] 
   }));
@@ -62,9 +71,11 @@ module.exports = app => {
   //   login page.  Otherwise, the primary route function function will be called,
   //   which, in this example, will redirect the user to the home page.
   app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/' }),
-  function(req, res) {
-    console.log('you have logged in ^_^')
+  passport.authenticate('google', {
+    failureRedirect: "http://localhost:8081/notRegistered",
+    successRedirect: "http://localhost:8081/Student"
+  }),(req, res) => {
+    console.log('you have logged in ^_^');
   });
   }
 

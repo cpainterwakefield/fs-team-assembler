@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true
         },
         auth_id: {
-            type: Sequelize.BIGINT,
+            type: Sequelize.STRING,
             defaultValue: null,
             allowNull: true,
             unique: true
