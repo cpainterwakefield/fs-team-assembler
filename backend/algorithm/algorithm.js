@@ -400,6 +400,10 @@ function scoreAllProjects(projects) {
     return totalScore;
 }
 /**
+ * Selects the fittest individual from a generation.
+ * 
+ * Each individual is scored using function `scoreAllProjects()`; whichever
+ * project that ends up having the highest score via this function is selected. 
  * 
  * @param {List of project lists} generation 
  * @return {One set of projects}
@@ -412,18 +416,23 @@ function generationSelction(generation) {
         if (scoreAllProjects(projectList) > fittest) {
             //If current is greater than the current fittest, make that the fittest 
             fittest = scoreAllProjects(projectList);
-             fitProject = projectList;
+            fitProject = projectList;
         }
     }
 
-    return fitProject;
+    return _.cloneDeep(fitProject);
 }
 
 /**
+ * Generates a new list of individuals (generation) from a particularly fit individual.
  * 
+ * There's very little need to "breed" two individuals together in our context due to the
+ * induced coupling between students and projects. Thus we create new individuals by
+ * randomly exchanging students between projects from the fittest individual.
+ *  
  * @param {Project list to create a new generation out of.} fittestProjectList 
  * @param {Amount of times to repeat generation.} numRepeats
- * @return {New generation}
+ * @return {The new generation, a list of individuals.}
  */
 function generateFromFittest(fittestProjectList, numRepeats) {
     //Create an empty generation to fill and return
