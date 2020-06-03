@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app color="indigo darken-4" dark class=my-tb>
-    <v-app-bar-title class="headline smetallic--text text-uppercase font-weight-light">Reconnect</v-app-bar-title>
+    <span class="headline smetallic--text text-uppercase font-weight-light">Reconnect</span>
     <v-spacer/>
     <v-btn class="btn1" to="/student/">Profile</v-btn>
     <v-btn class="btn1" to="/student/edit">Edit</v-btn>

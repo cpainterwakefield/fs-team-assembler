@@ -9,7 +9,7 @@
           <v-card>
             <v-card-text class="v-card-text1">
               <v-form v-model="valid">
-                <v-file-input label="Add Students (JSON)" outlined accept=".csv" background-color="white" multiple></v-file-input>
+                <v-file-input label="Add Students (CSV)" outlined accept=".csv" background-color="white" multiple></v-file-input>
               </v-form>
             </v-card-text>
             <v-card-actions class="c1">
@@ -21,7 +21,7 @@
           <v-card>
             <v-card-text class="v-card-text1">
               <v-form v-model="valid">
-                <v-file-input label="Add Projects (JSON)" outlined accept=".csv" background-color="white" multiple></v-file-input>
+                <v-file-input label="Add Projects (CSV)" outlined accept=".csv" background-color="white" multiple></v-file-input>
               </v-form>
             </v-card-text>
             <v-card-actions class="c1">

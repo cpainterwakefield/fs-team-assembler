@@ -26,7 +26,7 @@ module.exports = (sequelize, Sequelize) => {
         },
 
         gpa: {
-            type: Sequelize.DECIMAL(3),
+            type: Sequelize.DECIMAL(10,3),
             defaultValue: null,
             allowNull: true
         },
@@ -48,7 +48,24 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: null,
             allowNull: true
         },
+      
+        first_project: {
+            type: Sequelize.INTEGER,
+            defaultValue: null,
+            allowNull: true
+        }, 
+
+        second_project: {
+            type: Sequelize.INTEGER,
+            defaultValue: null,
+            allowNull: true
+        }, 
     
+        third_project: {
+            type: Sequelize.INTEGER,
+            defaultValue: null,
+            allowNull: true
+        }, 
       
     });
 
