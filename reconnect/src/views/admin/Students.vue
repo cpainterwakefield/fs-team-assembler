@@ -39,7 +39,7 @@
       <h3 class="head1">Avoids</h3> 
       <h3 class="head1">Assigned</h3> 
       <hr>
-      <div class="row" v-for="student in students" :key="student.name">
+      <div class="row" v-for="student in students" :key="student.id">
         <div class="panel">
           <div class="list1">{{student.name}}</div>
         </div>
@@ -53,17 +53,16 @@
           <div class="list1">{{student.gpa}}</div>
         </div>
         <div class="panel">
-          <div class="list1" v-if="student.selection_preference == null">N/A</div>
+          <div class="list1" v-if="student.selection_preference == null"><font color="red">N/A</font></div>
           <div class="list1" v-else>
-            <div class="list1" v-if="student.selection_preference">T</div>
-            <div class="list1" v-else>P</div>
+            <div class="list1" v-if="student.selection_preference"><font color="blue">T</font></div>
+            <div class="list1" v-else><font color="green">P</font></div>
           </div>
         </div>
         <div class="panel">
-          <div class="list1" v-for="(proj, i) in student.proj" :key="i">
-            <div class="list2">{{proj}}</div>
-            <hr>
-          </div>
+          <div class="list2" v-if="student.first_project">{{getName(student.first_project)}}</div>
+          <div class="list2" v-if="student.second_project">{{getName(student.second_project)}}</div>
+          <div class="list2" v-if="student.third_project">{{getName(student.third_project)}}</div>
         </div>
         <div class="panel">
           <div class="list1" v-for="(prefer, i) in student.pref" :key="i">
@@ -78,7 +77,7 @@
           </div>
         </div>
         <div class="panel">
-         <div class="list1" v-if="student.assigned"><font color="green">{{student.assigned}}</font></div> 
+         <div class="list1" v-if="student.project_id"><font color="green">{{getName(student.project_id)}}</font></div> 
          <div class="list1" v-else><font color="red">X</font></div> 
         </div>
       </div>
@@ -101,10 +100,8 @@ export default {
   data() {
     return {
       valid: true,
-      students: [
-//        {name: 'John Doe', email: 'johndoe@gmail.com', pt: 'proj', proj: ['p1', 'p2', 'p3'], pref: ['Mickey Mouse', 'Donald Duck', 'Goofy Dog'], avoid: ['Pluto Dog'], assigned: 'p3'},
-//        {name: 'John Doe', email: 'johndoe@gmail.com', pt: 'team', proj: ['p4', 'p5', 'p6'], pref: ['Mickey Mouse', 'Donald Duck'], avoid: ['Pluto Dog'], assigned: null},
-      ],
+      students: [],
+      projects: [],
       totalStudents: 100,
       totalSubmitted: 95,
       totalTeamPref: 25,
@@ -121,18 +118,28 @@ export default {
   },
   mounted() {
     var self=this;
-    console.log("look here")
-    axios.get('http://' + location.hostname + ':8080/api/students')
-    .then(response => {
-      console.log(response)
-      // JSON responses are automatically parsed.
-      self.students = response.data
+    const requestStud = axios.get('http://localhost:8080/api/students');
+    const requestProj = axios.get('http://localhost:8080/api/projects');
 
-    })
+    axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
+      const responseStud = responses[0]
+      const responseProj = responses[1]
+      // use/access the results
+      self.students = responseStud.data
+      self.projects = responseProj.data
+    }))
     .catch(e => {
+      // react on errors.
       self.errors.push(e)
     })
-  }
+
+  },
+  
+  methods: {
+    getName: function(pid) {
+      return this.projects.find(function(id) {if (id.id === pid) return id}).name
+    }
+  } 
 }
 
 
