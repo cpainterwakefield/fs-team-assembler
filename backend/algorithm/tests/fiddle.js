@@ -186,7 +186,7 @@ var testProjectList = [testProjectsNormal.firstProject, testProjectsNormal.secon
 // checkDeepCopy(testNormalList);
 
 const algorithm = require('../algorithm');
-let population = algorithm.gSI(testNormalList, testProjectList, 10);
+let population = algorithm.greedySeedInitial(testNormalList, testProjectList, 10);
 
 /*
 for (let individual of population) {

@@ -144,10 +144,12 @@ function greedySeedInitial(students, projects, populationSize) {
             } else {
                 let inProject = false;
                 for (let preferredProject of student.projectPreferences) {
-                    if (currentProjectList.includes(preferredProject)) {
+                    // Checks if at least some project with the given ID is in the project list.
+                    // e.name can be changed to e.id for project IDs.
+                    if (currentProjectList.some((e) => e.name == preferredProject)) {
                         // If the project list still has a project that the student
                         // prefers, put them in that project.
-                        let projectIndex = currentProjectList.indexOf(preferredProject);
+                        let projectIndex = currentProjectList.findIndex((e) => e.name == preferredProject);
                         currentProjectList[projectIndex].people.push(student);
 
                         // If the project is full, then push to project list.
@@ -160,6 +162,7 @@ function greedySeedInitial(students, projects, populationSize) {
 
                         // The student is in a project.
                         inProject = true;
+                        break;
                     }
                 }
 
@@ -492,7 +495,6 @@ function evolvePopulation(population) {
 }
 
 exports.greedySeedInitial = greedySeedInitial;
-exports.gSI = gSI;
 
 exports.scoreProjectPreferences = scoreProjectPreferences;
 exports.scorePersonPreferences = scorePersonPreferences;
