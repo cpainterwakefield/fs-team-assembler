@@ -121,11 +121,12 @@ export default {
     const requestStud = axios.get('http://localhost:8080/api/students');
     const requestProj = axios.get('http://localhost:8080/api/projects');
     console.log("look here")
-    axios.get('http://' + location.hostname + ':8080/api/students', {withCredentials: true})
+    axios.get('http://localhost:8080/api/students', {withCredentials: true})
     .then(response => {
       console.log(response)
       // JSON responses are automatically parsed.
       self.students = response.data
+    })
 
     axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
       const responseStud = responses[0]
