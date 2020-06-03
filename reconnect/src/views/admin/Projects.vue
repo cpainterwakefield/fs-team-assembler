@@ -57,7 +57,7 @@ export default {
   },
   mounted() {
     var self=this;
-    axios.get('http://localhost:8080/api/projects')
+    axios.get('http://localhost:8080/api/projects', {withCredentials: true})
     .then(response => {
       console.log(response)
       // JSON responses are automatically parsed.

@@ -186,7 +186,7 @@ var testProjectList = [testProjectsNormal.firstProject, testProjectsNormal.secon
 // checkDeepCopy(testNormalList);
 
 const algorithm = require('../algorithm');
-let population = algorithm.gSI(testNormalList, testProjectList, 10);
+let population = algorithm.greedySeedInitial(testNormalList, testProjectList, 10);
 
 /*
 for (let individual of population) {
@@ -195,9 +195,6 @@ for (let individual of population) {
     console.log("----------\n");
 }
 */
-
-// TODO: It looks like the greedy seed does not do well with respecting project
-// preferences. Fix this!
 
 console.log("PEOPLE:");
 for (let individual of population) {

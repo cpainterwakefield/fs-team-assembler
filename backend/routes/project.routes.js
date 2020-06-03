@@ -3,23 +3,33 @@ module.exports = app => {
 
     var router = require("express").Router();
 
+    const authcheck = (req,res,next)=>{
+        if(!req.user){
+            // if user is not logged in this executes
+            res.redirect("/auth/login");
+        }else{
+            //If they are logged in
+            next();
+        }
+    }
+
     // Create a new project 
-    router.post("/", projects.create);
+    router.post("/", authcheck ,projects.create);
 
     // Get all the projects 
-    router.get("/", projects.findAll);
+    router.get("/", authcheck, projects.findAll);
 
     // Find a project by a certain ID
-    router.get("/:id", projects.findOne);
+    router.get("/:id", authcheck, projects.findOne);
 
     // Update a project via a certain ID
-    router.put("/:id", projects.update);
+    router.put("/:id", authcheck, projects.update);
 
     // Delete a project with the given ID
-    router.delete("/:id", projects.delete);
+    router.delete("/:id", authcheck, projects.delete);
 
     // Delete all projects (ooo!)
-    router.delete("/", projects.deleteAll);
+    router.delete("/", authcheck, projects.deleteAll);
 
     app.use('/api/projects', router);
 }

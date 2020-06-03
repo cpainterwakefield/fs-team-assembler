@@ -57,7 +57,7 @@ exports.create = (req, res) => {
             // or generic error message.
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating a Client."
+                    err.message || "Some error occurred while creating a Student."
             });
         });
 };

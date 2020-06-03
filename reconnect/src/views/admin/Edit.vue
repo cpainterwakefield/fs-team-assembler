@@ -145,8 +145,8 @@ export default {
   },
   mounted() {
     var self=this;
-    const requestStud = axios.get('http://localhost:8080/api/students');
-    const requestProj = axios.get('http://localhost:8080/api/projects');
+    const requestStud = axios.get('http://localhost:8080/api/students', {withCredentials: true});
+    const requestProj = axios.get('http://localhost:8080/api/projects', {withCredentials: true});
 
     axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
       const responseStud = responses[0]

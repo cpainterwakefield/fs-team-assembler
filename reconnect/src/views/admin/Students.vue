@@ -118,8 +118,17 @@ export default {
   },
   mounted() {
     var self=this;
+<<<<<<< HEAD
     const requestStud = axios.get('http://localhost:8080/api/students');
     const requestProj = axios.get('http://localhost:8080/api/projects');
+=======
+    console.log("look here")
+    axios.get('http://' + location.hostname + ':8080/api/students', {withCredentials: true})
+    .then(response => {
+      console.log(response)
+      // JSON responses are automatically parsed.
+      self.students = response.data
+>>>>>>> f609b6c76c2bc8e85efa285bb5e340eb1abfad24
 
     axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
       const responseStud = responses[0]
