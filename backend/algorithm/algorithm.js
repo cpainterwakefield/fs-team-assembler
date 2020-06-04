@@ -129,30 +129,32 @@ function evolvePopulation(population) {
     return generateFromFittest(generationSelection(population), 100);
   }
   
-  function runGeneticAlgorithm() {
-      let students = dbInt.getAllStudents();
-      let projects = dbInt.getAllProjects();
+function runGeneticAlgorithm() {
+    let students = dbInt.getAllStudents();
+    let projects = dbInt.getAllProjects();
+
+    //Making initial greedy generation
+    let generation = seeding.greedySeedInitial(students, projects, 100);
+    let newGeneration;
+    // Set a max amount to stop at if it never reaches the threshold for stoping.
+    let maxEvolveTimes = 100;
+    const DIFFERENCE_THRESHOLD = 1.1;
+
+    for (i = 0; i < maxEvolveTimes; i++) {
+        newGeneration = evolvePopulation(generation);
+        // If it reaches a point where there is not much difference in highest fit individuals, return.
+        if (Math.abs(scoring.scoreAllProjects(generationSelection(newGeneration)) -
+            scoring.scoreAllProjects(generationSelection(generation))) < DIFFERENCE_THRESHOLD) {
+            return generationSelection(newGeneration);
+        }
+        else {
+            generation = newGeneration;
+        }
+    }
+    return generationSelection(newGeneration);
+}
   
-      //Making initial greedy generation
-      let generation = seeding.greedySeedInitial(students, projects, 100);
-      let currentScore = 0;
-      let newGeneration;
-      // Set a max amount to stop at if it never reaches the threshold for stoping.
-      let maxEvolveTimes = 100;
-      const DIFFERENCE_THRESHOLD = 1.1;
-      
-      for (i = 0; i < maxEvolveTimes; i++) {
-          newGeneration = evolvePopulation(generation);
-          // If it reaches a point where there is not much difference in generations, return.
-          if(Math.abs(scoring.scoreGeneration(newGeneration) - scoring.scoreGeneration(generation)) < DIFFERENCE_THRESHOLD){
-              return newGeneration;
-          }
-          else {
-              generation = newGeneration;
-          }
-      }
-      return newGeneration;
-  }
-  
-  exports.generationSelection = generationSelection;
-  exports.generateFromFittest = generateFromFittest;
+exports.generationSelection = generationSelection;
+exports.generateFromFittest = generateFromFittest;
+exports.evolvePopulation = evolvePopulation;
+exports.runGeneticAlgorithm = runGeneticAlgorithm;
