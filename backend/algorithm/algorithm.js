@@ -129,6 +129,19 @@ function evolvePopulation(population) {
     return generateFromFittest(generationSelection(population), 100);
   }
   
+/**
+ * This is where the algorithm will start executing. 
+ * It will gather the information from the database here, and store them into the greedy seed function 
+ * to create an initial population. 
+ * 
+ * This algorithm will run and evolve several times, creating new generations more fit than the last. 
+ * To keep the algorithm from running endlessly, there are two 'caps' set to control the length of run time:
+ *  1.  A set amount to keep the loop running, for example, 100 times before it stops and takes the most
+ *      fit individual at that current population
+ *  2.  A 'difference threshold' to track the change in between the most fit individual in adjacent populations. 
+ *  
+ *  These values can be altered to produce a potential more fit result, however, at the cost of run time.  
+ */
 function runGeneticAlgorithm() {
     let students = dbInt.getAllStudents();
     let projects = dbInt.getAllProjects();
@@ -136,7 +149,7 @@ function runGeneticAlgorithm() {
     //Making initial greedy generation
     let generation = seeding.greedySeedInitial(students, projects, 100);
     let newGeneration;
-    // Set a max amount to stop at if it never reaches the threshold for stoping.
+    // Set a max amount to stop at if it never reaches the threshold for stopping.
     let maxEvolveTimes = 100;
     const DIFFERENCE_THRESHOLD = 1.1;
 
