@@ -196,7 +196,34 @@ function scoreAllProjects(projects) {
     return totalScore;
 }
 
+/**
+ * Scores the full generation. 
+ * 
+ * This just adds up the total scores of all the projects in a generation
+ * using scoreAllProjects().
+ * 
+ * If a requirement is not met in a specific project, the whole project list
+ * score returns undefined, and it skips over that list of projects, adding
+ * nothing to the totalScore.
+ * @param {The generation that has the score to total up.} generation 
+ */
+function scoreGeneration(generation) {
+    let totalScore = 0;
+
+    for(i = 0; i < generation.length; i++) {
+        if(scoreAllProjects(generation[i]) == undefined) {
+            continue;
+        }
+        else {
+            totalScore += scoreAllProjects(generation[i]);
+        }
+    }
+
+    return totalScore;
+}
+
 exports.scoreProjectPreferences = scoreProjectPreferences;
 exports.scorePersonPreferences = scorePersonPreferences;
 exports.scoreProject = scoreProject;
 exports.scoreAllProjects = scoreAllProjects;
+exports.scoreGeneration = scoreGeneration;

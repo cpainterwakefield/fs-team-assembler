@@ -126,15 +126,33 @@ function generateFromFittest(fittestProjectList, numRepeats) {
  * @param {The population to be evolved.} population 
  */
 function evolvePopulation(population) {
-
-}
-
-/**
- * Runs the algorithm on the server.
- */
-function runAlgorithm() {
-
-}
-
-exports.generationSelection = generationSelection;
-exports.generateFromFittest = generateFromFittest;
+    return generateFromFittest(generationSelection(population), 100);
+  }
+  
+  function runGeneticAlgorithm() {
+      let students = dbInt.getAllStudents();
+      let projects = dbInt.getAllProjects();
+  
+      //Making initial greedy generation
+      let generation = seeding.greedySeedInitial(students, projects, 100);
+      let currentScore = 0;
+      let newGeneration;
+      // Set a max amount to stop at if it never reaches the threshold for stoping.
+      let maxEvolveTimes = 100;
+      const DIFFERENCE_THRESHOLD = 1.1;
+      
+      for (i = 0; i < maxEvolveTimes; i++) {
+          newGeneration = evolvePopulation(generation);
+          // If it reaches a point where there is not much difference in generations, return.
+          if(Math.abs(scoring.scoreGeneration(newGeneration) - scoring.scoreGeneration(generation)) < DIFFERENCE_THRESHOLD){
+              return newGeneration;
+          }
+          else {
+              generation = newGeneration;
+          }
+      }
+      return newGeneration;
+  }
+  
+  exports.generationSelection = generationSelection;
+  exports.generateFromFittest = generateFromFittest;
