@@ -18,8 +18,7 @@ passport.use(new SamlStrategy(
   {
     path: config.development.passport.saml.path,
     entryPoint: config.development.passport.saml.entryPoint,
-    issuer: config.development.passport.saml.issuer,
-    cert: config.development.passport.saml.cert
+    issuer: config.development.passport.saml.issuer
   },
   function(profile, done) {
     console.log(profile._json.email);
@@ -61,7 +60,7 @@ passport.use(new SamlStrategy(
 
 module.exports = app => {
 
-  app.get('/auth/login',
+  app.get('/',
     passport.authenticate(config.passport.strategy,
       {
         successRedirect: 'https://reconnect.mines.edu/student',

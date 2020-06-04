@@ -8,9 +8,9 @@
             <v-layout wrap>
               <v-flex>
                 <div class="left-questions">
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Preferred Name" :placeholder="name"></v-text-field>
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Minor" :placeholder="minor"></v-text-field>
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="GPA" :placeholder="gpa"></v-text-field>
+                  <v-text-field class="text3" readonly background-color="white" filled color="black" label="Preferred Name" :placeholder="name"></v-text-field>
+                  <v-text-field class="text3" readonly background-color="white" filled color="black" label="Minor" :placeholder="minor"></v-text-field>
+                  <v-text-field class="text3" readonly background-color="white" filled color="black" label="GPA" :placeholder="gpa"></v-text-field>
                 </div>
               </v-flex>
               <v-flex>
@@ -20,22 +20,18 @@
               </v-flex>
             </v-layout>
           </div>
-          <hr>
+           <hr>
           <div class="bottom">
             <h2> Your Choices </h2>
-            <v-layout wrap>
-              <v-flex>
-                <div class="project_pref">
-                  <h3> Project Preferences </h3>
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="First Preference" :placeholder="firstProj"></v-text-field> 
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :placeholder="secondProj"></v-text-field> 
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Third Preference" :placeholder="thirdProj"></v-text-field> 
+                <div class="projects2">
+                  <h3 class="h3_1"> Project Preferences </h3>
+                  <v-text-field class="text" readonly background-color="white" filled color="black" label="First Preference" :placeholder=getName(this.firstProj)></v-text-field> 
+                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :placeholder=getName(this.firstProj)></v-text-field> 
+                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Third Preference" :placeholder=getName(this.thirdProj)></v-text-field> 
                 </div>
-              </v-flex>
-              <v-flex>
-                <div class="teams">
+                <div class="teams2">
                   <h3 class="h3_1"> Team Preferences </h3>
-                  <div class="pref1">
+                  <div class="pref2">
                     <v-list dense max-height=105px class="overflow-y-auto" width="250">
                       <h5><u>Preferred Team</u></h5>
                       <v-list-item v-for="(pref, i) in team_pref" :key="i">
@@ -43,7 +39,7 @@
                       </v-list-item>  
                     </v-list>
                   </div>
-                  <div class="pref1">
+                  <div class="pref2">
                     <v-list dense max-height=105px class="overflow-y-auto" width="250">
                       <h5><u>Avoid Team</u></h5>
                       <v-list-item v-for="(avoid, i) in team_avoid" :key="i">
@@ -52,8 +48,6 @@
                     </v-list>
                   </div>
                 </div>
-              </v-flex>
-            </v-layout>
           </div>
           <hr> 
           <div class="experience">
@@ -93,17 +87,43 @@ export default {
   },
     mounted() {
       var self=this;
-      axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true})
-      .then(response => {
-        console.log(response)
-        // JSON responses are automatically parsed.
-        self.students = response.data
+      let id = 1
+      const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
+      const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true})
 
-      })
+      axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
+        const responseStud = responses[0]
+        const responseProj = responses[1]
+        // use/access the results
+        self.student = responseStud.data
+          self.experience = self.student.experience
+          self.gpa = self.student.gpa
+          self.minor = self.student.minor
+          self.name = self.student.username
+          self.firstProj = self.student.first_project
+          self.secondProj = self.student.second_project
+          self.thirdProj = self.student.third_project
+          self.preference = self.student.selection_preference
+          if (self.preference === false)
+            self.preference = "Project"
+          else if (self.preference === true)
+            self.preference = "Team"
+          else self.preference = "Doesn't Matter"
+        self.projects = responseProj.data
+      }))
       .catch(e => {
+        // react on errors.
         self.errors.push(e)
       })
+
+   },
+  methods: {
+    getName: function(pid) {
+      if (this.projects.find(function(id) {if (id.id === pid) return id}))
+        return this.projects.find(function(id) {if (id.id === pid) return id}).name
+      else return null;
     }
+  }
 }
 
 </script>
@@ -111,8 +131,11 @@ export default {
 <style type="text/css">
   body { font-family: sans-serif; }
 
-  .pref1 {
-    margin-bottom: 20px;
+  .text {
+  }
+
+  .pref2 {
+    margin-bottom: 10px;
   }
 
   h5 {
@@ -181,9 +204,9 @@ export default {
     margin: 10px;
   }
 
-  .project_pref {
-    width: 90%;
-    margin: 10px;
+  .projects2 {
+    width: 40%;
+    display: inline-block;
   }
 
   .bottom {
@@ -195,9 +218,11 @@ export default {
     margin-right: 30px;
   }
 
-  .teams {
+  .teams2 {
     width: 40%;
-    margin-left: 160px;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-left: 50px;
+    display: inline-block;
   }
+
 </style>

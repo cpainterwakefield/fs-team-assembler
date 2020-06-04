@@ -3,29 +3,27 @@ const bodyParser = require("body-parser");
 const db = require("./models");
 const cors = require("cors");
 const passport = require("passport");
-const keys = require("./config/keys");
-const serveStatic = require("serve-static");
-//nom nom nom
-const cookieSession = require("cookie-session");
+// const keys = require("./config/keys");
+// const cookieSession = require("cookie-session");
 
 const app = express();
 
-app.use(serveStatic("./dist"));
-
 //cookie settings
+/*
 app.use(cookieSession({
   maxAge: 1000 * 60 * 60,
   keys: [keys.cookie.keyOne]
-
 }));
+*/
 
 var corsOptions = {
   origin: ["http://localhost:8081", "https://accounts.google.com"],
-  methods: ["OPTIONS", "POST", "GET","PUT","DELETE"],
+  //methods: ["OPTIONS", "POST", "GET","PUT","DELETE"],
   credentials: true,
   allowedHeaders: ["Origin", "Content-Type", "Authorization", "Accept", "X-Requested-With"],
   exposedHeaders: ["Origin"]
 };
+
 
 app.use(cors(corsOptions));
 
@@ -41,8 +39,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-require("./routes/routes.google")(app);
-//require("./routes/shiboleth.routes")(app);
+// require("./routes/routes.google")(app);
+// require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);

@@ -6,6 +6,7 @@
  * 
  * @author Jo Westarp
  */
+
 const db = require("../models");
 
 /* Quick "hello world" function that tries to get some JSON from the DB.
@@ -36,6 +37,17 @@ async function getAllStudents() {
 }
 
 /**
+ * Gets a student by their primary key.
+ */
+async function getStudentPk(primaryKey) {
+    const { QueryTypes } = require('sequelize');
+    const student = await db.sequelize.query("SELECT * FROM students",
+        { type: QueryTypes.SELECT });
+
+    return student;
+}
+
+/**
  * Gets all the projects from the DB.
  * The DB model uses JSON, so we get the response as JSON.
  */
@@ -44,5 +56,8 @@ async function getAllProjects() {
     return theProjects;
 }
 
+exports.helloPostgres = helloPostgres;
 exports.getAllStudents = getAllStudents;
 exports.getAllProjects = getAllProjects;
+
+exports.getStudentPk = getStudentPk;

@@ -18,13 +18,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN,
             allowNull: true
         },
-        /*
-        project_id: {
-            type: Sequelize.INTEGER,
-            defaultValue: null,
-            allowNull: true
-        },
-        */
+
         gpa: {
             type: Sequelize.DECIMAL(10,3),
             defaultValue: null,
@@ -46,10 +40,9 @@ module.exports = (sequelize, Sequelize) => {
         email: {
             type: Sequelize.STRING,
             defaultValue: null,
-            allowNull: true
-        }/*,
-      
-        first_project: {
+            allowNull: false
+        },
+     /*   first_project: {
             type: Sequelize.INTEGER,
             defaultValue: null,
             allowNull: true
@@ -65,32 +58,31 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             defaultValue: null,
             allowNull: true
-        }, */
-      
-    });
+        }, 
+   */ });
     Student.associate = function(models) {
         //declare associations here
-        Student.hasOne(models.projects, {
+        Student.hasMany(models.prefer_teammate,{
             foreignKey: 'preferrer_id',
-            as: 'Student'
+            allowNull: true,
+            defaultValue: null,
         });
-        Student.hasMany(models.projects, {
+        Student.hasMany(models.prefer_teammate,{
             foreignKey: 'preferree_id',
-            as: 'prefStudent'
+            allowNull: true,
+            defaultValue: null,
         });
-        Student.hasOne(models.projects,{
-            foreignKey: 'id',
-            as: 'first_project'
+        Student.hasMany(models.avoid_teammate,{
+            foreignKey: 'avoider_id',
+            allowNull: true,
+            defaultValue: null,
         });
-        Student.hasOne(models.projects,{
-            foreignKey: 'id',
-            as: 'second_project'
-        })
-        Student.hasOne(models.projects,{
-            foreignKey: 'id',
-            as: 'third_project'
-        })
-    }
+        Student.hasMany(models.avoid_teammate,{
+            foreignKey: 'avoidee_id',
+            allowNull: true,
+            defaultValue: null,
+        });
+   }
 
     return Student;
 };
