@@ -68,6 +68,25 @@ module.exports = (sequelize, Sequelize) => {
         Student.hasMany(models.prefer_teammates,{
             foreignKey: 'preferree_id',
         });
+//        Student.belongsTo(models.projects, {
+//            foreignKey: 'id',
+//            as: 'project_id'
+//        });
+        Student.belongsTo(models.projects,{
+            foreignKey: 'id',
+            as: 'first_project',
+            allowNull: true
+        });
+        Student.belongsTo(models.projects,{
+            foreignKey: 'id',
+            as: 'second_project',
+            allowNull: true
+        })
+        Student.belongsTo(models.projects,{
+            foreignKey: 'id',
+            as: 'third_project',
+            allowNull: true
+        })
     }
 
     return Student;

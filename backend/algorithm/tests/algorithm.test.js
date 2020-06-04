@@ -10,35 +10,35 @@ const seeding = require('../seeding');
  */
 var testStudentsClique = {
     firstStudent : {
-        name: "Devon",
+        id: 1,
         prefersTeam: true,
-        projectPreferences: ["first", "second", "third"],
-        personPreferences: ["Alice", "Bob", "Clive"],
-        personAvoidances: ["Adam", "Bea", "Cathy"]
+        projectPreferences: [1, 2, 3],
+        personPreferences: [2, 3, 4],
+        personAvoidances: [5, 6, 7]
     },
 
     secondStudent : {
-        name: "Clive",
+        id: 2,
         prefersTeam: true,
-        projectPreferences: ["second", "third", "first"],
-        personPreferences: ["Bob", "Clive", "Devon"],
-        personAvoidances: ["Adam", "Bea", "Duncan"]
+        projectPreferences: [3, 1, 2],
+        personPreferences: [1, 3, 4],
+        personAvoidances: [5, 6, 8]
     },
 
     thirdStudent : {
-        name: "Bob",
+        id: 3,
         prefersTeam: true,
-        projectPreferences: ["third", "first", "second"],
-        personPreferences: ["Alice", "Clive", "Devon"],
-        personAvoidances: ["Adam", "Cathy", "Duncan"]
+        projectPreferences: [3, 2, 1],
+        personPreferences: [1, 2, 4],
+        personAvoidances: [5, 7, 8]
     },
 
     fourthStudent : {
-        name: "Alice",
+        id: 4,
         prefersTeam: true,
-        projectPreferences: ["third", "second", "first"],
-        personPreferences: ["Bob", "Clive", "Devon"],
-        personAvoidances: ["Bea", "Cathy", "Duncan"]
+        projectPreferences: [2, 3, 1],
+        personPreferences: [2, 3, 4],
+        personAvoidances: [6, 7, 8]
     }
 }
 
@@ -50,7 +50,7 @@ var testStudentsClique = {
  * or "[company name]".
  */
 var testProjectClique = {
-    projectName: "third",
+    id: 3,
     minPeople: 3,
     maxPeople: 5,
     people: [testStudentsClique.firstStudent, testStudentsClique.secondStudent,
@@ -59,40 +59,40 @@ var testProjectClique = {
 
 var testStudentsNormal = {
     firstStudent : {
-        name: "Devon",
+        id: 4,
         prefersTeam: false,
-        projectPreferences: ["first", "second", "third"],
-        personPreferences: ["Alice", "Bob"],
+        projectPreferences: [1, 2, 3],
+        personPreferences: [1, 2],
         personAvoidances: [] 
     },
 
     secondStudent : {
-        name: "Clive",
+        id: 3,
         prefersTeam: true,
-        projectPreferences: ["second", "third"],
-        personPreferences: ["Devon"],
-        personAvoidances: ["Bea"]
+        projectPreferences: [2, 3],
+        personPreferences: [1],
+        personAvoidances: [7]
     },
 
     thirdStudent : {
-        name: "Bob",
+        id: 2,
         prefersTeam: undefined,
-        projectPreferences: ["first", "second"],
-        personPreferences: ["Alice", "Clive", "Devon"],
-        personAvoidances: ["Duncan"]
+        projectPreferences: [1, 2],
+        personPreferences: [4, 3, 1],
+        personAvoidances: [5]
     },
 
     fourthStudent : {
-        name: "Alice",
+        id: 1,
         prefersTeam: true,
-        projectPreferences: ["second"],
-        personPreferences: ["Clive", "Bob"],
-        personAvoidances: ["Cathy"]
+        projectPreferences: [2],
+        personPreferences: [2, 3],
+        personAvoidances: [7]
     }
 };
 
 var testProjectNormal = {
-    projectName: "second",
+    id: 2,
     minPeople: 4,
     maxPeople: 5,
     people: [testStudentsNormal.firstStudent, testStudentsNormal.secondStudent,
@@ -101,39 +101,39 @@ var testProjectNormal = {
 
 var testStudentsNormal2 = {
     firstStudent : {
-        name: "Devon",
+        id: 4,
         prefersTeam: false,
-        projectPreferences: ["first", "second", "third"],
-        personPreferences: ["Alice", "Bob"],
+        projectPreferences: [1, 2, 3],
+        personPreferences: [1, 2],
         personAvoidances: [] 
     },
 
     secondStudent : {
-        name: "Clive",
+        id: 3,
         prefersTeam: true,
-        projectPreferences: ["second", "third"],
-        personPreferences: ["Devon"],
-        personAvoidances: ["Bob"]
+        projectPreferences: [2, 3],
+        personPreferences: [4],
+        personAvoidances: [2]
     },
 
     thirdStudent : {
-        name: "Bob",
+        id: 2,
         prefersTeam: undefined,
-        projectPreferences: ["first", "second"],
-        personPreferences: ["Alice", "Clive", "Devon"],
-        personAvoidances: ["Duncan"]
+        projectPreferences: [1, 2],
+        personPreferences: [1, 3, 4],
+        personAvoidances: [8]
     },
 
     fourthStudent : {
-        name: "Alice",
+        id: 1,
         prefersTeam: true,
-        projectPreferences: ["second"],
-        personPreferences: ["Clive"],
-        personAvoidances: ["Bob"]
+        projectPreferences: [2],
+        personPreferences: [3],
+        personAvoidances: [2],
     }
 };
 var testProjectNormal2 = {
-    projectName: "second",
+    id: 2,
     minPeople: 4,
     maxPeople: 5,
     people: [testStudentsNormal2.firstStudent, testStudentsNormal2.secondStudent,
@@ -142,40 +142,40 @@ var testProjectNormal2 = {
 
 var testStudentsNormal3 = {
     firstStudent : {
-        name: "Devon",
+        id: 4,
         prefersTeam: false,
-        projectPreferences: ["first", "second", "third"],
-        personPreferences: ["Alice", "Bob"],
+        projectPreferences: [1, 2, 3], 
+        personPreferences: [1, 2], 
         personAvoidances: [] 
     },
 
     secondStudent : {
-        name: "Clive",
+        id: 3,
         prefersTeam: true,
-        projectPreferences: ["second", "third"],
-        personPreferences: ["Devon", "Bob"],
-        personAvoidances: ["Bea"]
+        projectPreferences: [2, 3], 
+        personPreferences: [4, 2], 
+        personAvoidances: [6] 
     },
 
     thirdStudent : {
-        name: "Bob",
+        id: 2,
         prefersTeam: undefined,
-        projectPreferences: ["first", "second"],
-        personPreferences: ["Alice", "Clive", "Devon"],
-        personAvoidances: ["Duncan"]
+        projectPreferences: [1, 2],
+        personPreferences: [1, 3, 4],
+        personAvoidances: [8] 
     },
 
     fourthStudent : {
-        name: "Alice",
+        id: 1,
         prefersTeam: true,
-        projectPreferences: ["second"],
-        personPreferences: ["Clive", "Bob"],
-        personAvoidances: ["Cathy"]
+        projectPreferences: [2], 
+        personPreferences: [3, 2], 
+        personAvoidances: [7]
     }
 };
 
 var testProjectNormal3 = {
-    projectName: "second",
+    id: 2, 
     minPeople: 4,
     maxPeople: 5,
     people: [testStudentsNormal3.firstStudent, testStudentsNormal3.secondStudent,
@@ -183,8 +183,6 @@ var testProjectNormal3 = {
 };
 
 var generation1 = [[testProjectNormal], [testProjectNormal2], [testProjectNormal3]]
-
-// checkDeepCopy()
 
 test('Nobody should get paired with anyone that they avoid.', () => {
 
