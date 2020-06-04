@@ -10,9 +10,9 @@
  */
 
 var _ = require('lodash');
-const scoring = require('scoring');
-const seeding = require('seeding');
-const dbInt = require('db_interactions');
+const scoring = require('./scoring');
+const seeding = require('./seeding');
+const dbInt = require('./db_interactions');
 
 /**
  * Selects the fittest individual from a generation.
@@ -23,7 +23,7 @@ const dbInt = require('db_interactions');
  * @param {List of project lists} generation 
  * @return {One set of projects}
  */
-function generationSelction(generation) {
+function generationSelection(generation) {
     let fittest = 0;
     let fitProject;
 
@@ -129,11 +129,5 @@ function evolvePopulation(population) {
 
 }
 
-exports.greedySeedInitial = greedySeedInitial;
-
-exports.scoreProjectPreferences = scoreProjectPreferences;
-exports.scorePersonPreferences = scorePersonPreferences;
-exports.scoreProject = scoreProject;
-exports.scoreAllProjects = scoreAllProjects;
-exports.generationSelction = generationSelction;
+exports.generationSelection = generationSelection;
 exports.generateFromFittest = generateFromFittest;
