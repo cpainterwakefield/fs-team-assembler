@@ -5,6 +5,7 @@ var expressSession = require('express-session');
 const keys = require('../config/keys');
 const db = require("../models");
 const User = db.users;
+const Student = db.students;
 const Op = db.Sequelize.Op;
 
 passport.serializeUser((user,done) => {
@@ -43,10 +44,20 @@ function(accessToken, refreshToken, profile, done) {
           name: profile._json.name,
           auth_id: id
         })
+        //Add this student to the student table too
+        User.findOne({where: {email: title}})
+        .then((createStudent) => {
+          Student.create({
+            name: profile._json.name,
+            email: profile._json.email,
+            
+          })
+        });
       }
       done(null , studentExists);
     }
     else{
+      User.create({email: 'michaelhumphrey@mymail.mines.edu'})
       done();
     }
   })

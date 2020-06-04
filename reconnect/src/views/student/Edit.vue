@@ -82,9 +82,10 @@ export default {
     }
   },
   mounted() {
+    console.log(process.env.VUE_APP_BASE_API_URL + "HERE")
     var self=this;
-    const requestStud = axios.get('http://localhost:8080/api/students');
-    const requestProj = axios.get('http://localhost:8080/api/projects');
+    const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true});
+    const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true});
 
     axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
       const responseStud = responses[0]
@@ -99,7 +100,7 @@ export default {
     })
     // need to change
     let id = 1
-    axios.get('http://' + location.hostname + ':8080/api/students/' + id)
+    axios.get('http://' + location.hostname + ':8080/api/students/' + id, {withCredentials: true})
       .then(response => {
         console.log(response)
         // JSON responses are automatically parsed.
@@ -128,7 +129,7 @@ export default {
 
     doSubmit() {
       //let id=1
-      axios.put('http://localhost:8080/api/students/1', {
+      axios.put('/api/students/1', {
         name: this.name,
         minor: this.minor,
         gpa: this.gpa,
@@ -139,7 +140,7 @@ export default {
         third_project: this.thirdProj,
         selection_preference: this.preference
         
-      })
+      }, {withCredentials: true})
       .then(response => {
         console.log(response);
       })

@@ -57,8 +57,8 @@ export default {
   },
   mounted() {
     let self=this;
-    const requestStud = axios.get('http://localhost:8080/api/students', {withCredentials: true});
-    const requestProj = axios.get('http://localhost:8080/api/projects', {withCredentials: true});
+    const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true});
+    const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true});
 
     axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
       const responseStud = responses[0]
@@ -74,8 +74,9 @@ export default {
   },
   methods: {
     doSubmit: function() {
-      axios.put('http://localhost:8080/api/students', {
-       students: this.students  
+      axios.put(process.env.VUE_APP_BASE_API_URL + '/students', {
+       students: this.students,
+       withCredentials: true 
       })
       .then(response => {
         console.log(response);

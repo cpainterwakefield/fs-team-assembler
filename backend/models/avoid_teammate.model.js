@@ -18,12 +18,12 @@ module.exports = (sequelize, Sequelize) => {
     AvoidTeammateXref.associates = function(models) {
         //declare associates here
         AvoidTeammateXref.hasOne(models.students, {
-            foreignKey: 'avoider_id',
-            as: 'Student'
+            foreignKey: 'id',
+            as: 'avoider_id'
         });
         AvoidTeammateXref.hasMany(models.students, {
-            foreignKey: 'avoidee_id',
-            as: 'AvoidedStudent'
+            foreignKey: 'id',
+            as: 'avoidee_id'
         })
     }
 

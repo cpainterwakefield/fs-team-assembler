@@ -145,8 +145,8 @@ export default {
   },
   mounted() {
     var self=this;
-    const requestStud = axios.get('http://localhost:8080/api/students', {withCredentials: true});
-    const requestProj = axios.get('http://localhost:8080/api/projects', {withCredentials: true});
+    const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true});
+    const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true});
 
     axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
       const responseStud = responses[0]
@@ -164,41 +164,42 @@ export default {
   methods: {
     deleteStudent: function (s_id) {
       var self=this;
-      axios.delete('http://localhost:8080/api/students/' + s_id)
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/students/' + s_id, {withCredentials: true})
       .catch(e => {
         self.errors.push(e)
       })
     },
     deleteProject: function (p_id) {
       var self=this;
-      axios.delete('http://localhost:8080/api/projects/' + p_id)
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/projects/' + p_id, {withCredentials: true})
       .catch(e => {
         self.errors.push(e)
       })
     },
     clearProjects: function() {
       var self=this;
-      axios.delete('http://localhost:8080/api/projects/')
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/projects/', {withCredentials: true})
       .catch(e => {
         self.errors.push(e)
       })
     },
     clearStudents: function() {
       var self=this;
-      axios.delete('http://localhost:8080/api/students/')
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/students/', {withCredentials: true})
       .catch(e => {
         self.errors.push(e)
       })
     },
     newProj: function() {
-      axios.post('http://localhost:8080/api/projects', {
+      axios.post(process.env.VUE_APP_BASE_API_URL + '/projects', {
+        withCredentials: true,
         name: this.compProj,
         client_name: this.compContName,
         client_email: this.compContEmail,
         client_company: this.compName,
         min_students: this.projMin,
         max_students: this.projMax
-      })
+      }, {withCredentials: true})
       .then(function (response) {
         console.log(response);
       })
@@ -207,10 +208,11 @@ export default {
       });
     },
     newStudent: function() {
-      axios.post('http://localhost:8080/api/students', {
+      axios.post(process.env.VUE_APP_BASE_API_URL + '/students', {
+        withCredentials: true,
         name: this.studName,
         email: this.studEmail
-      })
+      }, {withCredentials: true})
       .then(function (response) {
         console.log(response);
       })

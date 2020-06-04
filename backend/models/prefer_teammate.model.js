@@ -15,12 +15,12 @@ module.exports = (sequelize, Sequelize) => {
     PreferTeammateXref.associate = function(models) {
         //declare associations here
         PreferTeammateXref.hasOne(models.students, {
-            foreignKey: 'preferrer_id',
-            as: 'Student'
+            foreignKey: 'id',
+            as: 'preferrer_id'
         });
         PreferTeammateXref.hasMany(models.students, {
-            foreignKey: 'preferree_id',
-            as: 'prefStudent'
+            foreignKey: 'id',
+            as: 'preferree_id'
         })
     }
 
