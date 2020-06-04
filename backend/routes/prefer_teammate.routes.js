@@ -1,5 +1,5 @@
 module.exports = app => {
-    const prefer_teammates = require("../controllers/project.controller.js");
+    const prefer_teammates = require("../controllers/prefer_teammate.controller.js");
 
     var router = require("express").Router();
 
@@ -37,6 +37,6 @@ module.exports = app => {
     // Delete all prefer_teammates (ooo!)
     router.delete("/", authcheck, prefer_teammates.deleteAll);
 
-    app.use('/api/prefer_teammates', router);
+    app.use('/api/prefer_teammate', router);
 }
 

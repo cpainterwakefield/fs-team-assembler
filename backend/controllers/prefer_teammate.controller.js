@@ -1,10 +1,19 @@
 const db = require("../models");
-const Prefer_Teammate = db.prefer_teammate;
+const Prefer_Teammate = db.prefer_teammate_xrefs;
 const Op = db.Sequelize.Op;
 
 // Create and save a new Prefer_Teammate table
 exports.create = (req, res) => {
-    if (!req.body.name) {
+    if (!req.body.preferrer_id) {
+        // If there is no name, then there's no point in storing a Prefer_Teammate.
+        res.status(400).send({
+            message: "Content cannot be empty."
+        });
+
+        // Don't create anything.
+        return;
+    }
+    if (!req.body.preferree_id) {
         // If there is no name, then there's no point in storing a Prefer_Teammate.
         res.status(400).send({
             message: "Content cannot be empty."
