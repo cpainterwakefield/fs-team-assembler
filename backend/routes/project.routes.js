@@ -9,7 +9,12 @@ module.exports = app => {
             res.redirect("/auth/login");
         }else{
             //If they are logged in
-            next();
+            if(req.user.is_admin){
+                next();
+            }
+            else{
+                res.redirect("/auth/login");
+            }
         }
     }
 

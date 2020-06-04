@@ -45,8 +45,8 @@ module.exports = (sequelize, Sequelize) => {
     Project.associate = function(models) {
         //declare associations here
         Project.hasOne(models.advisor, {
-            foreignKey: 'advisor_id',
-            as: 'advisor'
+            foreignKey: 'id',
+            as: 'advisor_id'
         });
     }
 

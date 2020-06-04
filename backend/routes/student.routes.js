@@ -12,12 +12,26 @@ module.exports = app => {
             next();
         }
     }
+    const ADMINauthcheck = (req,res,next)=>{
+        if(!req.user){
+            // if user is not logged in this executes
+            res.redirect("/auth/login");
+        }else{
+            //If they are logged in
+            if(req.user.is_admin){
+                next();
+            }
+            else{
+                res.redirect("/auth/login");
+            }
+        }
+    }
 
     // Create a new student 
-    router.post("/", authcheck ,students.create);
+    router.post("/", ADMINauthcheck ,students.create);
 
     // Get all the students 
-    router.get("/", authcheck, students.findAll);
+    router.get("/", ADMINauthcheck, students.findAll);
 
     // Find a student by a certain ID
     router.get("/:id", authcheck, students.findOne);
@@ -26,10 +40,10 @@ module.exports = app => {
     router.put("/:id", authcheck, students.update);
 
     // Delete a student with the given ID
-    router.delete("/:id", authcheck, students.delete);
+    router.delete("/:id", ADMINauthcheck, students.delete);
 
     // Delete all students (ooo!)
-    router.delete("/", authcheck, students.deleteAll);
+    router.delete("/", ADMINauthcheck, students.deleteAll);
 
     app.use('/api/students', router);
 }
