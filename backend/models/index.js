@@ -9,6 +9,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 
     define: {
         underscored: true,
+    timestamps: false
     },
 
     pool: {

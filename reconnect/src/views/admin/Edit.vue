@@ -211,6 +211,7 @@ export default {
       axios.post(process.env.VUE_APP_BASE_API_URL + '/students', {
         withCredentials: true,
         name: this.studName,
+        project_id: null,
         email: this.studEmail
       }, {withCredentials: true})
       .then(function (response) {
@@ -218,6 +219,7 @@ export default {
       })
       .catch(function (error) {
         console.log(error);
+        self.errors.push(error)
       });
 
     }

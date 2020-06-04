@@ -18,7 +18,7 @@ app.use(cookieSession({
 
 var corsOptions = {
   origin: ["http://localhost:8081", "https://accounts.google.com"],
-  methods: ["OPTIONS", "POST", "GET","PUT","DELETE"],
+  //methods: ["OPTIONS", "POST", "GET","PUT","DELETE"],
   credentials: true,
   allowedHeaders: ["Origin", "Content-Type", "Authorization", "Accept", "X-Requested-With"],
   exposedHeaders: ["Origin"]
