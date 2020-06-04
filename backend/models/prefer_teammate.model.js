@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
         }
         */
     });
-    PreferTeammateXref.associate = function(models) {
+/*    PreferTeammateXref.associate = function(models) {
         //declare associations here
         PreferTeammateXref.hasOne(models.students, {
             foreignKey: 'id',
@@ -23,6 +23,6 @@ module.exports = (sequelize, Sequelize) => {
             as: 'preferree_id'
         })
     }
-
+*/
     return PreferTeammateXref;
 };

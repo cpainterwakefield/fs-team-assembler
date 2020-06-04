@@ -15,7 +15,7 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true
         }*/
     });
-    AvoidTeammateXref.associates = function(models) {
+/*    AvoidTeammateXref.associates = function(models) {
         //declare associates here
         AvoidTeammateXref.hasOne(models.students, {
             foreignKey: 'id',
@@ -26,6 +26,6 @@ module.exports = (sequelize, Sequelize) => {
             as: 'avoidee_id'
         })
     }
-
+*/
     return AvoidTeammateXref;
 };
