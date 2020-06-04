@@ -93,7 +93,7 @@ export default {
   },
     mounted() {
       var self=this;
-      axios.get('http://localhost:8080/api/students', {withCredentials: true})
+      axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true})
       .then(response => {
         console.log(response)
         // JSON responses are automatically parsed.

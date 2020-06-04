@@ -1,6 +1,6 @@
 const algorithm = require('../algorithm');
-
-
+const scoring = require('../scoring');
+const seeding = require('../seeding');
 
 /**
  * A object encoding four students in a 4-clique of preferences.
@@ -209,13 +209,13 @@ test('Team scoring w/ project preference should be accurate.', () => {
     // Should be 1
     // (The first student prefers teammates, and the project named)
     // ("third" is their least preference)
-    expect(algorithm.scoreProjectPreferences(testProjectClique,
+    expect(scoring.scoreProjectPreferences(testProjectClique,
         testStudentsClique.firstStudent, 3)).toBe(1);
 
     // Should be 3
     // (The third student prefers teammates, and the project named)
     // ("third" is their least preference)
-    expect(algorithm.scoreProjectPreferences(testProjectClique,
+    expect(scoring.scoreProjectPreferences(testProjectClique,
         testStudentsClique.thirdStudent, 3)).toBe(3);
 });
 
@@ -224,27 +224,27 @@ test('Team scoring w/ teammate preference should be accurate.', () => {
     // (The second student prefers teammates, and three of their)
     // (preferred students are on the project. We add two for every)
     // (student on the project *over* the first one).
-    expect(algorithm.scorePersonPreferences(testProjectClique,
+    expect(scoring.scorePersonPreferences(testProjectClique,
         testStudentsClique.secondStudent, 2)).toBe(4);
 
     // Should be 4
     // (ditto the previous test)
-    expect(algorithm.scorePersonPreferences(testProjectClique,
+    expect(scoring.scorePersonPreferences(testProjectClique,
         testStudentsClique.fourthStudent, 2)).toBe(4);
 });
 
 test('Team scoring for projects should be accurate.', () => {
     // Should be 25
-    expect(algorithm.scoreProject(testProjectClique)).toBe(25);
+    expect(scoring.scoreProject(testProjectClique)).toBe(25);
 });
 
 test('Generation selction function selects best fit project list.', () => {
     // Should select testProjectNormal
-    expect(algorithm.generationSelction(generation1)).toEqual([testProjectNormal3]);
+    expect(algorithm.generationSelection(generation1)).toEqual([testProjectNormal3]);
 })
 
 test('New generation is not the same as previous fit generation, and has 1000 project lists.', () => {
     // Should select testProjectNormal
-    expect(algorithm.generateFromFittest(algorithm.generationSelction(generation1), 1000)).not.toBe(generation1);
-    expect(algorithm.generateFromFittest(algorithm.generationSelction(generation1), 1000).length).toBe(1000);
+    expect(algorithm.generateFromFittest(algorithm.generationSelection(generation1), 1000)).not.toBe(generation1);
+    expect(algorithm.generateFromFittest(algorithm.generationSelection(generation1), 1000).length).toBe(1000);
 })
