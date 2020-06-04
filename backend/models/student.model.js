@@ -40,9 +40,9 @@ module.exports = (sequelize, Sequelize) => {
         email: {
             type: Sequelize.STRING,
             defaultValue: null,
-            allowNull: true
+            allowNull: false
         },
-        first_project: {
+     /*   first_project: {
             type: Sequelize.INTEGER,
             defaultValue: null,
             allowNull: true
@@ -59,35 +59,30 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: null,
             allowNull: true
         }, 
-    });
+   */ });
     Student.associate = function(models) {
         //declare associations here
-        Student.hasMany(models.prefer_teammates,{
+        Student.hasMany(models.prefer_teammate,{
             foreignKey: 'preferrer_id',
+            allowNull: true,
+            defaultValue: null,
         });
-        Student.hasMany(models.prefer_teammates,{
+        Student.hasMany(models.prefer_teammate,{
             foreignKey: 'preferree_id',
+            allowNull: true,
+            defaultValue: null,
         });
-//        Student.belongsTo(models.projects, {
-//            foreignKey: 'id',
-//            as: 'project_id'
-//        });
-        Student.belongsTo(models.projects,{
-            foreignKey: 'id',
-            as: 'first_project',
-            allowNull: true
+        Student.hasMany(models.avoid_teammate,{
+            foreignKey: 'avoider_id',
+            allowNull: true,
+            defaultValue: null,
         });
-        Student.belongsTo(models.projects,{
-            foreignKey: 'id',
-            as: 'second_project',
-            allowNull: true
-        })
-        Student.belongsTo(models.projects,{
-            foreignKey: 'id',
-            as: 'third_project',
-            allowNull: true
-        })
-    }
+        Student.hasMany(models.avoid_teammate,{
+            foreignKey: 'avoidee_id',
+            allowNull: true,
+            defaultValue: null,
+        });
+   }
 
     return Student;
 };

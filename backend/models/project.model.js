@@ -46,19 +46,24 @@ module.exports = (sequelize, Sequelize) => {
         //declare associations here
         Project.belongsTo(models.advisor, {
             foreignKey: 'id',
-            as: 'advisor_id'
+            as: 'advisor_id',
+            defaultValue: null,
         });
         Project.hasOne(models.students, {
             foreignKey: 'project_id',
+            defaultValue: null,
         });
         Project.hasOne(models.students, {
             foreignKey: 'first_project',
+            defaultValue: null,
         });
         Project.hasOne(models.students, {
             foreignKey: 'second_project',
+            defaultValue: null,
         });
         Project.hasOne(models.students, {
             foreignKey: 'third_project',
+            defaultValue: null,
         });
 /*        Project.hasMany(models.prefer_teammates, {
             foreignKey: 'project_id',
