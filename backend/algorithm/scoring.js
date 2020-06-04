@@ -27,7 +27,7 @@ function scoreProjectPreferences(project, person, teamPrefOffset) {
     let satisfied = false;
 
     person.projectPreferences.forEach(function (entry, index) {
-        if (entry == project.projectName && !satisfied) {
+        if (entry == project.id && !satisfied) {
             localTotal += (teamPrefOffset - index);
             satisfied = true;
         }
@@ -55,7 +55,7 @@ function scorePersonPreferences(project, person, teamPrefValue) {
     person.personPreferences.forEach(function (entry) {
         // Check whether they're in the project's people list.
         project.people.forEach(function (pEntry) {
-            if (entry == pEntry.name) {
+            if (entry == pEntry.id) {
                 // If they are, add teamPrefValue to the total for every
                 // extra person is in the project list.
                 localTotal += satisfied ? teamPrefValue : 0;
@@ -69,7 +69,7 @@ function scorePersonPreferences(project, person, teamPrefValue) {
         // If this team has anyone whom they chose to avoid, then the constraint is not
         // met, hence this returns undefined.
         project.people.forEach(function (pEntry) {
-            if (entry == pEntry.name) {
+            if (entry == pEntry.id) {
                 satisfied = false;
             }
         });
