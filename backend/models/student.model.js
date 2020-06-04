@@ -72,23 +72,23 @@ module.exports = (sequelize, Sequelize) => {
         //declare associations here
         Student.hasOne(models.projects, {
             foreignKey: 'preferrer_id',
-            as: 'Student'
-        });
-        Student.hasMany(models.projects, {
-            foreignKey: 'preferree_id',
-            as: 'prefStudent'
+            as: 'Student',
+            allowNull: true
         });
         Student.hasOne(models.projects,{
             foreignKey: 'id',
-            as: 'first_project'
+            as: 'first_project',
+            allowNull: true
         });
         Student.hasOne(models.projects,{
             foreignKey: 'id',
-            as: 'second_project'
+            as: 'second_project',
+            allowNull: true
         })
         Student.hasOne(models.projects,{
             foreignKey: 'id',
-            as: 'third_project'
+            as: 'third_project',
+            allowNull: true
         })
     }
 
