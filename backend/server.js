@@ -4,10 +4,13 @@ const db = require("./models");
 const cors = require("cors");
 const passport = require("passport");
 const keys = require("./config/keys");
+const serveStatic = require("serve-static");
 //nom nom nom
 const cookieSession = require("cookie-session");
 
 const app = express();
+
+app.use(serveStatic("./dist"));
 
 //cookie settings
 app.use(cookieSession({
