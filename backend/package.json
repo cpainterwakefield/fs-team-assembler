@@ -13,6 +13,7 @@
     "scripts": {
         "build": "webpack",
         "start": "node server.js",
+        "start-nocookie": "node server-nocookie.js",
         "test": "jest"
     },
     "dependencies": {
