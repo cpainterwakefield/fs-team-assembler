@@ -19,12 +19,12 @@ module.exports = (sequelize, Sequelize) => {
     PreferProjectXref.associates = function(models) {
         //declare associates here
         PreferProjectXref.hasOne(models.students, {
-            foreignKey: 'preferrer_id',
-            as: "student"
+            foreignKey: 'id',
+            as: "preferrer_id"
         });
         PreferProjectXref.hasMany(models.projects, {
-            foreignKey: 'project_id',
-            as: "project"
+            foreignKey: 'id',
+            as: "project_id"
         })
     }
 

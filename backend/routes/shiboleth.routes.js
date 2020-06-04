@@ -1,14 +1,18 @@
 var passport = require('passport');
 const SamlStrategy = require('passport-saml').Strategy;
 const config = require('../config/shib_config');
+const db = require("../models");
+const User = db.users;
+const Student = db.students;
+const Op = db.Sequelize.Op;
 
-passport.serializeUser(function (user, done) {
-  
-  done(null, user);
+passport.serializeUser((user,done) => {
+  done(null, user.id);
 });
-passport.deserializeUser(function (user, done) {
-  
-  done(null, user);
+passport.deserializeUser((id,done) => {
+  User.findByPk(id).then((user) => {
+    done(null,user);
+  })
 });
 passport.use(new SamlStrategy(
   {
@@ -17,64 +21,64 @@ passport.use(new SamlStrategy(
     issuer: config.development.passport.saml.issuer,
     cert: config.development.passport.saml.cert
   },
-  function (profile, done) {
-    return done(null,
-      {
-        id: profile.uid,
-        email: profile.email,
-        displayName: profile.cn,
-        firstName: profile.givenName,
-        lastName: profile.sn
-      });
+  function(profile, done) {
+    console.log(profile._json.email);
+    //check if user exists in DB
+    const title = profile._json.email;
+    const id = profile._json.sub.toString();
+    User.findOne({where: {email: title}})
+      .then((studentExists) => {
+      if(studentExists){
+        //Student is part of the course and they can log in
+        //Student info is in studentExists
+        if(studentExists.name != null){
+          studentExists.update({
+            name: profile._json.name,
+            auth_id: id
+          })
+          //Add this student to the student table too
+          User.findOne({where: {email: title}})
+          .then((createStudent) => {
+            //create student if user is not an admin
+            if(!studentExists.is_admin){
+              Student.create({
+                name: profile._json.name,
+                email: profile._json.email
+              })
+            }
+          });
+        }
+        done(null , studentExists);
+      }
+      else{
+        done();
+      }
+    })
+  
   })
 );
 
 
 module.exports = app => {
 
-  app.get('/student', function (req, res) {
-    if (req.isAuthenticated()) {
-      res.render('student',
-        {
-          user: req.user
-        });
-    } else {
-      res.render('student',
-        {
-          user: null
-        });
-    }
-  });
-
   app.get('/auth/login',
     passport.authenticate(config.passport.strategy,
       {
-        successRedirect: '/student',
-        failureRedirect: '/notRegistered'
+        successRedirect: 'https://reconnect.mines.edu/student',
+        failureRedirect: 'https://reconnect.mines.edu/notRegistered'
       })
   );
 
   app.post(config.passport.saml.path,
     passport.authenticate(config.passport.strategy,
       {
-        failureRedirect: '/',
+        failureRedirect: 'https://reconnect.mines.edu/notRegistered',
         failureFlash: true
       }),
     function (req, res) {
       res.redirect('/');
     }
   );
-
-  app.get('/profile', function (req, res) {
-    if (req.isAuthenticated()) {
-      res.render('profile',
-        {
-          user: req.user
-        });
-    } else {
-      res.redirect('/login');
-    }
-  });
 
   app.get('/logout', function (req, res) {
     req.logout();
