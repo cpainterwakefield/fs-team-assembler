@@ -129,5 +129,12 @@ function evolvePopulation(population) {
 
 }
 
+/**
+ * Runs the algorithm on the server.
+ */
+function runAlgorithm() {
+
+}
+
 exports.generationSelection = generationSelection;
 exports.generateFromFittest = generateFromFittest;
