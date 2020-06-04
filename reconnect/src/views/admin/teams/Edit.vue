@@ -75,7 +75,8 @@ export default {
   methods: {
     doSubmit: function() {
       axios.put('http://localhost:8080/api/students', {
-       students: this.students  
+       students: this.students,
+       withCredentials: true 
       })
       .then(response => {
         console.log(response);

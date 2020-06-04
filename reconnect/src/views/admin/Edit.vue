@@ -164,28 +164,28 @@ export default {
   methods: {
     deleteStudent: function (s_id) {
       var self=this;
-      axios.delete('http://localhost:8080/api/students/' + s_id)
+      axios.delete('http://localhost:8080/api/students/' + s_id, {withCredentials: true})
       .catch(e => {
         self.errors.push(e)
       })
     },
     deleteProject: function (p_id) {
       var self=this;
-      axios.delete('http://localhost:8080/api/projects/' + p_id)
+      axios.delete('http://localhost:8080/api/projects/' + p_id, {withCredentials: true})
       .catch(e => {
         self.errors.push(e)
       })
     },
     clearProjects: function() {
       var self=this;
-      axios.delete('http://localhost:8080/api/projects/')
+      axios.delete('http://localhost:8080/api/projects/', {withCredentials: true})
       .catch(e => {
         self.errors.push(e)
       })
     },
     clearStudents: function() {
       var self=this;
-      axios.delete('http://localhost:8080/api/students/')
+      axios.delete('http://localhost:8080/api/students/', {withCredentials: true})
       .catch(e => {
         self.errors.push(e)
       })
@@ -198,7 +198,7 @@ export default {
         client_company: this.compName,
         min_students: this.projMin,
         max_students: this.projMax
-      })
+      }, {withCredentials: true})
       .then(function (response) {
         console.log(response);
       })
@@ -210,7 +210,7 @@ export default {
       axios.post('http://localhost:8080/api/students', {
         name: this.studName,
         email: this.studEmail
-      })
+      }, {withCredentials: true})
       .then(function (response) {
         console.log(response);
       })
