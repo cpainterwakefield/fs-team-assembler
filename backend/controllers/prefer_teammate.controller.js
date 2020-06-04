@@ -1,5 +1,5 @@
 const db = require("../models");
-const Prefer_Teammate = db.prefer_teammates;
+const Prefer_Teammate = db.prefer_teammate;
 const Op = db.Sequelize.Op;
 
 // Create and save a new Prefer_Teammate table
