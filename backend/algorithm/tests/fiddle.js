@@ -84,6 +84,8 @@ function greedySeedInitial(students, projects, populationSize) {
 }
 */
 
+const seeding = require('../seeding');
+
 /**
  * A test for whether students are shallow or deep copied.
  * (This will become a problem if they are shallow copied).
@@ -185,8 +187,7 @@ var testProjectList = [testProjectsNormal.firstProject, testProjectsNormal.secon
 
 // checkDeepCopy(testNormalList);
 
-const algorithm = require('../algorithm');
-let population = algorithm.greedySeedInitial(testNormalList, testProjectList, 10);
+let population = seeding.greedySeedInitial(testNormalList, testProjectList, 10);
 
 /*
 for (let individual of population) {
@@ -212,3 +213,13 @@ for (let individual of population) {
     }
     console.log(">>>>>>>>>>\n");
 }
+
+const dbInt = require('../db_interactions');
+
+(async () => {
+    await dbInt.helloPostgres();
+})();
+
+(async () => {
+    console.log(await dbInt.getStudentPk(1));
+})();
