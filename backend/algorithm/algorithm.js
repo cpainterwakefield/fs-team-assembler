@@ -10,6 +10,9 @@
  */
 
 var _ = require('lodash');
+const scoring = require('scoring');
+const seeding = require('seeding');
+const dbInt = require('db_interactions');
 
 /**
  * Selects the fittest individual from a generation.
@@ -25,9 +28,9 @@ function generationSelction(generation) {
     let fitProject;
 
     for (let projectList of generation) {
-        if (scoreAllProjects(projectList) > fittest) {
+        if (scoring.scoreAllProjects(projectList) > fittest) {
             //If current is greater than the current fittest, make that the fittest 
-            fittest = scoreAllProjects(projectList);
+            fittest = scoring.scoreAllProjects(projectList);
             fitProject = projectList;
         }
     }
@@ -61,12 +64,14 @@ function generateFromFittest(fittestProjectList, numRepeats) {
         let currentFittest = _.cloneDeep(fittestProjectList);
 
         // Getting seeded random project indices to swap students from 
-        projIndex1 = Math.floor(seededRandom(i*2) * (currentFittest.length - 1));
-        projIndex2 = Math.floor(seededRandom(i*3) * (currentFittest.length - 1));
+        projIndex1 = Math.floor(seeding.seededRandom(i*2) * (currentFittest.length - 1));
+        projIndex2 = Math.floor(seeding.seededRandom(i*3) * (currentFittest.length - 1));
 
         // Choosing two random students from each randomly chosen project to switch
-        student1 = currentFittest[projIndex1].people[Math.floor(seededRandom(i*4) * (currentFittest[projIndex1].people.length))];
-        student2 = currentFittest[projIndex2].people[Math.floor(seededRandom(i*5) * (currentFittest[projIndex2].people.length))];
+        student1 = currentFittest[projIndex1].people[Math.floor(
+            seeding.seededRandom(i*4) * (currentFittest[projIndex1].people.length))];
+        student2 = currentFittest[projIndex2].people[Math.floor(
+            seeding.seededRandom(i*5) * (currentFittest[projIndex2].people.length))];
 
         // Swapping students
         temp = student1;

@@ -225,3 +225,6 @@ function greedySeedInitial(students, projects, populationSize) {
     // Return the list of list of projects.
     return projectPopulation;
 }
+
+exports.seededRandom = seededRandom;
+exports.greedySeedInitial = greedySeedInitial;
