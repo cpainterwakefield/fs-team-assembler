@@ -48,7 +48,22 @@ module.exports = (sequelize, Sequelize) => {
             foreignKey: 'id',
             as: 'advisor_id'
         });
-    }
+        Project.hasOne(models.students, {
+            foreignKey: 'project_id',
+        });
+        Project.hasOne(models.students, {
+            foreignKey: 'first_project',
+        });
+        Project.hasOne(models.students, {
+            foreignKey: 'second_project',
+        });
+        Project.hasOne(models.students, {
+            foreignKey: 'third_project',
+        });
+/*        Project.hasMany(models.prefer_teammates, {
+            foreignKey: 'project_id',
+        });
+ */   }
 
     return Project;
 };

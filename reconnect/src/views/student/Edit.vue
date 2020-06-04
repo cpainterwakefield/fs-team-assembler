@@ -17,9 +17,9 @@
               <v-flex>
                 <div class="right-pref">
                   <v-radio-group v-model="preference" label="I Prefer" >
-                    <v-radio name="selection_preference" label="Doesn't Matter" value=null></v-radio>                
-                    <v-radio name="selection_preference" label="My Chosen Projects" value=false></v-radio>
-                    <v-radio name="selection_preference" label="My Chosen Teammates" value=true></v-radio>                
+                    <v-radio name="selection_preference" label="Doesn't Matter" value="Doesn't Matter"></v-radio>                
+                    <v-radio name="selection_preference" label="My Chosen Projects" value="Project"></v-radio>
+                    <v-radio name="selection_preference" label="My Chosen Teammates" value="Team"></v-radio>                
                   </v-radio-group>
                 </div>
               </v-flex>
@@ -100,7 +100,7 @@ export default {
     })
     // need to change
     let id = 1
-    axios.get('http://' + location.hostname + ':8080/api/students/' + id, {withCredentials: true})
+    axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
       .then(response => {
         console.log(response)
         // JSON responses are automatically parsed.
@@ -113,6 +113,11 @@ export default {
         self.secondProj = self.student.second_project
         self.thirdProj = self.student.third_project
         self.preference = self.student.selection_preference
+        if (self.preference === false)
+          self.preference = "Project"
+        else if (self.preference === true)
+          self.preference = "Team"
+        else self.preference = "Doesn't Matter"
 
       })
       .catch(e => {
@@ -129,7 +134,12 @@ export default {
 
     doSubmit() {
       //let id=1
-      axios.put('/api/students/1', {
+        if (this.preference === "Project")
+          this.preference = false;
+        else if (this.preference === "Team")
+          this.preference = true;
+        else this.preference = null;
+      axios.put(process.env.VUE_APP_BASE_API_URL + '/students/1', {
         name: this.name,
         minor: this.minor,
         gpa: this.gpa,

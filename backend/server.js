@@ -24,7 +24,6 @@ var corsOptions = {
   exposedHeaders: ["Origin"]
 };
 
-
 app.use(cors(corsOptions));
 
 db.sequelize.sync();

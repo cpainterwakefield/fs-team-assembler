@@ -18,11 +18,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN,
             allowNull: true
         },
-        project_id: {
-            type: Sequelize.INTEGER,
-            defaultValue: null,
-            allowNull: true
-        },
+
         gpa: {
             type: Sequelize.DECIMAL(10,3),
             defaultValue: null,
@@ -46,7 +42,6 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: null,
             allowNull: true
         },
-/*      
         first_project: {
             type: Sequelize.INTEGER,
             defaultValue: null,
@@ -64,27 +59,16 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: null,
             allowNull: true
         }, 
-  */    
     });
-/*    Student.associate = function(models) {
+    Student.associate = function(models) {
         //declare associations here
-//        Student.belongsTo(models.projects, {
-//            foreignKey: 'id',
-//            as: 'project_id'
-//        });
-        Student.belongsTo(models.projects,{
-            foreignKey: 'id',
-            as: 'first_project'
+        Student.hasMany(models.prefer_teammates,{
+            foreignKey: 'preferrer_id',
         });
-        Student.belongsTo(models.projects,{
-            foreignKey: 'id',
-            as: 'second_project'
-        })
-        Student.belongsTo(models.projects,{
-            foreignKey: 'id',
-            as: 'third_project'
-        })
+        Student.hasMany(models.prefer_teammates,{
+            foreignKey: 'preferree_id',
+        });
     }
-*/
+
     return Student;
 };

@@ -6,16 +6,6 @@ CREATE TABLE users(
     is_admin BOOLEAN NOT NULL
 );
 
-CREATE TABLE student(
-    users_id INTEGER,
-    project_id INTEGER,
-    selection_preference BOOLEAN, -- TRUE = teammates, FALSE = project, NULL = ambivalent
-    gpa NUMERIC(4, 3), -- 4 digits total, 3 decimal places
-    major TEXT,
-    FOREIGN KEY (users_id) REFERENCES users(id),
-    FOREIGN KEY (project_id) REFERENCES project(id)
-);
-
 CREATE TABLE advisor(
     users_id INTEGER,
     FOREIGN KEY (users_id) REFERENCES users(id)
@@ -42,18 +32,18 @@ CREATE TABLE project(
 
 CREATE TABLE student(
     id INTEGER PRIMARY KEY,
+    users_id INTEGER,
     name TEXT,
+    selection_preference BOOLEAN, -- TRUE = teammates, FALSE = project, NULL = ambivalent
+    gpa NUMERIC(4, 3), -- 4 digits total, 3 decimal places
+    minor TEXT,
     username TEXT NOT NULL,
     project_id INTEGER REFERENCES project(id)
+    first_project INTEGER REFERENCES project(id)
+    second_project INTEGER REFERENCES project(id)
+    third_project INTEGER REFERENCES project(id)
 );
 
-CREATE TABLE prefer_project_xref(
-    preferrer_id INTEGER,
-    project_id INTEGER,
-    PRIMARY KEY (preferrer_id, project_id),
-    FOREIGN KEY (preferrer_id) REFERENCES student(id),
-    FOREIGN KEY (project_id) REFERENCES project(id)
-);
 
 CREATE TABLE prefer_teammate_xref(
     preferrer_id INTEGER,
