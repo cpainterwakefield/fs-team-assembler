@@ -42,9 +42,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('*', function(requests, response){
-  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
 
 //app.use('/student', routes);
 
@@ -54,6 +51,7 @@ require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
+require("./routes/vue.routes")(app);
 
 
 // set port, listen for requests
