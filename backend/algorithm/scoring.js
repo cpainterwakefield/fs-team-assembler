@@ -12,6 +12,18 @@
 
 var _ = require('lodash');
 
+// The penalty to scoring by having a student be placed in a project
+// that they do not prefer.
+const PROJECT_PENALTY = 5;
+
+// The penalty to scoring incurred by having someone in a group
+// with someone whom they chose to avoid.
+const AVOID_PENALTY = 7;
+
+// The penalty to scoring incurred by a group not having enough
+// members, or having too many members.
+const POP_BOUND_PENALTY = 10;
+
 /** 
  * A function that checks project preferences on a person basis,
  * with respect to `project`.
@@ -34,7 +46,7 @@ function scoreProjectPreferences(project, person, teamPrefOffset) {
     });
 
     if (!satisfied) {
-        return undefined;
+        return localTotal - PROJECT_PENALTY;
     }
 
     return localTotal;
@@ -70,15 +82,10 @@ function scorePersonPreferences(project, person, teamPrefValue) {
         // met, hence this returns undefined.
         project.people.forEach(function (pEntry) {
             if (entry == pEntry.id) {
-                satisfied = false;
+                localTotal -= AVOID_PENALTY;
             }
         });
     });
-
-    // If the constraint has not been satisfied, return undefined
-    if (!satisfied) {
-        return undefined;
-    }
 
     return localTotal;
 };
@@ -114,7 +121,6 @@ function scoreProject(project) {
     // range requested for the project, then the project doesn't meet the constraint.
     if (project.people.length < project.minPeople
         || project.people.length > project.maxPeople) {
-        return undefined;
     }
 
     for (let person of project.people) {
@@ -124,44 +130,31 @@ function scoreProject(project) {
             let projectPrefTotal = scoreProjectPreferences(project, person, 2);
             let personPrefTotal = undefined;
 
-            // If the project preference total is undefined, no
+            // If the project preference total is below 0, no
             // constraints were met. Check person preferences to make sure
             // that at least those were met.
-            if (projectPrefTotal == undefined) {
+            if (projectPrefTotal <= 0) {
                 personPrefTotal = scorePersonPreferences(project, person, 1);
             }
 
-            // If none of these constraints are satisfied, return
-            // undefined to indicate such.
-            //
-            // Otherwise, return possible totals.
-            if (projectPrefTotal == undefined) {
+            // Return possible totals.
+            if (projectPrefTotal <= 0) {
                 total += personPrefTotal;
-            } else if (personPrefTotal == undefined) {
-                total += projectPrefTotal;
             } else {
-                return undefined;
+                total += projectPrefTotal;
             }
         } else if (person.prefersTeam) {
             let personPrefTotal = scorePersonPreferences(project, person, 2);
             let projectPrefTotal = scoreProjectPreferences(project, person, 3);
 
             // (Explicit undefined checks and returns for clarity)
-            if (personPrefTotal == undefined) {
-                return undefined;
-            } else {
-                total += personPrefTotal + projectPrefTotal;
-            }
+            total += personPrefTotal + projectPrefTotal;
         } else {
             let personPrefTotal = scorePersonPreferences(project, person, 1);
             // Check project preferences with an offset of 4 (for weighted team scoring).
             let projectPrefTotal = scoreProjectPreferences(project, person, 4);
 
-            if (projectPrefTotal == undefined) {
-                return undefined;
-            } else {
-                total += personPrefTotal + projectPrefTotal;
-            }
+            total += personPrefTotal + projectPrefTotal;
         }
     }
 
@@ -185,11 +178,6 @@ function scoreAllProjects(projects) {
 
     for (let project of projects) {
         let projectScore = scoreProject(project);
-
-        if (projectScore == undefined) {
-            return undefined;
-        }
-
         totalScore += projectScore;
     }
 
