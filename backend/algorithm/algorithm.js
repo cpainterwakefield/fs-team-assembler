@@ -167,10 +167,6 @@ function runGeneticAlgorithm() {
     return generationSelection(newGeneration);
 }
 
-function convertAndRun() {
-
-}
-  
 exports.generationSelection = generationSelection;
 exports.generateFromFittest = generateFromFittest;
 exports.evolvePopulation = evolvePopulation;

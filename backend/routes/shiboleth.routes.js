@@ -75,7 +75,7 @@ module.exports = app => {
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
       })
   );
-
+  /*
   app.post(config.passport.path,
     passport.authenticate(config.passport.strategy,
       {
@@ -86,10 +86,10 @@ module.exports = app => {
       res.redirect('https://reconnect.mines.edu/student');
     }
   );
-
+*/
   app.get('/logout', function (req, res) {
     req.logout();
-    // TODO: invalidate session on IP
+    req.logout();
     res.redirect('/');
   });
 

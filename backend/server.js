@@ -47,13 +47,16 @@ app.use(passport.session());
 //app.use('/student', routes);
 
 //require("./routes/routes.google")(app);
-require("./routes/shiboleth.routes")(app);
+//require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
 
+app.get('/',(res, req) => {
+  res.send(req);
+})
 
 app.get('/student', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
