@@ -236,4 +236,5 @@ var aj = (async () => {
 (async () => {
     let algoJSON = await aj;
     console.log(algoJSON.students);
+    console.log(algoJSON.projects);
 })();
