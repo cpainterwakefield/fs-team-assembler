@@ -36,8 +36,8 @@
                 </div>
                 <div class="teammate_pref">
                   <h3> Team Preferences </h3>
-                  <v-select width=50px multiple label="Prefer Teammates" outlined background-color="white" :items=students v-on:input="limiter" item-text="name" v-model="team_pref"></v-select>
-                  <v-select width=50px multiple label="Avoid Teammates" outlined background-color="white" :items=students v-on:input="limiter" item-text="name" v-model="team_avoid"></v-select>
+                  <v-select width=50px multiple label="Prefer Teammates" outlined background-color="white" :items=students v-on:input="limiter" item-text="name" item-value="id" v-model="team_pref"></v-select>
+                  <v-select width=50px multiple label="Avoid Teammates" outlined background-color="white" :items=students v-on:input="limiter" item-text="name" item-value="id" v-model="team_avoid"></v-select>
                 </div>
           </div>
           <hr> 
@@ -84,46 +84,38 @@ export default {
   mounted() {
     console.log(process.env.VUE_APP_BASE_API_URL + "HERE")
     var self=this;
-    const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true});
+    let id = 1
+    const requestStudOne = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true});
+    const requestStuds = axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true});
     const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true});
 
-    axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
-      const responseStud = responses[0]
+    axios.all([requestStudOne, requestProj, requestStuds]).then(axios.spread((...responses) => {
+      const responseStudOne = responses[0]
       const responseProj = responses[1]
+      const responseStuds = responses[2]
       // use/access the results
-      self.students = responseStud.data
+      self.students = responseStuds.data
+      self.student = responseStudOne.data
+      self.experience = self.student.experience
+      self.gpa = self.student.gpa
+      self.minor = self.student.minor
+      self.name = self.student.username
+      self.firstProj = self.student.first_project
+      self.secondProj = self.student.second_project
+      self.thirdProj = self.student.third_project
+      self.preference = self.student.selection_preference
+      if (self.preference === false)
+        self.preference = "Project"
+      else if (self.preference === true)
+        self.preference = "Team"
+      else self.preference = "Doesn't Matter"
+
       self.projects = responseProj.data
     }))
     .catch(e => {
       // react on errors.
       self.errors.push(e)
     })
-    // need to change
-    let id = 1
-    axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
-      .then(response => {
-        console.log(response)
-        // JSON responses are automatically parsed.
-        self.student = response.data
-        self.experience = self.student.experience
-        self.gpa = self.student.gpa
-        self.minor = self.student.minor
-        self.name = self.student.username
-        self.firstProj = self.student.first_project
-        self.secondProj = self.student.second_project
-        self.thirdProj = self.student.third_project
-        self.preference = self.student.selection_preference
-        if (self.preference === false)
-          self.preference = "Project"
-        else if (self.preference === true)
-          self.preference = "Team"
-        else self.preference = "Doesn't Matter"
-
-      })
-      .catch(e => {
-        self.errors.push(e)
-      })
-
   },    
   methods: {
     limiter: function(e) {
@@ -133,13 +125,13 @@ export default {
     },
 
     doSubmit() {
-      //let id=1
-        if (this.preference === "Project")
-          this.preference = false;
-        else if (this.preference === "Team")
-          this.preference = true;
-        else this.preference = null;
-      axios.put(process.env.VUE_APP_BASE_API_URL + '/students/1', {
+      let id=1
+      if (this.preference === "Project")
+        this.preference = false;
+      else if (this.preference === "Team")
+        this.preference = true;
+      else this.preference = null;
+      axios.put(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {
         name: this.name,
         minor: this.minor,
         gpa: this.gpa,
@@ -149,7 +141,7 @@ export default {
         second_project: this.secondProj,
         third_project: this.thirdProj,
         selection_preference: this.preference
-        
+      
       }, {withCredentials: true})
       .then(response => {
         console.log(response);
@@ -157,6 +149,25 @@ export default {
       .catch(err => {
         console.log(err);
       });
+
+      
+      for (let pref of this.team_pref){
+        console.log(pref)
+        console.log(id)
+      
+        axios.post(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate', {
+          withCredentials: true,
+          preferrer_id: parseInt(id),
+          preferree_id: parseInt(pref)
+        }, {withCredentials: true})    
+        .then(response => {
+          console.log(response)
+        })
+        .catch(err => {
+          console.log(err);
+    
+        })
+      }
     }
   }
 }

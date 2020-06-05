@@ -1,5 +1,5 @@
 var passport = require('passport');
-const SamlStrategy = require('passport-saml').Strategy;
+const CustomStrategy = require('passport-custom').Strategy;
 const config = require('../config/shib_config');
 const db = require("../models");
 const User = db.users;
@@ -14,17 +14,23 @@ passport.deserializeUser((id,done) => {
     done(null,user);
   })
 });
-passport.use(new SamlStrategy(
-  {
-    path: config.development.passport.saml.path,
-    entryPoint: config.development.passport.saml.entryPoint,
-    issuer: config.development.passport.saml.issuer
-  },
-  function(profile, done) {
-    console.log(profile._json.email);
+passport.use(new CustomStrategy(
+  function(req, done) {
+    var envvar864 = req.header['!~passenger-envvars'];
+    var envvarDump = new Buffer(envvarB64, 'base64').toString('binary');
+    var ary = dump.split("\0");
+    var result = {};
+    var i;
+
+    for (i = 0; i < ary.length - 1; i+=2) {
+      result[ary[i]] = ary[i + 1];
+    }
+    res.send(result);
+    /*
+    console.log(req._json.email);
     //check if user exists in DB
-    const title = profile._json.email;
-    const id = profile._json.sub.toString();
+    const title = req._json.email;
+    const id = req._json.sub.toString();
     User.findOne({where: {email: title}})
       .then((studentExists) => {
       if(studentExists){
@@ -32,7 +38,7 @@ passport.use(new SamlStrategy(
         //Student info is in studentExists
         if(studentExists.name != null){
           studentExists.update({
-            name: profile._json.name,
+            name: req._json.name,
             auth_id: id
           })
           //Add this student to the student table too
@@ -41,8 +47,8 @@ passport.use(new SamlStrategy(
             //create student if user is not an admin
             if(!studentExists.is_admin){
               Student.create({
-                name: profile._json.name,
-                email: profile._json.email
+                name: req._json.name,
+                email: req._json.email
               })
             }
           });
@@ -53,7 +59,7 @@ passport.use(new SamlStrategy(
         done();
       }
     })
-  
+  */
   })
 );
 
