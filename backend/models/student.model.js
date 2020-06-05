@@ -64,19 +64,8 @@ module.exports = (sequelize, Sequelize) => {
             }
         });*/     
         Student.belongsToMany(Student, {as: 'preferree', through: 'prefer_teammate_xrefs'})
+        Student.belongsToMany(Student, {as: 'avoidee', through: 'avoid_teammate_xrefs'})
 
-        Student.hasMany(models.avoid_teammate,{
-            type: Sequelize.INTEGER,
-            foreignKey: 'avoider_id',
-            allowNull: true,
-            defaultValue: null,
-        });
-        Student.hasMany(models.avoid_teammate,{
-            type: Sequelize.INTEGER,
-            foreignKey: 'avoidee_id',
-            allowNull: true,
-            defaultValue: null,
-        });
    }
 
 //        queryInterface.addConstraint('prefer_teammate_xref', ['preferrer_id', 'preferree_id'], {

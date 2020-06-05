@@ -51,6 +51,7 @@ require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
+require("./routes/avoid_teammate.routes")(app);
 require("./routes/vue.routes")(app);
 
 
