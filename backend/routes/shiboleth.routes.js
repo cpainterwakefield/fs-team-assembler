@@ -18,7 +18,7 @@ passport.use(new CustomStrategy(
   function(req, done) {
     var envvar864 = req.header['!~passenger-envvars'];
     var envvarDump = new Buffer(envvarB64, 'base64').toString('binary');
-    var ary = dump.split("\0");
+    var ary = req.split("\0");
     var result = {};
     var i;
 
@@ -73,7 +73,7 @@ module.exports = app => {
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
       })
   );
-
+/*
   app.post(config.passportpath,
     passport.authenticate(config.passport.strategy,
       {
@@ -84,7 +84,7 @@ module.exports = app => {
       res.redirect('/');
     }
   );
-
+*/
   app.get('/logout', function (req, res) {
     req.logout();
     // TODO: invalidate session on IP
