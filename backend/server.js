@@ -45,15 +45,38 @@ app.use(passport.session());
 
 //app.use('/student', routes);
 
-require("./routes/routes.google")(app);
-//require("./routes/shiboleth.routes")(app);
+//require("./routes/routes.google")(app);
+require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
+<<<<<<< HEAD
 require("./routes/avoid_teammate.routes")(app);
 require("./routes/vue.routes")(app);
 
+=======
+//require("./routes/vue.routes")(app, path);
+
+app.get('/student', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+app.get('/admin', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+app.get('/student/edit', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+app.get('/admin/projects', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+app.get('/admin/edit', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+app.get('/admin/teams', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+>>>>>>> d1805f42c4f143d069ea084d46353d5cc6033af3
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
