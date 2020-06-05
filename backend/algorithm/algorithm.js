@@ -58,7 +58,7 @@ function generateFromFittest(fittestProjectList, numRepeats) {
     let projIndex2;
     let temp;
 
-    // Repeat 1000 times
+    // Repeat numRepeats times
     for(let i = 0; i < numRepeats; i++) {
         // Clone fittest project list so that we're not editing the original
         let currentFittest = _.cloneDeep(fittestProjectList);
@@ -127,7 +127,7 @@ function generateFromFittest(fittestProjectList, numRepeats) {
  */
 function evolvePopulation(population) {
     return generateFromFittest(generationSelection(population), 100);
-  }
+}
   
 /**
  * This is where the algorithm will start executing. 
@@ -166,7 +166,7 @@ function runGeneticAlgorithm() {
     }
     return generationSelection(newGeneration);
 }
-  
+
 exports.generationSelection = generationSelection;
 exports.generateFromFittest = generateFromFittest;
 exports.evolvePopulation = evolvePopulation;

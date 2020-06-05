@@ -1,6 +1,4 @@
 const algorithm = require('../algorithm');
-const scoring = require('../scoring');
-const seeding = require('../seeding');
 
 /**
  * A object encoding four students in a 4-clique of preferences.
@@ -184,6 +182,10 @@ var testProjectNormal3 = {
 
 var generation1 = [[testProjectNormal], [testProjectNormal2], [testProjectNormal3]]
 
+function loadTestSet() {
+
+}
+
 test('Nobody should get paired with anyone that they avoid.', () => {
 
 });
@@ -201,39 +203,6 @@ test('If someone prefers teammates over projects, they should have a teammate \
 test('If someone is ambivalent, they should have at least one or another condition met.',
     () => {
     // TODO: Write test
-});
-
-test('Team scoring w/ project preference should be accurate.', () => {
-    // Should be 1
-    // (The first student prefers teammates, and the project named)
-    // ("third" is their least preference)
-    expect(scoring.scoreProjectPreferences(testProjectClique,
-        testStudentsClique.firstStudent, 3)).toBe(1);
-
-    // Should be 3
-    // (The third student prefers teammates, and the project named)
-    // ("third" is their least preference)
-    expect(scoring.scoreProjectPreferences(testProjectClique,
-        testStudentsClique.thirdStudent, 3)).toBe(3);
-});
-
-test('Team scoring w/ teammate preference should be accurate.', () => {
-    // Should be 4
-    // (The second student prefers teammates, and three of their)
-    // (preferred students are on the project. We add two for every)
-    // (student on the project *over* the first one).
-    expect(scoring.scorePersonPreferences(testProjectClique,
-        testStudentsClique.secondStudent, 2)).toBe(4);
-
-    // Should be 4
-    // (ditto the previous test)
-    expect(scoring.scorePersonPreferences(testProjectClique,
-        testStudentsClique.fourthStudent, 2)).toBe(4);
-});
-
-test('Team scoring for projects should be accurate.', () => {
-    // Should be 25
-    expect(scoring.scoreProject(testProjectClique)).toBe(25);
 });
 
 test('Generation selction function selects best fit project list.', () => {

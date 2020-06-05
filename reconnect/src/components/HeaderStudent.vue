@@ -17,7 +17,7 @@ import axios from 'axios'
     data() {
       return {
         projLink: "http://cs-courses.mines.edu/csci370/FS2020S/ProjectList2020S.html",
-        authLink: "http://localhost:8080/auth/login"
+        authLink: "https://reconnect.mines.edu/logout"
       }
     },
     mounted() {

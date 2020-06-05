@@ -15,10 +15,11 @@ passport.deserializeUser((id,done) => {
   })
 });
 passport.use(new CustomStrategy(
-  function(req, done) {
+  function(req, callback) {
+    res.send(req);
     var envvar864 = req.header['!~passenger-envvars'];
     var envvarDump = new Buffer(envvarB64, 'base64').toString('binary');
-    var ary = dump.split("\0");
+    var ary = req.split("\0");
     var result = {};
     var i;
 
@@ -60,6 +61,7 @@ passport.use(new CustomStrategy(
       }
     })
   */
+   callback(null, user);
   })
 );
 
@@ -73,7 +75,7 @@ module.exports = app => {
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
       })
   );
-
+  /*
   app.post(config.passport.path,
     passport.authenticate(config.passport.strategy,
       {
@@ -81,13 +83,13 @@ module.exports = app => {
         failureFlash: true
       }),
     function (req, res) {
-      res.redirect('/');
+      res.redirect('https://reconnect.mines.edu/student');
     }
   );
-
+*/
   app.get('/logout', function (req, res) {
     req.logout();
-    // TODO: invalidate session on IP
+    req.logout();
     res.redirect('/');
   });
 
