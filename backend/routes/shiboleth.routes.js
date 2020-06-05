@@ -14,9 +14,7 @@ passport.deserializeUser((id,done) => {
     done(null,user);
   })
 });
-passport.use(new CustomStrategy({
-  //paths
-},
+passport.use(new CustomStrategy(
   function(req, callback) {
     res.send(req);
     var envvar864 = req.header['!~passenger-envvars'];
