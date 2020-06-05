@@ -180,6 +180,11 @@ function convertDBResponse(dbJSON) {
     return algoJSON;
 }
 
+async function loadAndConvert() {
+    const dbJSON = await getDBJson();
+    return convertDBResponse(await dbJSON);
+}
+
 // Standard Sequelize util functions
 exports.helloPostgres = helloPostgres;
 exports.getAllStudents = getAllStudents;
@@ -189,3 +194,4 @@ exports.getStudentPk = getStudentPk;
 // DB conversions
 exports.getDBJson = getDBJson;
 exports.convertDBResponse = convertDBResponse;
+exports.loadAndConvert = loadAndConvert;

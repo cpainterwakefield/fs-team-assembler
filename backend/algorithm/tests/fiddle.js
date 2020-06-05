@@ -225,16 +225,13 @@ const dbInt = require('../db_interactions');
     console.log(await dbInt.getAllStudents());
     console.log(await dbInt.getStudentPk(0));
 })();
-*/
 
 var aj = (async () => {
-    const dbJSON = (async () => await dbInt.getDBJson())();
-    let algoJSON = await dbInt.convertDBResponse(await dbJSON);
-    return algoJSON;
+    const dbJSON = await dbInt.getDBJson();
+    return dbInt.convertDBResponse(await dbJSON);
 })();
+*/
 
 (async () => {
-    let algoJSON = await aj;
-    console.log(algoJSON.students);
-    console.log(algoJSON.projects);
+    console.log(await dbInt.loadAndConvert());
 })();
