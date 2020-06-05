@@ -1,38 +1,38 @@
 const db = require("../models");
-const Prefer_Teammate = db.prefer_teammate;
+const Avoid_Teammate = db.avoid_teammate;
 const Op = db.Sequelize.Op;
 
-// Create and save a new Prefer_Teammate table
+// Create and save a new Avoid_Teammate table
 exports.create = (req, res) => {
-    if (!req.body.preferrer_id) {
-        // If there is no name, then there's no point in storing a Prefer_Teammate.
+    if (!req.body.avoidrer_id) {
+        // If there is no name, then there's no point in storing a Avoid_Teammate.
         res.status(400).send({
-            message: "Prefferrer cannot be empty."
+            message: "Avoider cannot be empty."
         });
 
         // Don't create anything.
         return;
     }
-    if (!req.body.preferree_id) {
-        // If there is no name, then there's no point in storing a Prefer_Teammate.
+    if (!req.body.avoidree_id) {
+        // If there is no name, then there's no point in storing a Avoid_Teammate.
         res.status(400).send({
-            message: "Preferree cannot be empty."
+            message: "Avoidee cannot be empty."
         });
 
         // Don't create anything.
         return;
     }
 
-    const prefer_teammate = {
-        preferreeId: req.body.preferree_id,
-        studentId: req.body.preferrer_id,
+    const avoid_teammate = {
+        avoidreeId: req.body.avoidree_id,
+        studentId: req.body.avoidrer_id,
 
     };
 
-    // Create a prefer_teammate from the JSON object prefer_teammate.
-    Prefer_Teammate.create(prefer_teammate)
+    // Create a avoid_teammate from the JSON object avoid_teammate.
+    Avoid_Teammate.create(avoid_teammate)
         .then(data => {
-            // Send the actual prefer_teammate data as a response.
+            // Send the actual avoid_teammate data as a response.
             res.send(data);
         })
         .catch(err => {
@@ -40,12 +40,12 @@ exports.create = (req, res) => {
             // or generic error message.
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating a Prefer_Teammate."
+                    err.message || "Some error occurred while creating a Avoid_Teammate."
             });
         });
 };
 
-// Get all the Prefer_Teammates from the database
+// Get all the Avoid_Teammates from the database
 exports.findAll = (req, res) => {
     const title = req.query.title;
 
@@ -53,70 +53,73 @@ exports.findAll = (req, res) => {
     let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
     var condition = title ? conditionResult : null;
 
-    Prefer_Teammate.findAll({ where: condition })
+    Avoid_Teammate.findAll({ where: condition })
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving Prefer_Teammates."
+                    err.message || "Some error occurred while retrieving Avoid_Teammates."
             });
         });
 };
 
-// Get a single Prefer_Teammate from the database
-    Prefer_Teammate.findAll({where: {studentId : req.params.id} })
+// Get a single Avoid_Teammate from the database
+exports.findOne = (req, res) => {
+
+    Avoid_Teammate.findAll({where: {studentId : req.params.id} })
+        
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(501).send({
-                message: "Error retrieving Prefer_Teammate with id=" + id
+                message: "Error retrieving Avoid_Teammate with id=" + id
             });
         });
 };
 
-// Update a single Prefer_Teammate via its ID
+// Update a single Avoid_Teammate via its ID
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    Prefer_Teammate.update(req.body, {
+    Avoid_Teammate.update(req.body, {
         where: { id: id }
     })
     .then(num => {
         if (num == 1) {
             res.send({
-                message: "Prefer_Teammate was updated successfully."
+                message: "Avoid_Teammate was updated successfully."
             });
         } else {
             res.send({
-                message: `Cannot update Prefer_Teammate with id=${id}.`
+                message: `Cannot update Avoid_Teammate with id=${id}.`
             });
         }
     })
     .catch(err => {
         res.status(500).send({
-            message: "Error updating Prefer_Teammate with id=" + id
+            message: "Error updating Avoid_Teammate with id=" + id
         });
     });
 };
 
-// Delete a Prefer_Teammate via its ID
+// Delete a Avoid_Teammate via its ID
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Prefer_Teammate.destroy({
+    Avoid_Teammate.destroy({
         where: { id: id }
     })
     .then(num => {
         if (num == 1) {
             res.send({
-                message: "Prefer_Teammate was deleted successfully."
+                message: "Avoid_Teammate was deleted successfully."
             });
         } else {
             res.send({
-                message: `Cannot delete Prefer_Teammate with id=${id}.`
+                message: `Cannot delete Avoid_Teammate with id=${id}.`
             });
         }
     })
@@ -127,7 +130,7 @@ exports.delete = (req, res) => {
     });
 };
 
-// Delete all Prefer_Teammates from the DB
+// Delete all Avoid_Teammates from the DB
 // Probably don't want this functionality for anything.
 exports.deleteAll = (req, res) => {
 
