@@ -195,7 +195,6 @@ for (let individual of population) {
     console.log(individual);
     console.log("----------\n");
 }
-*/
 
 console.log("PEOPLE:");
 for (let individual of population) {
@@ -213,13 +212,28 @@ for (let individual of population) {
     }
     console.log(">>>>>>>>>>\n");
 }
+*/
 
 const dbInt = require('../db_interactions');
 
+/*
 (async () => {
     await dbInt.helloPostgres();
 })();
 
 (async () => {
-    console.log(await dbInt.getStudentPk(1));
+    console.log(await dbInt.getAllStudents());
+    console.log(await dbInt.getStudentPk(0));
+})();
+*/
+
+var aj = (async () => {
+    const dbJSON = (async () => await dbInt.getDBJson())();
+    let algoJSON = await dbInt.convertDBResponse(await dbJSON);
+    return algoJSON;
+})();
+
+(async () => {
+    let algoJSON = await aj;
+    console.log(algoJSON.students);
 })();

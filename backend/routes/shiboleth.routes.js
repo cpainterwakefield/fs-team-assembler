@@ -70,17 +70,15 @@ passport.use(new CustomStrategy({
 
 module.exports = app => {
 
-  app.post('/',
+  app.get('/',
     passport.authenticate(config.passport.strategy,
       {
         successRedirect: 'https://reconnect.mines.edu/student',
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
-      },function(req,res){
-        res.send(req);
       })
   );
-/*
-  app.post(config.passportpath,
+
+  app.post(config.passport.path,
     passport.authenticate(config.passport.strategy,
       {
         failureRedirect: 'https://reconnect.mines.edu/notRegistered',
@@ -90,7 +88,7 @@ module.exports = app => {
       res.redirect('https://reconnect.mines.edu/student');
     }
   );
-*/
+
   app.get('/logout', function (req, res) {
     req.logout();
     // TODO: invalidate session on IP
