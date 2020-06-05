@@ -7,10 +7,12 @@ const keys = require("./config/keys");
 const serveStatic = require("serve-static");
 //nom nom nom
 const cookieSession = require("cookie-session");
+const path = require("path");
 
 const app = express();
-
 app.use(serveStatic("./dist"));
+
+//app.use(serveStatic(path.join()))
 
 //cookie settings
 app.use(cookieSession({
@@ -40,6 +42,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.get('*', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+
+//app.use('/student', routes);
 
 require("./routes/routes.google")(app);
 //require("./routes/shiboleth.routes")(app);
