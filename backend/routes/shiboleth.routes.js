@@ -74,7 +74,7 @@ module.exports = app => {
       })
   );
 
-  app.post(config.passport.saml.path,
+  app.post(config.passport.path,
     passport.authenticate(config.passport.strategy,
       {
         failureRedirect: 'https://reconnect.mines.edu/notRegistered',

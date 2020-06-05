@@ -22,8 +22,8 @@ def convert_student(input_file, output_file):
             return "NULL"
 
 
-    output_fieldnames = ["id", "users_id", "name", "gpa", "selection_preference",
-                         "gpa", "minor", "username", "project_id", "first_project",
+    output_fieldnames = ["id", "users_id", "name", "selection_preference", "gpa",
+                         "minor", "username", "project_id", "first_project",
                          "second_project", "third_project"]
     input_dictreader = csv.DictReader(input_file)
     output_dictwriter = csv.DictWriter(output_file, output_fieldnames, restval="NULL")
