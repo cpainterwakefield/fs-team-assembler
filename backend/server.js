@@ -22,7 +22,7 @@ app.use(cookieSession({
 }));
 
 var corsOptions = {
-  origin: ["http://localhost:8081", "https://accounts.google.com"],
+  origin: ["http://localhost:8081", "https://accounts.google.com", "https://reconnect.mines.edu"],
   methods: ["OPTIONS", "POST", "GET","PUT","DELETE"],
   credentials: true,
   allowedHeaders: ["Origin", "Content-Type", "Authorization", "Accept", "X-Requested-With"],
@@ -52,7 +52,6 @@ require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
-require("./routes/vue.routes")(app);
 
 
 app.get('/student', function(requests, response){
