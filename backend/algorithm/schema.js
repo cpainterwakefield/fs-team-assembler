@@ -40,6 +40,12 @@ var personSchema = {
             "type": "integer"
         },
 
+        "prefersTeam": {
+            "description" : "The selection preference for the student. If true, the student prefers to \
+            be with teammates, if false, projects, if null, they don't care either way.",
+            "type": "boolean"
+        },
+
         "projectPreferences": {
             "description": "The IDs of the projects that the person prefers.",
             "type": "array"
