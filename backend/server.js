@@ -19,7 +19,7 @@ const app = express();
 
 app.use(expressCspHeader({
   directives: {
-      'default-src': [SELF]
+      'default-src': [SELF, "reconnect.mines.edu"]
   }
 }));
 
