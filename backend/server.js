@@ -10,7 +10,7 @@ const cookieSession = require("cookie-session");
 const path = require("path");
 
 const app = express();
-app.use(serveStatic("./dist"));
+//app.use(serveStatic("./dist"));
 
 //app.use(serveStatic(path.join()))
 
@@ -22,7 +22,7 @@ app.use(cookieSession({
 }));
 
 var corsOptions = {
-  origin: ["http://localhost:8081", "https://accounts.google.com"],
+  origin: ["http://localhost:8081", "https://accounts.google.com", "https://reconnect.mines.edu"],
   methods: ["OPTIONS", "POST", "GET","PUT","DELETE"],
   credentials: true,
   allowedHeaders: ["Origin", "Content-Type", "Authorization", "Accept", "X-Requested-With"],
@@ -45,13 +45,13 @@ app.use(passport.session());
 
 //app.use('/student', routes);
 
-//require("./routes/routes.google")(app);
-require("./routes/shiboleth.routes")(app);
+require("./routes/routes.google")(app);
+//require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
-//require("./routes/vue.routes")(app, path);
+require("./routes/avoid_teammate.routes")(app);
 
 app.get('/student', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
