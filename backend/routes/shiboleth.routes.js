@@ -14,8 +14,11 @@ passport.deserializeUser((id,done) => {
     done(null,user);
   })
 });
-passport.use(new CustomStrategy(
-  function(req, done) {
+passport.use(new CustomStrategy({
+  //paths
+},
+  function(req, callback) {
+    res.send(req);
     var envvar864 = req.header['!~passenger-envvars'];
     var envvarDump = new Buffer(envvarB64, 'base64').toString('binary');
     var ary = req.split("\0");
@@ -60,17 +63,20 @@ passport.use(new CustomStrategy(
       }
     })
   */
+   callback(null, user);
   })
 );
 
 
 module.exports = app => {
 
-  app.get('/',
+  app.post('/',
     passport.authenticate(config.passport.strategy,
       {
         successRedirect: 'https://reconnect.mines.edu/student',
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
+      },function(req,res){
+        res.send(req);
       })
   );
 /*
@@ -81,7 +87,7 @@ module.exports = app => {
         failureFlash: true
       }),
     function (req, res) {
-      res.redirect('/');
+      res.redirect('https://reconnect.mines.edu/student');
     }
   );
 */

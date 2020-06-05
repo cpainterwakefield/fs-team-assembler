@@ -9,19 +9,11 @@ const serveStatic = require("serve-static");
 const cookieSession = require("cookie-session");
 const path = require("path");
 
-const { expressCspHeader, INLINE, NONE, SELF } = require('express-csp-header');
-
-
 const app = express();
 //app.use(serveStatic("./dist"));
 
 //app.use(serveStatic(path.join()))
 
-app.use(expressCspHeader({
-  directives: {
-      'default-src': [SELF, "reconnect.mines.edu"]
-  }
-}));
 
 //cookie settings
 app.use(cookieSession({
