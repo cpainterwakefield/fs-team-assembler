@@ -23,14 +23,15 @@ exports.create = (req, res) => {
         return;
     }
 
+    console.log(req.body.preferrer_id + "PREFERRER")
+    console.log(req.body.preferree_id + "PREFERREE")
+
     const prefer_teammate = {
         preferreeId: req.body.preferree_id,
         studentId: req.body.preferrer_id,
 
     };
-};
 
-exports.findOne = (req, res) => {
     // Create a prefer_teammate from the JSON object prefer_teammate.
     Prefer_Teammate.create(prefer_teammate)
         .then(data => {

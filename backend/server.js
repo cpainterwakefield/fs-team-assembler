@@ -10,7 +10,7 @@ const cookieSession = require("cookie-session");
 const path = require("path");
 
 const app = express();
-app.use(serveStatic("./dist"));
+//app.use(serveStatic("./dist"));
 
 //app.use(serveStatic(path.join()))
 
@@ -52,7 +52,7 @@ require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
-require("./routes/vue.routes")(app);
+//require("./routes/vue.routes")(app);
 
 app.get('/student', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
