@@ -23,6 +23,9 @@ exports.create = (req, res) => {
         return;
     }
 
+    console.log(req.body.preferrer_id + "PREFERRER")
+    console.log(req.body.preferree_id + "PREFERREE")
+
     const prefer_teammate = {
         preferreeId: req.body.preferree_id,
         studentId: req.body.preferrer_id,
@@ -66,6 +69,7 @@ exports.findAll = (req, res) => {
 };
 
 // Get a single Prefer_Teammate from the database
+exports.findOne = (req, res) => {
     Prefer_Teammate.findAll({where: {studentId : req.params.id} })
         .then(data => {
             res.send(data);
