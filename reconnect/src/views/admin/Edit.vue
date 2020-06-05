@@ -99,8 +99,8 @@
     </div>
     <hr>
     <div class="link">
-      <v-text-field class="bot" label="New Projects Link" v-model="link" background-color="white" filled /> 
-      <v-btn class="primary" >Submit</v-btn>
+      <v-text-field class="bot" :placeholder="link" label="New Projects Link" v-model="link" background-color="white" filled /> 
+      <v-btn class="primary" @click="changeLink">Submit</v-btn>
     </div>
     <hr>
     <div class="btn1">
@@ -147,13 +147,16 @@ export default {
     var self=this;
     const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true});
     const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true});
+    const requestLink = axios.get(process.env.VUE_APP_BASE_API_URL + '/project_link', {withCredentials: true});
 
-    axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
+    axios.all([requestStud, requestProj, requestLink]).then(axios.spread((...responses) => {
       const responseStud = responses[0]
       const responseProj = responses[1]
+      const responseLink = responses[2]
       // use/access the results 
       self.students = responseStud.data
       self.projects = responseProj.data
+      self.link = responseLink.data[0].link
     }))
     .catch(e => {
       // react on errors.
@@ -222,6 +225,14 @@ export default {
         self.errors.push(error)
       });
 
+    },
+    changeLink: function() {
+      axios.put(process.env.VUE_APP_BASE_API_URL + '/project_link/1', {
+        link: this.link
+      })
+      .then(response => {
+        console.log(response)
+      })
     }
   },
 }
@@ -289,6 +300,7 @@ export default {
   }
 
   .link {
+    margin: 25px;
     display: inline;
     width: 90%;
   }

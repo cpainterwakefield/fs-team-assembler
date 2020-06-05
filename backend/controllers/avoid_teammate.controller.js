@@ -4,7 +4,10 @@ const Op = db.Sequelize.Op;
 
 // Create and save a new Avoid_Teammate table
 exports.create = (req, res) => {
-    if (!req.body.avoidrer_id) {
+    console.log(req.body.avoider_id + "AVOIDER")
+    console.log(req.body.avoidee_id + "AVOIDEE")
+
+    if (!req.body.avoider_id) {
         // If there is no name, then there's no point in storing a Avoid_Teammate.
         res.status(400).send({
             message: "Avoider cannot be empty."
@@ -13,7 +16,7 @@ exports.create = (req, res) => {
         // Don't create anything.
         return;
     }
-    if (!req.body.avoidree_id) {
+    if (!req.body.avoidee_id) {
         // If there is no name, then there's no point in storing a Avoid_Teammate.
         res.status(400).send({
             message: "Avoidee cannot be empty."
@@ -24,8 +27,8 @@ exports.create = (req, res) => {
     }
 
     const avoid_teammate = {
-        avoidreeId: req.body.avoidree_id,
-        studentId: req.body.avoidrer_id,
+        avoideeId: req.body.avoidee_id,
+        studentId: req.body.avoider_id,
 
     };
 
@@ -107,10 +110,11 @@ exports.update = (req, res) => {
 
 // Delete a Avoid_Teammate via its ID
 exports.delete = (req, res) => {
+    console.log("ID: " + req.params.id)
     const id = req.params.id;
 
     Avoid_Teammate.destroy({
-        where: { id: id }
+        where: { studentId : req.params.id }
     })
     .then(num => {
         if (num == 1) {

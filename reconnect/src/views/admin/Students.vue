@@ -60,24 +60,24 @@
           </div>
         </div>
         <div class="panel">
-          <div class="list2" v-if="student.first_project">{{getName(student.first_project)}}</div>
-          <div class="list2" v-if="student.second_project">{{getName(student.second_project)}}</div>
-          <div class="list2" v-if="student.third_project">{{getName(student.third_project)}}</div>
+          <div class="list2" v-if="student.first_project">{{getProj(student.first_project)}}</div>
+          <hr>
+          <div class="list2" v-if="student.second_project">{{getProj(student.second_project)}}</div>
+          <hr>
+          <div class="list2" v-if="student.third_project">{{getProj(student.third_project)}}</div>
         </div>
         <div class="panel">
-          <div class="list1" v-for="(prefer, i) in student.pref" :key="i">
-            <div class="list2">{{prefer}}</div>
-            <hr>
+          <div class="list1" v-for="(prefer, i) in team_pref" :key="i">
+            <span v-if="prefer.studentId === student.id"><font color="green">{{getStud(prefer.preferreeId)}}</font><hr></span>
           </div>
         </div>
         <div class="panel">
-          <div class="list1" v-for="(av, i) in student.avoid" :key="i">
-            <div class="list2">{{av}}</div>
-            <hr>
+          <div class="list1" v-for="(av, i) in team_avoid" :key="i">
+            <span v-if="av.studentId === student.id"><font color="red">{{getStud(av.avoideeId)}}</font><hr></span>
           </div>
         </div>
         <div class="panel">
-         <div class="list1" v-if="student.project_id"><font color="green">{{getName(student.project_id)}}</font></div> 
+         <div class="list1" v-if="student.project_id"><font color="green">{{getProj(student.project_id)}}</font></div> 
          <div class="list1" v-else><font color="red">X</font></div> 
         </div>
       </div>
@@ -113,6 +113,8 @@ export default {
       totalFirstProj: 50,
       totalSecondProj: 35,
       totalThirdProj: 15,
+      team_pref: [],
+      team_avoid: []
     
     }
   },
@@ -121,6 +123,8 @@ export default {
     
     const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true})
     const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true})
+    const requestPref = axios.get(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate', {withCredentials: true})
+    const requestAvoid = axios.get(process.env.VUE_APP_BASE_API_URL + '/avoid_teammate', {withCredentials: true})
     console.log("look here")
     axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true})
     .then(response => {
@@ -129,12 +133,17 @@ export default {
       self.students = response.data
     })
 
-    axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
+    axios.all([requestStud, requestProj, requestPref, requestAvoid]).then(axios.spread((...responses) => {
       const responseStud = responses[0]
       const responseProj = responses[1]
+      const responsePref = responses[2]
+      const responseAvoid = responses[3]
       // use/access the results
       self.students = responseStud.data
       self.projects = responseProj.data
+      self.team_pref = responsePref.data
+      self.team_avoid = responseAvoid.data
+      console.log(self.team_pref)
     }))
     .catch(e => {
       // react on errors.
@@ -144,8 +153,11 @@ export default {
   },
   
   methods: {
-    getName: function(pid) {
+    getProj: function(pid) {
       return this.projects.find(function(id) {if (id.id === pid) return id}).name
+    },
+    getStud: function(sid) {
+      return this.students.find(function(id) {if (id.id === sid) return id}).name
     }
   } 
 }
@@ -170,13 +182,7 @@ export default {
   }
 
   .list1 {
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-
-  .list2 {
-    margin-left: 20px;
-    margin-right: 20px;
+    text-align: left;
   }
 
   .panel {

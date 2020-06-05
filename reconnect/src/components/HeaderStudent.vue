@@ -10,6 +10,8 @@
 </template>
 
 <script>
+
+import axios from 'axios'
   export default {
     name: 'Header',
     data() {
@@ -17,6 +19,20 @@
         projLink: "http://cs-courses.mines.edu/csci370/FS2020S/ProjectList2020S.html",
         authLink: "http://localhost:8080/auth/login"
       }
+    },
+    mounted() {
+      var self = this
+      axios.get(process.env.VUE_APP_BASE_API_URL + '/project_link/1', {withCredentials: true})
+      .then(response => {
+        console.log(response)
+        // JSON responses are automatically parsed.
+        self.projLink = response.data
+
+      })
+      .catch(e => {
+        self.errors.push(e)
+      })
+
     }
   }
 </script>

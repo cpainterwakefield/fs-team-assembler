@@ -34,6 +34,7 @@ db.avoid_teammate = require("./avoid_teammate.model.js")(sequelize, Sequelize);
 db.prefer_project = require("./prefer_project.model.js")(sequelize, Sequelize);
 db.users = require("./users.model.js")(sequelize, Sequelize);
 db.avoid_teammate = require("./avoid_teammate.model.js")(sequelize, Sequelize);
+db.project_link = require("./project_link.model.js")(sequelize, Sequelize);
 
 Object.keys(db).forEach(modelName => {
     if(db[modelName].associate) {
