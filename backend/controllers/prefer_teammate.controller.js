@@ -1,5 +1,5 @@
 const db = require("../models");
-const Prefer_Teammate = db.prefer_teammate_xrefs;
+const Prefer_Teammate = db.prefer_teammate;
 const Op = db.Sequelize.Op;
 
 // Create and save a new Prefer_Teammate table
@@ -7,7 +7,7 @@ exports.create = (req, res) => {
     if (!req.body.preferrer_id) {
         // If there is no name, then there's no point in storing a Prefer_Teammate.
         res.status(400).send({
-            message: "Content cannot be empty."
+            message: "Prefferrer cannot be empty."
         });
 
         // Don't create anything.
@@ -16,7 +16,7 @@ exports.create = (req, res) => {
     if (!req.body.preferree_id) {
         // If there is no name, then there's no point in storing a Prefer_Teammate.
         res.status(400).send({
-            message: "Content cannot be empty."
+            message: "Preferree cannot be empty."
         });
 
         // Don't create anything.
@@ -24,8 +24,8 @@ exports.create = (req, res) => {
     }
 
     const prefer_teammate = {
-        preferree_id: req.body.preferree_id,
-        preferrer_id: req.body.preferrer_id,
+        preferreeId: req.body.preferree_id,
+        studentId: req.body.preferrer_id,
 
     };
 
@@ -68,13 +68,21 @@ exports.findAll = (req, res) => {
 // Get a single Prefer_Teammate from the database
 exports.findOne = (req, res) => {
     const id = req.params.id;
+    console.log("ID: " + id)
+    // !!! THIS could be where SQL injections happen--check for security here !!!
+    let conditionResult = { student_id: { [Op.iLike]: `%${id}%` } }
+    var condition = id ? conditionResult : null;
 
-    Prefer_Teammate.findByPk(id)
+    console.log("CONDITIONL " + conditionResult.student_id)
+
+    Prefer_Teammate.findAll()
+        
         .then(data => {
+            console.log(data)
             res.send(data);
         })
         .catch(err => {
-            res.status(500).send({
+            res.status(501).send({
                 message: "Error retrieving Prefer_Teammate with id=" + id
             });
         });

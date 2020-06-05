@@ -155,7 +155,8 @@ export default {
         console.log(pref)
         console.log(id)
       
-        axios.post(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate/', {
+        axios.post(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate', {
+          withCredentials: true,
           preferrer_id: parseInt(id),
           preferree_id: parseInt(pref)
         }, {withCredentials: true})    
