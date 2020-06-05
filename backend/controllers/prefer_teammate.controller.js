@@ -28,7 +28,9 @@ exports.create = (req, res) => {
         studentId: req.body.preferrer_id,
 
     };
+};
 
+exports.findOne = (req, res) => {
     // Create a prefer_teammate from the JSON object prefer_teammate.
     Prefer_Teammate.create(prefer_teammate)
         .then(data => {
@@ -66,6 +68,7 @@ exports.findAll = (req, res) => {
 };
 
 // Get a single Prefer_Teammate from the database
+exports.findOne = (req, res) => {
     Prefer_Teammate.findAll({where: {studentId : req.params.id} })
         .then(data => {
             res.send(data);
