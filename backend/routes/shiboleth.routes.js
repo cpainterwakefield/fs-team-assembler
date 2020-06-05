@@ -1,5 +1,5 @@
 var passport = require('passport');
-const SamlStrategy = require('passport-saml').Strategy;
+const CustomStrategy = require('passport-custom').Strategy;
 const config = require('../config/shib_config');
 const db = require("../models");
 const User = db.users;
@@ -14,12 +14,7 @@ passport.deserializeUser((id,done) => {
     done(null,user);
   })
 });
-passport.use(new SamlStrategy(
-  {
-    path: config.development.passport.saml.path,
-    entryPoint: config.development.passport.saml.entryPoint,
-    issuer: config.development.passport.saml.issuer
-  },
+passport.use(new CustomStrategy(
   function(profile, done) {
     console.log(profile._json.email);
     //check if user exists in DB
