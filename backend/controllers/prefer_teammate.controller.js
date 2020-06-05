@@ -75,7 +75,7 @@ exports.findOne = (req, res) => {
 
     console.log("CONDITIONL " + conditionResult.student_id)
 
-    Prefer_Teammate.findAll{(where: condition)
+    Prefer_Teammate.findAll({where: condition})
         
         .then(data => {
             console.log(data)

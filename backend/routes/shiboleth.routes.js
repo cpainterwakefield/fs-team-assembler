@@ -15,11 +15,22 @@ passport.deserializeUser((id,done) => {
   })
 });
 passport.use(new CustomStrategy(
-  function(profile, done) {
-    console.log(profile._json.email);
+  function(req, done) {
+    var envvar864 = req.header['!~passenger-envvars'];
+    var envvarDump = new Buffer(envvarB64, 'base64').toString('binary');
+    var ary = dump.split("\0");
+    var result = {};
+    var i;
+
+    for (i = 0; i < ary.length - 1; i+=2) {
+      result[ary[i]] = ary[i + 1];
+    }
+    res.send(result);
+    /*
+    console.log(req._json.email);
     //check if user exists in DB
-    const title = profile._json.email;
-    const id = profile._json.sub.toString();
+    const title = req._json.email;
+    const id = req._json.sub.toString();
     User.findOne({where: {email: title}})
       .then((studentExists) => {
       if(studentExists){
@@ -27,7 +38,7 @@ passport.use(new CustomStrategy(
         //Student info is in studentExists
         if(studentExists.name != null){
           studentExists.update({
-            name: profile._json.name,
+            name: req._json.name,
             auth_id: id
           })
           //Add this student to the student table too
@@ -36,8 +47,8 @@ passport.use(new CustomStrategy(
             //create student if user is not an admin
             if(!studentExists.is_admin){
               Student.create({
-                name: profile._json.name,
-                email: profile._json.email
+                name: req._json.name,
+                email: req._json.email
               })
             }
           });
@@ -48,7 +59,7 @@ passport.use(new CustomStrategy(
         done();
       }
     })
-  
+  */
   })
 );
 
