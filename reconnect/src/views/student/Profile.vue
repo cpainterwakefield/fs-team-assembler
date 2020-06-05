@@ -90,10 +90,12 @@ export default {
       let id = 1
       const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
       const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true})
+      const requestPref = axios.get(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate/' + id, {withCredentials: true})
 
-      axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
+      axios.all([requestStud, requestProj, requestPref]).then(axios.spread((...responses) => {
         const responseStud = responses[0]
         const responseProj = responses[1]
+        const responsePref = responses[2]
         // use/access the results
         self.student = responseStud.data
           self.experience = self.student.experience
@@ -110,6 +112,7 @@ export default {
             self.preference = "Team"
           else self.preference = "Doesn't Matter"
         self.projects = responseProj.data
+        self.team_pref = responsePref.data
       }))
       .catch(e => {
         // react on errors.

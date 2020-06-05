@@ -1,5 +1,5 @@
 var passport = require('passport');
-const SamlStrategy = require('passport-saml').Strategy;
+const CustomStrategy = require('passport-custom').Strategy;
 const config = require('../config/shib_config');
 const db = require("../models");
 const User = db.users;
@@ -14,13 +14,7 @@ passport.deserializeUser((id,done) => {
     done(null,user);
   })
 });
-passport.use(new SamlStrategy(
-  {
-    path: config.development.passport.saml.path,
-    entryPoint: config.development.passport.saml.entryPoint,
-    issuer: config.development.passport.saml.issuer,
-    cert: config.development.passport.saml.cert
-  },
+passport.use(new CustomStrategy(
   function(profile, done) {
     console.log(profile._json.email);
     //check if user exists in DB
@@ -61,7 +55,7 @@ passport.use(new SamlStrategy(
 
 module.exports = app => {
 
-  app.get('/auth/login',
+  app.get('/',
     passport.authenticate(config.passport.strategy,
       {
         successRedirect: 'https://reconnect.mines.edu/student',

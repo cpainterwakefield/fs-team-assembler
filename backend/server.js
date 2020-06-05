@@ -7,10 +7,12 @@ const keys = require("./config/keys");
 const serveStatic = require("serve-static");
 //nom nom nom
 const cookieSession = require("cookie-session");
+const path = require("path");
 
 const app = express();
-
 app.use(serveStatic("./dist"));
+
+//app.use(serveStatic(path.join()))
 
 //cookie settings
 app.use(cookieSession({
@@ -41,12 +43,34 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+//app.use('/student', routes);
+
 require("./routes/routes.google")(app);
 //require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
+require("./routes/prefer_teammate.routes")(app);
+//require("./routes/vue.routes")(app, path);
 
+app.get('/student', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+app.get('/admin', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+app.get('/student/edit', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+app.get('/admin/projects', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+app.get('/admin/edit', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
+app.get('/admin/teams', function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+})
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
