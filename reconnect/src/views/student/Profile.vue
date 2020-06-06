@@ -43,7 +43,7 @@
                     <v-list dense max-height=105px class="overflow-y-auto" width="250">
                       <h5><u>Avoid Team</u></h5>
                       <v-list-item v-for="(avoid, i) in team_avoid" :key="i">
-                        <v-list-item-title class="element" v-text="avoid"></v-list-item-title>
+                        <v-list-item-title class="element" v-text="getStud(avoid.avoideeId)"></v-list-item-title>
                       </v-list-item>  
                     </v-list>
                   </div>
@@ -91,13 +91,15 @@ export default {
       const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
       const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true})
       const requestPref = axios.get(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate/' + id, {withCredentials: true})
+      const requestAvoid = axios.get(process.env.VUE_APP_BASE_API_URL + '/avoid_teammate/' + id, {withCredentials: true})
       const requestStuds = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/', {withCredentials: true})
 
-      axios.all([requestStud, requestProj, requestPref, requestStuds]).then(axios.spread((...responses) => {
+      axios.all([requestStud, requestProj, requestPref, requestStuds, requestAvoid]).then(axios.spread((...responses) => {
         const responseStud = responses[0]
         const responseProj = responses[1]
         const responsePref = responses[2]
         const responseStuds = responses[3]
+        const responseAvoid = responses[4]
         // use/access the results
         self.student = responseStud.data
           self.experience = self.student.experience
@@ -116,6 +118,7 @@ export default {
         self.projects = responseProj.data
         self.team_pref = responsePref.data
         self.students = responseStuds.data
+        self.team_avoid = responseAvoid.data
       }))
       .catch(e => {
         // react on errors.

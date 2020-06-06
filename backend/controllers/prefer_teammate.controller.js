@@ -23,9 +23,6 @@ exports.create = (req, res) => {
         return;
     }
 
-    console.log(req.body.preferrer_id + "PREFERRER")
-    console.log(req.body.preferree_id + "PREFERREE")
-
     const prefer_teammate = {
         preferreeId: req.body.preferree_id,
         studentId: req.body.preferrer_id,
@@ -56,7 +53,7 @@ exports.findAll = (req, res) => {
     let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
     var condition = title ? conditionResult : null;
 
-    Prefer_Teammate.findAll({ where: condition })
+    Prefer_Teammate.findAll()
         .then(data => {
             res.send(data);
         })
@@ -70,7 +67,7 @@ exports.findAll = (req, res) => {
 
 // Get a single Prefer_Teammate from the database
 exports.findOne = (req, res) => {
-    Prefer_Teammate.findAll({where: {studentId : req.params.id} })
+    Prefer_Teammate.findAll({attributes: ['preferreeId'], where: {studentId : req.params.id} })
         .then(data => {
             res.send(data);
         })
@@ -111,7 +108,7 @@ exports.delete = (req, res) => {
     const id = req.params.id;
 
     Prefer_Teammate.destroy({
-        where: { id: id }
+        where: { studentId: id }
     })
     .then(num => {
         if (num == 1) {
