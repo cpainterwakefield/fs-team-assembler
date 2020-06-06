@@ -16,17 +16,18 @@ passport.deserializeUser((id,done) => {
 });
 
 passport.use(new CustomStrategy(
-  function(dump, callback) {
+  function(req, callback) {
     var envvar864 = req.header['!~passenger-envvars'];
-    var envvarDump = new Buffer(envvarB64, 'base64').toString('binary');
-    var ary = req.split("\0");
+    var envvarDump = new Buffer(envvar864, 'base64').toString('binary');
+
+    var ary = envvarDump.split("\0");
     var result = {};
     var i;
 
     for (i = 0; i < ary.length - 1; i+=2) {
       result[ary[i]] = ary[i + 1];
     }
-    
+    res.send(result);
     //check if user exists in DB
     const title = result._json.email;
     const id = result._json.sub.toString();
