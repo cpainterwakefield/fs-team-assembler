@@ -54,7 +54,21 @@ require("./routes/project_link.routes")(app);
 //require("./routes/vue.routes")(app);
 
 app.get('/dump', function(req, res){
-  res.send(req.header['!~passenger-envvars'])
+  res.send(req.header['!~passenger-envvars']);
+
+var envvarB64 = req.headers['!~passenger-envvars'];
+var dump = new Buffer(envvarB64, 'base64').toString('binary'); 
+  var ary = dump.split("\0");
+  var result = {};
+  var i;
+
+  for (i = 0; i < ary.length - 1; i += 2) {
+      result[ary[i]] = ary[i + 1];
+  }
+
+  res.send(result);
+  
+
 })
 
 app.get('/student', function(requests, response){
