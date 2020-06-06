@@ -19,7 +19,6 @@ passport.use(new CustomStrategy(
   function(req, callback) {
     var envvar864 = req.header['!~passenger-envvars'];
     var envvarDump = new Buffer(envvar864, 'base64').toString('binary');
-
     var ary = envvarDump.split("\0");
     var result = {};
     var i;
@@ -27,10 +26,10 @@ passport.use(new CustomStrategy(
     for (i = 0; i < ary.length - 1; i+=2) {
       result[ary[i]] = ary[i + 1];
     }
+    
     res.send(result);
     //check if user exists in DB
-    const title = result._json.email;
-    const id = result._json.sub.toString();
+    const title = result.mail;
     User.findOne({where: {email: title}})
       .then((studentExists) => {
       if(studentExists){
@@ -38,8 +37,7 @@ passport.use(new CustomStrategy(
         //Student info is in studentExists
         if(studentExists.name != null){
           studentExists.update({
-            name: result._json.name,
-            auth_id: id
+            name: result.displayName,
           })
           //Add this student to the student table too
           User.findOne({where: {email: title}})
@@ -47,8 +45,8 @@ passport.use(new CustomStrategy(
             //create student if user is not an admin
             if(!studentExists.is_admin){
               Student.create({
-                name: result._json.name,
-                email: result._json.email
+                name: result.displayName,
+                email: result.mail
               })
             }
           });
