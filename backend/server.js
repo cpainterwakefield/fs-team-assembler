@@ -44,51 +44,32 @@ app.use(passport.session());
 //app.use('/student', routes);
 
 //require("./routes/routes.google")(app);
-//require("./routes/shiboleth.routes")(app);
+require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
-//require("./routes/vue.routes")(app);
-
-app.get('/dump', function(req, res){
-  res.send(req.header['!~passenger-envvars']);
-
-var envvarB64 = req.headers['!~passenger-envvars'];
-var dump = new Buffer(envvarB64, 'base64').toString('binary'); 
-  var ary = dump.split("\0");
-  var result = {};
-  var i;
-
-  for (i = 0; i < ary.length - 1; i += 2) {
-      result[ary[i]] = ary[i + 1];
-  }
-
-  res.send(result);
-  
-
-})
 
 app.get('/student', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 app.get('/admin', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 app.get('/student/edit', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 app.get('/admin/projects', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 app.get('/admin/edit', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 app.get('/admin/teams', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
