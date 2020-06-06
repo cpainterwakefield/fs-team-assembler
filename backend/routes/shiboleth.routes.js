@@ -26,11 +26,10 @@ passport.use(new CustomStrategy(
     for (i = 0; i < ary.length - 1; i+=2) {
       result[ary[i]] = ary[i + 1];
     }
-    /*
-    console.log(req._json.email);
+    
     //check if user exists in DB
-    const title = req._json.email;
-    const id = req._json.sub.toString();
+    const title = result._json.email;
+    const id = result._json.sub.toString();
     User.findOne({where: {email: title}})
       .then((studentExists) => {
       if(studentExists){
@@ -38,7 +37,7 @@ passport.use(new CustomStrategy(
         //Student info is in studentExists
         if(studentExists.name != null){
           studentExists.update({
-            name: req._json.name,
+            name: result._json.name,
             auth_id: id
           })
           //Add this student to the student table too
@@ -47,20 +46,18 @@ passport.use(new CustomStrategy(
             //create student if user is not an admin
             if(!studentExists.is_admin){
               Student.create({
-                name: req._json.name,
-                email: req._json.email
+                name: result._json.name,
+                email: result._json.email
               })
             }
           });
         }
-        done(null , studentExists);
+        callback(null , studentExists);
       }
       else{
-        done();
+        callback();
       }
     })
-  */
-   callback(null, user);
   })
 );
 
@@ -87,7 +84,6 @@ module.exports = app => {
   );
 
   app.get('/logout', function (req, res) {
-    req.logout();
     req.logout();
     res.redirect('/');
   });
