@@ -2,17 +2,15 @@
 <center>
   <Header />
   <div class="run">
-    <v-btn class="primary" @click="buildModels()">BUILD -- REMOVE</v-btn>
     <v-btn class="primary" @click="doSubmit()">Submit</v-btn>
     <hr>
     <div class="left-list">
       <h2 class="h2_2">Remaining</h2>
       <hr>
-      <draggable group="projects" :list="students">
-        <div class="element" v-for="(student, i) in students" :key="i">  
-          <span class="p2" v-if="student.project_id == null"><hr></span> 
-          <v-app-bar-nav-icon small class="icon1" v-if="student.project_id == null"></v-app-bar-nav-icon>
-          <span class="p2" v-if="student.project_id == null">{{student.name}}<hr></span>
+      <draggable group="projects" :list="nullStuds">
+        <div class="element" v-for="(student, i) in nullStuds" :key="i">  
+          <v-app-bar-nav-icon small class="icon1"></v-app-bar-nav-icon>
+          <span class="p2">{{student.name}}</span>
         </div>
       </draggable>
     </div>
@@ -22,9 +20,8 @@
         <hr>
         <draggable :list="model.students" class="drag1" group="projects" @change="setItems">
           <div class="element" v-for="student in model.students" :key="student.id">
-            <span class="p2"><hr></span> 
             <v-app-bar-nav-icon small class="icon1"></v-app-bar-nav-icon>
-            <span class="p2" >{{student.name}} <hr></span>
+            <span class="p2" >{{student.name}}</span>
           </div>
         </draggable>
       </span>
@@ -51,6 +48,7 @@ export default {
       students: [],
       projects: [],
       projectsModel: [],
+      nullStuds: [],
       models: [],
       show: true,
     }
@@ -67,25 +65,12 @@ export default {
       self.students = responseStud.data
       self.projects = responseProj.data
     }))
-    .catch(e => {
-      // react on errors.
-      self.errors.push(e)
-    })
-  },
-  methods: {
-    doSubmit: function() {
-      axios.put(process.env.VUE_APP_BASE_API_URL + '/students', {
-       students: this.students,
-       withCredentials: true 
-      })
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    },
-    buildModels: function() {
+    .then( response => {
+      console.log(response)
+      for (let st of this.students) {
+        if (st.project_id === null)
+          this.nullStuds.push(st)
+      }
       for (let pr of this.projects) {
         let studList=[];
         for (let st of this.students) {
@@ -94,7 +79,42 @@ export default {
         }
         this.models.push({project: pr, students:  studList})
       }
-      console.log("mod: " + this.models)
+    })
+    .catch(e => {
+      // react on errors.
+      self.errors.push(e)
+    })
+  },
+  methods: {
+    doSubmit: function() {
+      for (let pr of this.models) {
+        for (let st of pr.students) {
+          st.project_id = pr.project.id
+          axios.put(process.env.VUE_APP_BASE_API_URL + '/students/' + st.id, {
+            project_id: st.project_id,
+            withCredentials: true
+          })
+          .then(response => {
+            console.log(response)
+          })
+          .catch(err => {
+            this.errors.push(err)
+          })
+        }
+      }
+      for (let st of this.nullStuds) {
+        st.project_id = null
+        axios.put(process.env.VUE_APP_BASE_API_URL + '/students/' + st.id, {
+          project_id: st.project_id,
+          withCredentials: true
+        })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(err => {
+          this.errors.push(err)
+        })
+      }
     },
 
     setItems: function() {

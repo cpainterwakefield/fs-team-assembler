@@ -1,7 +1,7 @@
 -- Inserts dummy projects into DB
-INSERT INTO projects (min_students, max_students) VALUES (4, 5);
-INSERT INTO projects (min_students, max_students) VALUES (2, 4);
-INSERT INTO projects (min_students, max_students) VALUES (3, 5);
+INSERT INTO projects (name, min_students, max_students) VALUES ('project1', 4, 5);
+INSERT INTO projects (name, min_students, max_students) VALUES ('project2', 2, 4);
+INSERT INTO projects (name, min_students, max_students) VALUES ('project3', 3, 5);
 
 
 -- Inserts dummy students into DB

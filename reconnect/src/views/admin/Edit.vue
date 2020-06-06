@@ -7,25 +7,27 @@
         <h2 class="h2_1">Add Student(s)/Project(s)</h2>
         <div class="add_element">
           <v-card>
+            <h5>Upload a .csv file, each line formatted as follows: student name, student email</h5>
             <v-card-text class="v-card-text1">
               <v-form v-model="valid">
                 <v-file-input label="Add Students (CSV)" outlined accept=".csv" background-color="white" v-model="studentsFile"></v-file-input>
               </v-form>
             </v-card-text>
             <v-card-actions class="c1">
-              <v-btn color="primary" @click="submitStudentFile()">Submit</v-btn>
+              <v-btn color="primary" @click="submitStudentFile">Submit</v-btn>
             </v-card-actions>
           </v-card>
         </div>
         <div class="add_element">
           <v-card>
+            <h5>Upload a .csv file, each line formatted as follows: Company Name, Contact Name, Contact Email, Project Name, MinStudents, Max Students</h5>
             <v-card-text class="v-card-text1">
               <v-form v-model="valid">
-                <v-file-input label="Add Projects (CSV)" outlined accept=".csv" background-color="white" multiple v-model="projectsFile"></v-file-input>
+                <v-file-input label="Add Projects (CSV)" outlined accept=".csv" background-color="white" v-model="projectsFile"></v-file-input>
               </v-form>
             </v-card-text>
             <v-card-actions class="c1">
-              <v-btn color="primary">Submit</v-btn>
+              <v-btn color="primary" @click="submitProjectFile">Submit</v-btn>
             </v-card-actions>
           </v-card>
         </div>
@@ -115,8 +117,8 @@
 
 import Header from '@/components/HeaderAdmin.vue'
 import axios from 'axios'
-const neatCsv = require('neat-csv');
-const fs = require('fs');
+//const neatCsv = require('neat-csv');
+//const fs = require('fs');
 
 export default {
   name: 'Profile',
@@ -231,21 +233,98 @@ export default {
     },
     changeLink: function() {
       axios.put(process.env.VUE_APP_BASE_API_URL + '/project_link/1', {
+        withCredentials: true,
         link: this.link
       })
       .then(response => {
         console.log(response)
       })
     },
+    submitProjectFile: function() {
+      
+      console.log(this.projectsFile)
+      const readerP = new FileReader();
+readerP.readAsText(this.projectsFile);
+      console.log(this.projectsFile)
+  
+      readerP.onload = e => {
+
+        var projs = this.parseCSV(e.target.result)
+
+        for (let pr of projs) {
+          axios.post(process.env.VUE_APP_BASE_API_URL + '/projects', {
+            withCredentials: true,
+            name: pr.name,
+            client_name: pr.client_name,
+            client_email: pr.client_email,
+            client_company: pr.client_company,
+            min_students: pr.min_students,
+            max_students: pr.max_students
+          })
+          .then (response => { 
+            console.log(response)
+          })
+          .catch (err => {
+            this.errors.push(err)
+          })
+        }
+        
+        console.log(projs)
+      }
+    },
     submitStudentFile: function() {
       console.log(this.studentsFile)
-fs.readFile(this.studentsFile, (error, data) => {
-  if (error) {
-    return console.log('error reading file');
-  }
-  neatCsv(data)
-    .then((parsedData) => console.log(parsedData));
-});
+      const reader = new FileReader();
+
+      reader.readAsText(this.studentsFile);
+      reader.onload = e => {
+        console.log(e.target.result)
+        var studs = this.parseCSV(e.target.result)
+
+        for (let st of studs) {
+          axios.post(process.env.VUE_APP_BASE_API_URL + '/students', {
+            withCredentials: true,
+            name: st.name,
+            email: st.email 
+          })
+          .then (response => { 
+            console.log(response)
+          })
+          .catch (err => {
+            this.errors.push(err)
+          })
+        }
+      }
+    },
+
+    
+    
+    parseCSV(csv) {
+      console.log(csv)
+      var lines=csv.split("\n");
+
+      var result = [];
+
+      // NOTE: If your columns contain commas in their values, you'll need
+      // to deal with those before doing the next step 
+      // (you might convert them to &&& or something, then covert them back later)
+      // jsfiddle showing the issue https://jsfiddle.net/
+      var headers=lines[0].split(",");
+
+      for(var i=1;i<lines.length;i++){
+
+        var obj = {};
+        var currentline=lines[i].split(",");
+
+        for(var j=0;j<headers.length;j++){
+          obj[headers[j]] = currentline[j];
+        }
+
+        result.push(obj);
+
+      }
+
+      return result; //JavaScript object
     }
   },
 }

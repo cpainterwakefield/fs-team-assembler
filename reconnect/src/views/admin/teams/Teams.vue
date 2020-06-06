@@ -3,13 +3,13 @@
   <Header />
   <div class="run">
     <v-btn class="error" to="/admin/teams/edit">Edit</v-btn>
-    <v-btn class="primary" >Export</v-btn>
+    <v-btn class="primary" @click="downloadItem">Export</v-btn>
     <v-btn class="primary" >RUN</v-btn>
     <hr>
     <div class="left-list">
       <h2 class="h2_2">Remaining</h2>
       <div class="element1" v-for="(student, i) in students" :key="i">
-        <span class="p1" v-if="student.projectId == null"><hr>{{student.name}}<hr></span>
+        <div v-if="student.project_id == null"><hr>{{student.name}}<hr></div>
       </div>
     </div>
     <div class="right-list">
@@ -17,7 +17,7 @@
         <h2 class="h2_2">{{project.name}} ({{project.min_students}}, {{project.max_students}})</h2>
         <hr>
         <div class="element1" v-for="(student, i) in students" :key="i">
-          <div class="p1" v-if="student.projectId == project.id"><hr>{{student.name}}<hr></div>
+          <div v-if="student.project_id == project.id"><hr>{{student.name}}<hr></div>
         </div>
       </span>
     </div>
@@ -41,7 +41,8 @@ export default {
       students: [],
       students_all: [],
       students_left: [],
-      projects: []
+      projects: [],
+      models: []
       
     }
   },
@@ -61,6 +62,26 @@ export default {
       // react on errors.
       self.errors.push(e)
     })
+  },
+    
+  methods: {
+    downloadItem () {
+      for (let pr of this.projects) {
+        let studList=[];
+        for (let st of this.students) {
+          if (st.project_id === pr.id)
+            studList.push(st.name)
+        }
+        this.models.push({project: pr.name, students:  studList})
+      }
+          var str = JSON.stringify(this.models);
+          const blob = new Blob([str], { type: 'application/txt' })
+          const link = document.createElement('a')
+          link.href = URL.createObjectURL(blob)
+          link.download = 'export'
+          link.click()
+          URL.revokeObjectURL(link.href)
+    }
   }
 }
 
