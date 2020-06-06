@@ -4,8 +4,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     const authcheck = (req,res,next)=>{
-                next(); // COMMENT OUT -- ONLY FOR DEV
-/*        if(!req.user){
+        if(!req.user){
             // if user is not logged in this executes
             res.redirect("/auth/login");
         }else{
@@ -16,7 +15,8 @@ module.exports = app => {
             else{
                 res.redirect("/auth/login");
             }
-        }*/
+        }
+        res.redirect("/");
     }
 
     // Create a new project 
