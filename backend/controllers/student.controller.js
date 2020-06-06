@@ -12,15 +12,6 @@ project_id: int
 */
 
 exports.create = (req, res) => {
-    if (!req.body.name) {
-        // If there is no name, then there's no point in storing a Student.
-        res.status(400).send({
-            message: "Name cannot be empty."
-        });
-
-        // Don't create anything.
-        return;
-    }
     if (!req.body.email) {
         // If there is no name, then there's no point in storing a Client.
         res.status(400).send({

@@ -5,23 +5,23 @@ INSERT INTO projects (min_students, max_students) VALUES (3, 5);
 
 
 -- Inserts dummy students into DB
-INSERT INTO students (id, selection_preference, first_project, second_project, third_project, email) VALUES (1, true, 1, 2, 3, 'devon@mines.edu');
+INSERT INTO students (name,selection_preference, first_project, second_project, third_project, email) VALUES ('devon', true, 1, 2, 3, 'devon@mines.edu');
 
-INSERT INTO students (id, selection_preference, first_project, second_project, third_project, email) VALUES (2, true, 3, 1, 2, 'clive@mines.edu');
+INSERT INTO students (name,selection_preference, first_project, second_project, third_project, email) VALUES ('clive', true, 3, 1, 2, 'clive@mines.edu');
 
-INSERT INTO students (id, selection_preference, first_project, second_project, third_project, email) VALUES (3, true, 3, 2, 1, 'bob@mines.edu');
+INSERT INTO students (name,selection_preference, first_project, second_project, third_project, email) VALUES ('bob'. true, 3, 2, 1, 'bob@mines.edu');
 
-INSERT INTO students (id, selection_preference, first_project, second_project, third_project, email) VALUES (4, true, 2, 3, 1, 'alice@mines.edu');
+INSERT INTO students (name,selection_preference, first_project, second_project, third_project, email) VALUES ('alice', true, 2, 3, 1, 'alice@mines.edu');
 
 
 -- Extra students for testing avoids
-INSERT INTO students (id, selection_preference, first_project, second_project, third_project, email) VALUES (5, false, 1, 2, 3, 'duncan@mines.edu');
+INSERT INTO students (name,selection_preference, first_project, second_project, third_project, email) VALUES ('duncan', false, 1, 2, 3, 'duncan@mines.edu');
 
-INSERT INTO students (id, selection_preference, first_project, second_project, third_project, email) VALUES (6, false, 1, 2, 3, 'cathy@mines.edu');
+INSERT INTO students (name,selection_preference, first_project, second_project, third_project, email) VALUES ('cathy', false, 1, 2, 3, 'cathy@mines.edu');
 
-INSERT INTO students (id, selection_preference, first_project, second_project, third_project, email) VALUES (7, false, 1, 2, 3, 'barbara@mines.edu');
+INSERT INTO students (name,selection_preference, first_project, second_project, third_project, email) VALUES ('barbara', false, 1, 2, 3, 'barbara@mines.edu');
 
-INSERT INTO students (id, selection_preference, first_project, second_project, third_project, email) VALUES (8, false, 1, 2, 3, 'adam@mines.edu');
+INSERT INTO students (name,selection_preference, first_project, second_project, third_project, email) VALUES ('adam', false, 1, 2, 3, 'adam@mines.edu');
 
 
 -- Inserts student preferences into DB
@@ -55,14 +55,14 @@ INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (1, 7);
 -- Student 2:
 INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (2, 5);
 INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (2, 6);
-INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (2, 8);
+INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (2, 7);
 
 -- Student 3:
 INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (3, 5);
 INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (3, 7);
-INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (3, 8);
+INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (3, 4);
 
 -- Student 4:
 INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (4, 6);
 INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (4, 7);
-INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (4, 8);
+INSERT INTO avoid_teammate_xrefs (student_id, avoidee_id) VALUES (4, 3);

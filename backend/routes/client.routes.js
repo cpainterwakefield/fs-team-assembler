@@ -5,7 +5,7 @@ module.exports = app => {
 
     const authcheck = (req,res,next)=>{
                 next(); // COMMENT OUT -- ONLY FOR DEV
-        if(!req.user){
+/*        if(!req.user){
             // if user is not logged in this executes
             res.redirect("/auth/login");
         }else{
@@ -17,7 +17,7 @@ module.exports = app => {
                 res.redirect("/auth/login");
             }
         }
-    }
+  */  }
 
     // Create a new client
     router.post("/", authcheck ,clients.create);

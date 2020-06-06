@@ -5,17 +5,17 @@ module.exports = app => {
 
     const authcheck = (req,res,next)=>{
                 next(); // COMMENT OUT -- ONLY FOR DEV
-        if(!req.user){
+/*        if(!req.user){
             // if user is not logged in this executes
             res.redirect("/auth/login");
         }else{
             //If they are logged in
             next();
         }
-    }
+  */  }
     const ADMINauthcheck = (req,res,next)=>{
                 next(); // COMMENT OUT -- ONLY FOR DEV
-        if(!req.user){
+    /*    if(!req.user){
             // if user is not logged in this executes
             res.redirect("/auth/login");
         }else{
@@ -27,7 +27,7 @@ module.exports = app => {
                 res.redirect("/auth/login");
             }
         }
-    }
+   */ }
 
     // Create a new student 
     router.post("/", ADMINauthcheck ,students.create);

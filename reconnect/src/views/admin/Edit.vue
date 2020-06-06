@@ -9,11 +9,11 @@
           <v-card>
             <v-card-text class="v-card-text1">
               <v-form v-model="valid">
-                <v-file-input label="Add Students (CSV)" outlined accept=".csv" background-color="white" multiple></v-file-input>
+                <v-file-input label="Add Students (CSV)" outlined accept=".csv" background-color="white" v-model="studentsFile"></v-file-input>
               </v-form>
             </v-card-text>
             <v-card-actions class="c1">
-              <v-btn color="primary">Submit</v-btn>
+              <v-btn color="primary" @click="submitStudentFile()">Submit</v-btn>
             </v-card-actions>
           </v-card>
         </div>
@@ -21,7 +21,7 @@
           <v-card>
             <v-card-text class="v-card-text1">
               <v-form v-model="valid">
-                <v-file-input label="Add Projects (CSV)" outlined accept=".csv" background-color="white" multiple></v-file-input>
+                <v-file-input label="Add Projects (CSV)" outlined accept=".csv" background-color="white" multiple v-model="projectsFile"></v-file-input>
               </v-form>
             </v-card-text>
             <v-card-actions class="c1">
@@ -115,6 +115,8 @@
 
 import Header from '@/components/HeaderAdmin.vue'
 import axios from 'axios'
+const neatCsv = require('neat-csv');
+const fs = require('fs');
 
 export default {
   name: 'Profile',
@@ -139,8 +141,9 @@ export default {
       projMin: null,
       projMax: null,
       valid0: false,
-      valid1: false
-    
+      valid1: false,
+      studentsFile: null,
+      projectsFile: null,
     }
   },
   mounted() {
@@ -233,6 +236,16 @@ export default {
       .then(response => {
         console.log(response)
       })
+    },
+    submitStudentFile: function() {
+      console.log(this.studentsFile)
+fs.readFile(this.studentsFile, (error, data) => {
+  if (error) {
+    return console.log('error reading file');
+  }
+  neatCsv(data)
+    .then((parsedData) => console.log(parsedData));
+});
     }
   },
 }

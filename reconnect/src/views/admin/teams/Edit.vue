@@ -8,7 +8,7 @@
     <div class="left-list">
       <h2 class="h2_2">Remaining</h2>
       <hr>
-      <draggable group="projects">
+      <draggable group="projects" :list="students">
         <div class="element" v-for="(student, i) in students" :key="i">  
           <span class="p2" v-if="student.project_id == null"><hr></span> 
           <v-app-bar-nav-icon small class="icon1" v-if="student.project_id == null"></v-app-bar-nav-icon>
@@ -19,8 +19,8 @@
     <div class="right-list">
       <span class="proj1" v-for="model in models" :key="model.project.id">
         <h2 class="h2_2">{{model.project.name}} ({{model.project.min_students}}, {{model.project.max_students}})</h2>
-        <draggable :list="model.students" class="drag1" group="projects">
-          <hr>
+        <hr>
+        <draggable :list="model.students" class="drag1" group="projects" @change="setItems">
           <div class="element" v-for="student in model.students" :key="student.id">
             <span class="p2"><hr></span> 
             <v-app-bar-nav-icon small class="icon1"></v-app-bar-nav-icon>
@@ -86,8 +86,6 @@ export default {
       });
     },
     buildModels: function() {
-      console.log("IN MOUNT")
-      console.log(this.projects)
       for (let pr of this.projects) {
         let studList=[];
         for (let st of this.students) {
@@ -97,6 +95,12 @@ export default {
         this.models.push({project: pr, students:  studList})
       }
       console.log("mod: " + this.models)
+    },
+
+    setItems: function() {
+      console.log("INT SET") 
+       console.log(event) 
+        console.log(this.models)
     }
 
   },
