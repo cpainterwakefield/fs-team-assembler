@@ -1,4 +1,5 @@
 const scoring = require('../scoring');
+const dbInt = require('../db_interactions');
 
 /**
  * A object encoding four students in a 4-clique of preferences.
@@ -225,4 +226,17 @@ test('Team scoring w/ teammate preference should be accurate.', () => {
 test('Team scoring for projects should be accurate.', () => {
     // Should be 25
     expect(scoring.scoreProject(testProjectClique)).toBe(25);
+});
+
+test('Assuming easy test data is loaded, team scoring projects should be accurate.', () => {
+    (async () => {
+        let algoJson = await dbInt.loadAndConvert();
+        let students = algoJson.students;
+        let projects = algoJson.projects;
+
+        let testProject = projects[2];
+        testProject.people = [students[0], students[1], students[2], students[3]];
+
+        expect(scoring.scoreProject(testProject)).toBe(25);
+    })();
 });
