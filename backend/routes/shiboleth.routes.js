@@ -14,9 +14,9 @@ passport.deserializeUser((id,done) => {
     done(null,user);
   })
 });
+
 passport.use(new CustomStrategy(
-  function(req, callback) {
-    res.send(req);
+  function(dump, callback) {
     var envvar864 = req.header['!~passenger-envvars'];
     var envvarDump = new Buffer(envvarB64, 'base64').toString('binary');
     var ary = req.split("\0");
@@ -26,7 +26,6 @@ passport.use(new CustomStrategy(
     for (i = 0; i < ary.length - 1; i+=2) {
       result[ary[i]] = ary[i + 1];
     }
-    res.send(result);
     /*
     console.log(req._json.email);
     //check if user exists in DB
@@ -75,7 +74,7 @@ module.exports = app => {
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
       })
   );
-  /*
+  
   app.post(config.passport.path,
     passport.authenticate(config.passport.strategy,
       {
@@ -86,7 +85,7 @@ module.exports = app => {
       res.redirect('https://reconnect.mines.edu/student');
     }
   );
-*/
+
   app.get('/logout', function (req, res) {
     req.logout();
     req.logout();

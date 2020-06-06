@@ -71,7 +71,7 @@ module.exports = app => {
   //   redirecting the user to google.com.  After authorization, Google
   //   will redirect the user back to this application at /auth/google/callback
   // IMPORTANT: WHATEVER IS IN SIDE THE CLOSED BRACKETS AFTER SCOPE: BELOW IS THE INFORMATION WE GET BACK
-  app.get('/auth/login',
+  app.get('/',
   passport.authenticate('google', { 
     scope: ['profile', 'email'] 
   }));

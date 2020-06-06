@@ -7,7 +7,7 @@ module.exports = app => {
                 next(); // COMMENT OUT -- ONLY FOR DEV
         if(!req.user){
             // if user is not logged in this executes
-            res.redirect("/auth/login");
+            res.redirect("/");
         }else{
             //If they are logged in
             next();
@@ -17,14 +17,14 @@ module.exports = app => {
                 next(); // COMMENT OUT -- ONLY FOR DEV
         if(!req.user){
             // if user is not logged in this executes
-            res.redirect("/auth/login");
+            res.redirect("/");
         }else{
             //If they are logged in
             if(req.user.is_admin){
                 next();
             }
             else{
-                res.redirect("/auth/login");
+                res.redirect("/");
             }
         }
     }
