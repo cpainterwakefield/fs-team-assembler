@@ -12,7 +12,6 @@ module.exports = app => {
             next();
         }
         res.redirect("/");
-
     }
     const ADMINauthcheck = (req,res,next)=>{
         if(!req.user){
@@ -20,7 +19,7 @@ module.exports = app => {
             res.redirect("/");
         }else{
             //If they are logged in
-            if(req.user.is_admin){
+            if(req.user.minAcc){
                 next();
             }
             else{
@@ -29,6 +28,8 @@ module.exports = app => {
         }
         res.redirect("/");
     }
+    //Get the current student id
+    router.get("/retrieve", authcheck, students.retrieve);
 
     // Create a new student 
     router.post("/", ADMINauthcheck ,students.create);

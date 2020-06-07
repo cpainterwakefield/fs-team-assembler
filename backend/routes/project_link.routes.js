@@ -9,7 +9,7 @@ module.exports = app => {
             res.redirect("/auth/login");
         }else{
             //If they are logged in
-            if(req.user.is_admin){
+            if(req.user.minAcc){
                 next();
             }
             else{

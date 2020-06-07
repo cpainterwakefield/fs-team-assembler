@@ -7,12 +7,34 @@ const Student = db.students;
 const Op = db.Sequelize.Op;
 
 passport.serializeUser((user,done) => {
-  done(null, user.id);
-});
-passport.deserializeUser((id,done) => {
-  User.findByPk(id).then((user) => {
-    done(null,user);
+  //To create a cookie find a student with matching email to the user
+  Student.findOne({
+    where:{
+      email: user.email
+    }
   })
+  //when/if that student is found return a cookie containing userID, studentID, email, and is_admin
+  .then((studentFound) => {
+    done(null, {
+    uid: user.id,
+    sid: studentFound.id,
+    email: user.mail,
+    minAcc: user.is_admin
+    });
+  })
+});
+passport.deserializeUser((information,done) => {
+  var id = information.user.id;
+  var Uemail = information.user.email;
+  //if a student return student id or if admin return user id
+  done(null, {
+    user: {
+      uid: user.id,
+      sid: studentFound.id,
+      email: user.mail,
+      minAcc: user.is_admin
+    }
+  });
 });
 
 passport.use(new CustomStrategy(
@@ -26,8 +48,6 @@ passport.use(new CustomStrategy(
     for (i = 0; i < ary.length - 1; i+=2) {
       result[ary[i]] = ary[i + 1];
     }
-    
-    res.send(result);
     //check if user exists in DB
     const title = result.mail;
     User.findOne({where: {email: title}})
@@ -63,7 +83,7 @@ passport.use(new CustomStrategy(
 
 module.exports = app => {
 
-  app.get('/',
+  app.get('/login',
     passport.authenticate(config.passport.strategy,
       {
         successRedirect: 'https://reconnect.mines.edu/student',
