@@ -43,14 +43,27 @@ app.use(passport.session());
 
 //app.use('/student', routes);
 
-require("./routes/routes.google")(app);
-//require("./routes/shiboleth.routes")(app);
+//require("./routes/routes.google")(app);
+require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
+
+app.get('/dump', function(req, res){
+  var envvar864 = req.header['!~passenger-envvars'];
+    var envvarDump = new Buffer(envvar864, 'base64').toString('binary');
+    var ary = envvarDump.split("\0");
+    var result = {};
+    var i;
+
+    for (i = 0; i < ary.length - 1; i+=2) {
+      result[ary[i]] = ary[i + 1];
+    }
+  res.send(result.mail);
+})
 
 app.get('/student', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));

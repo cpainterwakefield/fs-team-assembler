@@ -38,7 +38,7 @@ passport.deserializeUser((information,done) => {
 });
 
 passport.use(new CustomStrategy(
-  function(req, callback) {
+  function(req, done) {
     var envvar864 = req.header['!~passenger-envvars'];
     var envvarDump = new Buffer(envvar864, 'base64').toString('binary');
     var ary = envvarDump.split("\0");
@@ -71,10 +71,11 @@ passport.use(new CustomStrategy(
             }
           });
         }
-        callback(null , studentExists);
+        done(null , studentExists);
       }
       else{
-        callback();
+        res.redirect('/notRegistered');
+        done(null);
       }
     })
   })
