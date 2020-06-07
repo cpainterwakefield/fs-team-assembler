@@ -84,7 +84,7 @@ exports.findAll = (req, res) => {
 
 // Get a single Student from the database using id given by shibboleth
 exports.findOne = (req, res) => {
-    const id = req["user"].id;
+    const id = req["user"].student.id;
 
     Student.findByPk(id)
         .then(data => {

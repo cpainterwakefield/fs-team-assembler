@@ -5,6 +5,6 @@ module.exports = {
       },
       passport: {
         strategy: 'custom',
-        path: '/login'
+        path: '/'
       }
   };
