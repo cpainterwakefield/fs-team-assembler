@@ -232,6 +232,25 @@ var aj = (async () => {
 })();
 */
 
+const scoring = require('../scoring');
+const algorithm = require('../algorithm');
+
+// Tests baseline scoring, mostly functionality
+/*
 (async () => {
-    console.log(await dbInt.loadAndConvert());
+    var testData = await dbInt.loadAndConvert();
+    var seed = seeding.greedySeedInitial(testData.students, (await testData).projects, 100);
+
+    for (let individual of seed) {
+        // console.log(individual);
+        let indScore = scoring.scoreAllProjects(individual);
+        console.log(indScore);
+    }
+})();
+*/
+
+// Tests genetic part
+(async () => {
+    var geneticResult = await algorithm.runGeneticAlgorithm();
+    console.log(scoring.scoreAllProjects(geneticResult));
 })();

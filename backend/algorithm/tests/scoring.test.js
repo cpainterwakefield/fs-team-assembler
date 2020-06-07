@@ -228,6 +228,7 @@ test('Team scoring for projects should be accurate.', () => {
     expect(scoring.scoreProject(testProjectClique)).toBe(25);
 });
 
+/*
 test('Assuming easy test data is loaded, team scoring projects should be accurate.', () => {
     (async () => {
         let algoJson = await dbInt.loadAndConvert();
@@ -240,3 +241,4 @@ test('Assuming easy test data is loaded, team scoring projects should be accurat
         expect(scoring.scoreProject(testProject)).toBe(25);
     })();
 });
+*/
