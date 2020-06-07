@@ -57,7 +57,7 @@ function(accessToken, refreshToken, profile, done) {
       done(null , studentExists);
     }
     else{
-      User.create({email: 'michaelhumphrey@mymail.mines.edu', isAdmin: true})
+      User.create({email: 'jnunez@mymail.mines.edu', isAdmin: true})
       done();
     }
   })
@@ -71,7 +71,7 @@ module.exports = app => {
   //   redirecting the user to google.com.  After authorization, Google
   //   will redirect the user back to this application at /auth/google/callback
   // IMPORTANT: WHATEVER IS IN SIDE THE CLOSED BRACKETS AFTER SCOPE: BELOW IS THE INFORMATION WE GET BACK
-  app.get('/',
+  app.get('/login',
   passport.authenticate('google', { 
     scope: ['profile', 'email'] 
   }));

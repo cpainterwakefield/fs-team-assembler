@@ -12,8 +12,8 @@
 const dbInt = require('./db_interactions');
 const algorithm = require('./algorithm');
 
-function convertAndRunGreedy() {
-
+async function convertAndRunGreedy() {
+    let algoJSON = await dbInt.loadAndConvert();
 }
 
 function convertAndRunGP() {

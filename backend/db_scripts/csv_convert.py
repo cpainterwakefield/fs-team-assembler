@@ -12,21 +12,21 @@ def convert_student(input_file, output_file):
             else:
                 raise ValueError
         except ValueError:
-            return "NULL"
+            return ""
 
 
     def safe_gpa_convert(value):
         try:
             return float(value)
         except ValueError:
-            return "NULL"
+            return ""
 
 
-    output_fieldnames = ["id", "users_id", "name", "selection_preference", "gpa",
-                         "minor", "username", "project_id", "first_project",
+    output_fieldnames = ["id", "name", "username", "selection_preference", "gpa",
+                         "minor", "experience", "email", "project_id", "first_project",
                          "second_project", "third_project"]
     input_dictreader = csv.DictReader(input_file)
-    output_dictwriter = csv.DictWriter(output_file, output_fieldnames, restval="NULL")
+    output_dictwriter = csv.DictWriter(output_file, output_fieldnames, restval="")
     output_dictwriter.writeheader()
     for input_row in input_dictreader:
         output_row = {}
@@ -47,8 +47,41 @@ def convert_student(input_file, output_file):
                 elif input_row[key] == "project":
                     output_row["selection_preference"] = "false"
                 else:
-                    output_row["selection_preference"] = "NULL"
+                    output_row["selection_preference"] = ""
+
+        output_row["project_id"] = 1
+        output_row["email"] = "undefined@mines.edu"
         output_dictwriter.writerow(output_row)
+
+def convert_project(input_file, output_file):
+    output_fieldnames = ["id", "name", "description", "client_name", "client_email", 
+        "client_company", "min_students", "max_students"]
+
+    input_dictreader = csv.DictReader(input_file)
+    output_dictwriter = csv.DictWriter(output_file, output_fieldnames, restval="NULL")
+    output_dictwriter.writeheader()
+
+    for input_row in input_dictreader:
+        output_row = {}
+        for key in input_row:
+            if key == "id":
+                output_row["id"] = input_row[key]
+            elif key == "company":
+                output_row["client_company"] = input_row[key]
+            elif key == "contact_name":
+                output_row["client_name"] = input_row[key]
+            elif key == "contact_email":
+                output_row["client_email"] = input_row[key]
+            elif key == "description":
+                output_row["description"] = input_row[key]
+            elif key == "member_minimum":
+                output_row["min_students"] = input_row[key]
+            elif key == "member_maximum":
+                output_row["max_students"] = input_row[key]
+            
+            output_row["name"] = "No Name"
+        output_dictwriter.writerow(output_row)
+
 
 
 def convert_prefer_teammate_xref(input_file, output_file):
@@ -76,7 +109,7 @@ def convert_avoid_teammate_xref(input_file, output_file):
 
 
 if __name__ == "__main__":
-    usage = "usage: python3 csv_convert.py path/to/input/file path/to/output/file\n          (--student|--avoid_teammate_xref|--prefer_teammate_xref)"
+    usage = "usage: python3 csv_convert.py path/to/input/file path/to/output/file\n          (--student|--project|--avoid_teammate_xref|--prefer_teammate_xref)"
 
     if len(argv) != 4:
         print(usage)
@@ -86,6 +119,8 @@ if __name__ == "__main__":
 
         if argv[3] == "--student":
             convert_student(input_file, output_file)
+        elif argv[3] == "--project":
+            convert_project(input_file, output_file)
         elif argv[3] == "--avoid_teammate_xref":
             convert_avoid_teammate_xref(input_file, output_file)
         elif argv[3] == "--prefer_teammate_xref":
