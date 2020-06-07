@@ -225,16 +225,32 @@ const dbInt = require('../db_interactions');
     console.log(await dbInt.getAllStudents());
     console.log(await dbInt.getStudentPk(0));
 })();
-*/
 
 var aj = (async () => {
-    const dbJSON = (async () => await dbInt.getDBJson())();
-    let algoJSON = await dbInt.convertDBResponse(await dbJSON);
-    return algoJSON;
+    const dbJSON = await dbInt.getDBJson();
+    return dbInt.convertDBResponse(await dbJSON);
 })();
+*/
 
+const scoring = require('../scoring');
+const algorithm = require('../algorithm');
+
+// Tests baseline scoring, mostly functionality
+/*
 (async () => {
-    let algoJSON = await aj;
-    console.log(algoJSON.students);
-    console.log(algoJSON.projects);
+    var testData = await dbInt.loadAndConvert();
+    var seed = seeding.greedySeedInitial(testData.students, (await testData).projects, 100);
+
+    for (let individual of seed) {
+        // console.log(individual);
+        let indScore = scoring.scoreAllProjects(individual);
+        console.log(indScore);
+    }
+})();
+*/
+
+// Tests genetic part
+(async () => {
+    var geneticResult = await algorithm.runGeneticAlgorithm();
+    console.log(scoring.scoreAllProjects(geneticResult));
 })();

@@ -7,9 +7,12 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     dialect: dbConfig.dialect,
     operatorAliases: false,
 
+    // Disables logging to prevent test interference
+    logging: false,
+
     define: {
         underscored: true,
-    timestamps: false
+        timestamps: false
     },
 
     pool: {

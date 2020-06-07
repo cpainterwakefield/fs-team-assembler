@@ -35,6 +35,7 @@ function generationSelection(generation) {
         }
     }
 
+    console.log(fitProject);
     return _.cloneDeep(fitProject);
 }
 
@@ -142,9 +143,10 @@ function evolvePopulation(population) {
  *  
  *  These values can be altered to produce a potential more fit result, however, at the cost of run time.  
  */
-function runGeneticAlgorithm() {
-    let students = dbInt.getAllStudents();
-    let projects = dbInt.getAllProjects();
+async function runGeneticAlgorithm() {
+    let testData = await dbInt.loadAndConvert();
+    let students = testData.students; 
+    let projects = testData.projects;
 
     //Making initial greedy generation
     let generation = seeding.greedySeedInitial(students, projects, 100);
@@ -155,6 +157,10 @@ function runGeneticAlgorithm() {
 
     for (i = 0; i < maxEvolveTimes; i++) {
         newGeneration = evolvePopulation(generation);
+
+        // Debug: print score of generation
+        // console.log(scoring.scoreAllProjects(newGeneration));
+
         // If it reaches a point where there is not much difference in highest fit individuals, return.
         if (Math.abs(scoring.scoreAllProjects(generationSelection(newGeneration)) -
             scoring.scoreAllProjects(generationSelection(generation))) < DIFFERENCE_THRESHOLD) {
@@ -164,6 +170,7 @@ function runGeneticAlgorithm() {
             generation = newGeneration;
         }
     }
+
     return generationSelection(newGeneration);
 }
 
