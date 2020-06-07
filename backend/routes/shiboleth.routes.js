@@ -6,35 +6,34 @@ const User = db.users;
 const Student = db.students;
 const Op = db.Sequelize.Op;
 
+//This handles creating a cookie to give to the user
 passport.serializeUser((user,done) => {
-  //To create a cookie find a student with matching email to the user
-  Student.findOne({
-    where:{
-      email: user.email
-    }
-  })
-  //when/if that student is found return a cookie containing userID, studentID, email, and is_admin
-  .then((studentFound) => {
-    done(null, {
-    uid: user.id,
-    sid: studentFound.id,
-    email: user.mail,
-    minAcc: user.is_admin
-    });
-  })
+  //attach the id of the user to the cookie
+  done(null, user.id);
 });
-passport.deserializeUser((information,done) => {
-  var id = information.user.id;
-  var Uemail = information.user.email;
-  //if a student return student id or if admin return user id
-  done(null, {
-    user: {
-      uid: user.id,
-      sid: studentFound.id,
-      email: user.mail,
-      minAcc: user.is_admin
+passport.deserializeUser((id,done) => {
+  //recieve the id from the cookie
+  //find the user in the table of users then
+  User.findById(id)
+  .then((foundUser) => {
+    if(foundUser.is_admin){
+      //If foundUser is an admin return only foundUser since no student exists
+      done(null, foundUser);
+    }else{
+      var studentEmail = foundUser.email;
+      Student.findOne({where: {email: studentEmail}})
+      .then((foundStudent) =>{
+        //if a student is found 
+        if(foundStudent){
+          //return user and student so we can access both of those
+          done(null, {
+            user: foundUser,
+            student: foundStudent
+          });
+        }
+      })
     }
-  });
+  })
 });
 
 passport.use(new CustomStrategy(
@@ -51,30 +50,41 @@ passport.use(new CustomStrategy(
     //check if user exists in DB
     const title = result.mail;
     User.findOne({where: {email: title}})
-      .then((studentExists) => {
-      if(studentExists){
-        //Student is part of the course and they can log in
-        //Student info is in studentExists
-        if(studentExists.name != null){
-          studentExists.update({
-            name: result.displayName,
+      .then((userExists) => {
+      //If they exist then add their information from the shibboleth envvar
+      if(userExists){
+        //if user.name is null then there is no info on that user yet
+        //so lets add it
+        if(userExists.name == null){
+          userExists.update({
+            name: result.displayName
           })
-          //Add this student to the student table too
-          User.findOne({where: {email: title}})
-          .then((createStudent) => {
-            //create student if user is not an admin
-            if(!studentExists.is_admin){
-              Student.create({
-                name: result.displayName,
-                email: result.mail
-              })
-            }
-          });
         }
-        done(null , studentExists);
+        //If user is admin then they should not be added as a student
+        if(userExists.is_admin){
+          done(null,userExists);
+        }
+        //Add this user information to student table too if they exist
+        Student.findOne({where: {email: title}})
+        .then((createStudent) => {
+          //if no student exists then create one
+          if(!createStudent){
+            Student.create({
+              name: result.displayName,
+              email: result.mail
+            })
+            //student created now finish
+            done(null, userExists)
+          }
+          //Student already exists so finish
+          else{
+            done(null,userExists)
+          }
+        })        
       }
+      //There is no user in the table that has that email
+      //Meaning they are not in the class or have not been added yet
       else{
-        res.redirect('/notRegistered');
         done(null);
       }
     })
@@ -84,11 +94,15 @@ passport.use(new CustomStrategy(
 
 module.exports = app => {
 
-  app.get('/login',
+  app.get('/',
     passport.authenticate(config.passport.strategy,
       {
-        successRedirect: 'https://reconnect.mines.edu/student',
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
+      }, function(req, res){
+        if(req.user.minAcc){
+          res.redirect("/admin");
+        }
+        res.redirect("/student");
       })
   );
   
@@ -99,7 +113,10 @@ module.exports = app => {
         failureFlash: true
       }),
     function (req, res) {
-      res.redirect('https://reconnect.mines.edu/student');
+      if(req.user.minAcc){
+        res.redirect("/admin");
+      }
+      res.redirect("/student");
     }
   );
 

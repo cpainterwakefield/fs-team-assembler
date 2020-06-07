@@ -5,7 +5,6 @@ const cors = require("cors");
 const passport = require("passport");
 const keys = require("./config/keys");
 const serveStatic = require("serve-static");
-const router = require('express').Router();
 //nom nom nom
 const cookieSession = require("cookie-session");
 const path = require("path");
@@ -53,7 +52,7 @@ require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
 
-router.get('/dump', function(req, res){
+app.get('/dump', function(req, res){
   var envvar864 = req.header['!~passenger-envvars'];
     var envvarDump = new Buffer(envvar864, 'base64').toString('binary');
     var ary = envvarDump.split("\0");
@@ -66,22 +65,22 @@ router.get('/dump', function(req, res){
   res.send(result.mail);
 });
 
-router.get('/student', function(requests, response){
+app.get('/student', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-router.get('/admin', function(requests, response){
+app.get('/admin', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-router.get('/student/edit', function(requests, response){
+app.get('/student/edit', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-router.get('/admin/projects', function(requests, response){
+app.get('/admin/projects', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-router.get('/admin/edit', function(requests, response){
+app.get('/admin/edit', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-router.get('/admin/teams', function(requests, response){
+app.get('/admin/teams', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
 
