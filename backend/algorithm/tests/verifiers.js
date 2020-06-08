@@ -33,6 +33,14 @@ function everyStudentAssignedOnce(students, projectList) {
     }
 }
 
+/**
+ * Makes sure that no students are on projects with people whom they chose to avoid.
+ * 
+ * Does this by checking every single project and marking whether the student has
+ * avoided anyone else.
+ * 
+ * @param {The list of all projects, populated with students.} projectList 
+ */
 function noAvoidsOnSameProject(projectList) {
     // The total amount of avoids, per project.
     let avoidList = [];
@@ -67,6 +75,8 @@ function noAvoidsOnSameProject(projectList) {
         if (numAvoids > 0) {
             console.log(`Avoided student in same project, proj. ID: ${projectList[avoidIndex].id}`);
 
+            // Add the number of avoids to the total avoids, mark the fact
+            // that there are avoids in the same project.
             totalAvoids += numAvoids;
             areAvoids = true;
         }
