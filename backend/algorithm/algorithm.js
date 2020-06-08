@@ -52,7 +52,7 @@ function generationSelection(generation) {
  * @return {The new generation, a list of individuals.}
  */
 function generateFromFittest(fittestProjectList, numRepeats, entropy=10) {
-    console.log(fittestProjectList);
+    // console.log(fittestProjectList);
 
     //Create an empty generation to fill and return
     let generation = [];
@@ -98,7 +98,7 @@ function generateFromFittest(fittestProjectList, numRepeats, entropy=10) {
         generation.push(currentFittest);
     }
 
-    console.log(generation[0]);
+    // console.log(generation[0]);
     return generation;
 }
 
@@ -163,6 +163,10 @@ async function runGeneticAlgorithm() {
     let testData = await dbInt.loadAndConvert();
     let students = testData.students; 
     let projects = testData.projects;
+
+    if (students == undefined || projects == undefined) {
+        return;
+    }
 
     // Making initial greedy generation
     let generation = seeding.greedySeedInitial(students, projects, 100);
