@@ -43,9 +43,9 @@ app.use(passport.session());
 
 app.use(expressCspHeader({
   directives: {
-    'default-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
-    'img-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
-    'style-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
+    'default-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
+    'img-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
+    'style-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
     'script-src': [SELF, INLINE]
   }
 }));
