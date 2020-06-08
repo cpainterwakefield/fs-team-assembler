@@ -4,8 +4,8 @@
   <div class="projects"> 
     <h1>Projects</h1>
     <div class="table">
-      <h3 class="head2">Company Name</h3> 
       <h3 class="head2">Project Name</h3> 
+      <h3 class="head2">Company Name</h3> 
       <h3 class="head2">Contact Name</h3> 
       <h3 class="head2">Contact Email</h3> 
       <h3 class="head2">Min</h3> 
@@ -13,10 +13,10 @@
       <hr>
       <div class="row" v-for="(project, i) in projects" :key="i">
         <div class="panel1">
-          <div class="list1">{{project.client_company}}</div>
+          <div class="list1">{{project.name}}</div>
         </div>
         <div class="panel1">
-          <div class="list1">{{project.name}}</div>
+          <div class="list1">{{project.client_company}}</div>
         </div>
         <div class="panel1">
           <div class="list1">{{project.client_name}}</div>
@@ -49,10 +49,7 @@ export default {
   data() {
     return {
       valid: true,
-      projects: [
-//        {companyName: 'Company1', projectName: 'Project1', contactName: 'contact1', contactEmail: 'contact1@gmail.com', min: 2, max: 5},
-//        {companyName: 'Company2', projectName: 'Project2', contactName: 'contact2', contactEmail: 'contact2@gmail.com', min: 2, max: 5},
-      ],
+      projects: [],
     }
   },
   mounted() {
@@ -67,7 +64,6 @@ export default {
     .catch(e => {
       self.errors.push(e)
     })
-    console.log("HERE")
   }
 }
 

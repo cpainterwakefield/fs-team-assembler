@@ -33,6 +33,9 @@ module.exports = app => {
     // Update a project via a certain ID
     router.put("/:id", ADMINauthcheck, projects.update);
 
+    // RUNS ALGORITHM
+    router.put("/run", authcheck, projects.run); 
+
     // Delete a project with the given ID
     router.delete("/:id", ADMINauthcheck, projects.delete);
 
