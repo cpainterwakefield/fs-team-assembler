@@ -43,8 +43,10 @@ app.use(passport.session());
 
 app.use(expressCspHeader({
   directives: {
-    'default-src': [SELF],
-    'img-src': [SELF]
+    'default-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net"],
+    'img-src': [SELF],
+    'style-src': [SELF],
+    'script-src': [SELF, INLINE]
   }
 }));
 
