@@ -38,9 +38,9 @@ CREATE TABLE student(
     gpa NUMERIC(4, 3), -- 4 digits total, 3 decimal places
     minor TEXT,
     username TEXT NOT NULL,
-    project_id INTEGER REFERENCES project(id)
-    first_project INTEGER REFERENCES project(id)
-    second_project INTEGER REFERENCES project(id)
+    project_id INTEGER REFERENCES project(id),
+    first_project INTEGER REFERENCES project(id),
+    second_project INTEGER REFERENCES project(id),
     third_project INTEGER REFERENCES project(id)
 );
 

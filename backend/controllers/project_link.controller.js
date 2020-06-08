@@ -1,12 +1,12 @@
 const db = require("../models");
-const Project = db.projects;
+const project_link = db.project_link;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-    if (!req.body.name) {
-        // If there is no name, then there's no point in storing a Project.
+    if (!req.body.link) {
+        // If there is no name, then there's no point in storing a project_link.
         res.status(400).send({
-            message: "Name cannot be empty."
+            message: "link cannot be empty."
         });
 
         // Don't create anything.
@@ -14,18 +14,11 @@ exports.create = (req, res) => {
     }
 
     const project = {
-        name: req.body.name,
-        description: req.body.description,
-        min_students: req.body.min_students,
-        max_students: req.body.max_students,
-        client_name: req.body.client_name,
-        client_email: req.body.client_email,
-        client_company: req.body.client_company,
-        advisor_id: req.body.advisor_id
+        link: req.body.link,
     };
 
-    // Create a Project from the JSON object project.
-    Project.create(project)
+    // Create a project_link from the JSON object project.
+    project_link.create(project)
         .then(data => {
             // Send the actual project data as a response.
             res.send(data);
@@ -35,12 +28,12 @@ exports.create = (req, res) => {
             // or generic error message.
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating a Project."
+                    err.message || "Some error occurred while creating a project_link."
             });
         });
 };
 
-// Get all the Project from the database
+// Get all the project_link from the database
 exports.findAll = (req, res) => {
     const title = req.query.title;
 
@@ -48,48 +41,48 @@ exports.findAll = (req, res) => {
     let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
     var condition = title ? conditionResult : null;
 
-    Project.findAll({ where: condition , order: ['name']})
+    project_link.findAll({ where: condition })
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving Clients."
+                    err.message || "Some error occurred while retrieving project links."
             });
         });
 };
 
-// Get a single Project from the database
+// Get a single project_link from the database
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Project.findByPk(id)
+    project_link.findByPk(id)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error retrieving Client with id=" + id
+                message: "Error retrieving project link with id=" + id
             });
         });
 };
 
-// Update a single Project via its ID
+// Update a single project_link via its ID
 exports.update = (req, res) => {
     const id = req.params.id;
-    //UPDATE Project DATA BELOW
-    Project.update(req.body, {
+    //UPDATE project_link DATA BELOW
+    project_link.update(req.body, {
         where: { id: id }
     })
     .then(num => {
         if (num == 1) {
             res.send({
-                message: "Client was updated successfully."
+                message: "project link was updated successfully."
             });
         } else {
             res.send({
-                message: `Cannot update Client with id=${id}.`
+                message: `Cannot update project link with id=${id}.`
             });
         }
         
@@ -99,21 +92,21 @@ exports.update = (req, res) => {
     });
 };
 
-// Delete a Project via its ID
+// Delete a project_link via its ID
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Project.destroy({
+    project_link.destroy({
         where: { id: id }
     })
     .then(num => {
         if (num == 1) {
             res.send({
-                message: "Client was deleted successfully."
+                message: "project link was deleted successfully."
             });
         } else {
             res.send({
-                message: `Cannot delete Client with id=${id}.`
+                message: `Cannot delete project link with id=${id}.`
             });
         }
     })
@@ -124,14 +117,14 @@ exports.delete = (req, res) => {
     });
 };
 
-// Delete all Projects from the DB
+// Delete all project_links from the DB
 // Probably don't want this functionality for anything.
 exports.deleteAll = (req, res) => {
-    Project.destroy({where: {}})
+    project_link.destroy({where: {}})
     .then(num => {
         if (num == 1) {
             res.send({
-                message: "Client was deleted successfully."
+                message: "project link was deleted successfully."
             });
         } else {
             res.send({

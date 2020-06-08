@@ -9,7 +9,7 @@
             <v-layout wrap>
               <v-flex>
                 <div class="left-questions">
-                  <v-text-field class="text" v-model="name" background-color="white" outlined label="Preferred Name"></v-text-field>
+                  <v-text-field class="text" v-model="username" background-color="white" outlined label="Preferred Name"></v-text-field>
                   <v-text-field class="text" v-model="minor" background-color="white" outlined label="Minor"></v-text-field>
                   <v-text-field class="text" v-model="gpa" :rules="[v => !!v || 'This is required']" required background-color="white" outlined label="GPA" type="number"></v-text-field>
                 </div>
@@ -36,8 +36,8 @@
                 </div>
                 <div class="teammate_pref">
                   <h3> Team Preferences </h3>
-                  <v-select width=50px multiple label="Prefer Teammates" outlined background-color="white" :items=students v-on:input="limiter" item-text="name" v-model="team_pref"></v-select>
-                  <v-select width=50px multiple label="Avoid Teammates" outlined background-color="white" :items=students v-on:input="limiter" item-text="name" v-model="team_avoid"></v-select>
+                  <v-select width=50px multiple label="Prefer Teammates" outlined background-color="white" :value="team_pref" :items=students v-on:input="limiter" item-text="name" item-value="id" v-model="team_pref"></v-select>
+                  <v-select width=50px multiple label="Avoid Teammates" outlined background-color="white" :value="team_avoid" :items=students v-on:input="limiter" item-text="name" item-value="id" v-model="team_avoid"></v-select>
                 </div>
           </div>
           <hr> 
@@ -78,85 +78,138 @@ export default {
       name: "",
       minor: "",
       gpa: null,
-      experience: ""
+      experience: "",
+      username: "" 
     }
   },
-  mounted() {
-    console.log(process.env.VUE_APP_BASE_API_URL + "HERE")
-    var self=this;
-    const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true});
-    const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true});
+    mounted() {
+      var self=this;
+      let id = 1
+      const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
+      const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true})
+      const requestPref = axios.get(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate/' + id, {withCredentials: true})
+      const requestAvoid = axios.get(process.env.VUE_APP_BASE_API_URL + '/avoid_teammate/' + id, {withCredentials: true})
+      const requestStuds = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/', {withCredentials: true})
 
-    axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
-      const responseStud = responses[0]
-      const responseProj = responses[1]
-      // use/access the results
-      self.students = responseStud.data
-      self.projects = responseProj.data
-    }))
-    .catch(e => {
-      // react on errors.
-      self.errors.push(e)
-    })
-    // need to change
-    let id = 1
-    axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
-      .then(response => {
-        console.log(response)
-        // JSON responses are automatically parsed.
-        self.student = response.data
-        self.experience = self.student.experience
-        self.gpa = self.student.gpa
-        self.minor = self.student.minor
-        self.name = self.student.username
-        self.firstProj = self.student.first_project
-        self.secondProj = self.student.second_project
-        self.thirdProj = self.student.third_project
-        self.preference = self.student.selection_preference
-        if (self.preference === false)
-          self.preference = "Project"
-        else if (self.preference === true)
-          self.preference = "Team"
-        else self.preference = "Doesn't Matter"
-
-      })
+      axios.all([requestStud, requestProj, requestPref, requestStuds, requestAvoid]).then(axios.spread((...responses) => {
+        const responseStud = responses[0]
+        const responseProj = responses[1]
+        const responsePref = responses[2]
+        const responseStuds = responses[3]
+        const responseAvoid = responses[4]
+        // use/access the results
+        self.student = responseStud.data
+          self.experience = self.student.experience
+          self.gpa = self.student.gpa
+          self.minor = self.student.minor
+          self.name = self.student.name
+          self.username = self.student.username ? self.student.username : self.student.name
+          self.firstProj = self.student.first_project
+          self.secondProj = self.student.second_project
+          self.thirdProj = self.student.third_project
+          self.preference = self.student.selection_preference
+          if (self.preference === false)
+            self.preference = "Project"
+          else if (self.preference === true)
+            self.preference = "Team"
+          else self.preference = "Doesn't Matter"
+          self.projects = responseProj.data
+          //self.team_pref = responsePref.data
+          self.students = responseStuds.data
+          //self.team_avoid = responseAvoid.data
+          for (let i of responsePref.data)
+            self.team_pref.push(i.preferreeId)
+          for (let i of responseAvoid.data)
+            self.team_avoid.push(i.avoideeId)
+          }))
       .catch(e => {
+        // react on errors.
         self.errors.push(e)
       })
 
-  },    
+   },
+      
   methods: {
     limiter: function(e) {
       if(e.length > 10) {
         e.pop()
       }
+    
     },
-
-    doSubmit() {
-      //let id=1
-        if (this.preference === "Project")
-          this.preference = false;
-        else if (this.preference === "Team")
-          this.preference = true;
-        else this.preference = null;
-      axios.put(process.env.VUE_APP_BASE_API_URL + '/students/1', {
+    
+    doSubmit: function() {
+      let id=1
+      if (this.preference === "Project")
+        this.preference = false;
+      else if (this.preference === "Team")
+        this.preference = true;
+      else this.preference = null;
+      axios.put(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {
         name: this.name,
         minor: this.minor,
         gpa: this.gpa,
-        username: this.name,
+        username: this.username,
         experience: this.experience,
         first_project: this.firstProj,
         second_project: this.secondProj,
         third_project: this.thirdProj,
         selection_preference: this.preference
-        
+      
       }, {withCredentials: true})
       .then(response => {
         console.log(response);
+        if (this.preference === false)
+          this.preference = "Project"
+        else if (this.preference === true)
+          this.preference = "Team"
+        else this.preference = "Doesn't Matter"
       })
       .catch(err => {
         console.log(err);
       });
+
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate/' + id, {withCredentials: true})
+      .then(response => {
+        console.log(response)
+        for (let pref of this.team_pref){
+          axios.post(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate', {
+            withCredentials: true,
+            preferrer_id: parseInt(id),
+            preferree_id: parseInt(pref)
+          }, {withCredentials: true})    
+          .then(response => {
+            console.log(response)
+          })
+          .catch(err => {
+            console.log(err);
+          })
+        }
+      })
+      .catch(e => {
+        self.errors.push(e)
+      })
+      
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/avoid_teammate/' + id, {withCredentials: true})
+      .then (response => {
+        console.log(response)
+        for (let avoid of this.team_avoid){
+          axios.post(process.env.VUE_APP_BASE_API_URL + '/avoid_teammate', {
+            withCredentials: true,
+            avoider_id: parseInt(id),
+            avoidee_id: parseInt(avoid)
+          }, {withCredentials: true})    
+          .then(response => {
+            console.log(response)
+          })
+          .catch(err => {
+            console.log(err);
+          })
+        }
+      })
+      .catch(err => {
+        self.errors.push(err)
+      })
+     
     }
   }
 }

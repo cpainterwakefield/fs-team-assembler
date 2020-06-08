@@ -15,7 +15,7 @@
       <div class="resp">{{totalProj1Proj}} of {{totalProjPref}}</div>
       <hr>
       <div class="prompt">Of those with no preference, number who got either a team member OR project they selected:</div>
-      <div class="resp">{{totalNoPref}} of {{totalTeamOrProj}}</div>
+      <div class="resp">{{totalTeamOrProj}} of {{totalNoPref}}</div>
       <hr>
       <div class="prompt">Students who were assigned to the first project they wanted:</div>
       <div class="resp">{{totalFirstProj}} of {{totalProjPref}}</div>
@@ -60,24 +60,24 @@
           </div>
         </div>
         <div class="panel">
-          <div class="list2" v-if="student.first_project">{{getName(student.first_project)}}</div>
-          <div class="list2" v-if="student.second_project">{{getName(student.second_project)}}</div>
-          <div class="list2" v-if="student.third_project">{{getName(student.third_project)}}</div>
+          <div class="list2" v-if="student.first_project">{{getProj(student.first_project)}}</div>
+          <hr>
+          <div class="list2" v-if="student.second_project">{{getProj(student.second_project)}}</div>
+          <hr>
+          <div class="list2" v-if="student.third_project">{{getProj(student.third_project)}}</div>
         </div>
         <div class="panel">
-          <div class="list1" v-for="(prefer, i) in student.pref" :key="i">
-            <div class="list2">{{prefer}}</div>
-            <hr>
+          <div class="list1" v-for="(prefer, i) in team_pref" :key="i">
+            <span v-if="prefer.studentId === student.id"><font color="green">{{getStud(prefer.preferreeId)}}</font><hr></span>
           </div>
         </div>
         <div class="panel">
-          <div class="list1" v-for="(av, i) in student.avoid" :key="i">
-            <div class="list2">{{av}}</div>
-            <hr>
+          <div class="list1" v-for="(av, i) in team_avoid" :key="i">
+            <span v-if="av.studentId === student.id"><font color="red">{{getStud(av.avoideeId)}}</font><hr></span>
           </div>
         </div>
         <div class="panel">
-         <div class="list1" v-if="student.project_id"><font color="green">{{getName(student.project_id)}}</font></div> 
+         <div class="list1" v-if="student.project_id"><font color="green">{{getProj(student.project_id)}}</font></div> 
          <div class="list1" v-else><font color="red">X</font></div> 
         </div>
       </div>
@@ -102,17 +102,19 @@ export default {
       valid: true,
       students: [],
       projects: [],
-      totalStudents: 100,
-      totalSubmitted: 95,
-      totalTeamPref: 25,
-      totalTeam1Mem: 25,
-      totalProjPref: 70,
-      totalProj1Proj: 65,
-      totalNoPref: 5,
-      totalTeamOrProj: 5,
-      totalFirstProj: 50,
-      totalSecondProj: 35,
-      totalThirdProj: 15,
+      totalStudents: 0,
+      totalSubmitted: 0,
+      totalTeamPref: 0,
+      totalTeam1Mem: 0,
+      totalProjPref: 0,
+      totalProj1Proj: 0,
+      totalNoPref: 0,
+      totalTeamOrProj: 0,
+      totalFirstProj: 0,
+      totalSecondProj: 0,
+      totalThirdProj: 0,
+      team_pref: [],
+      team_avoid: []
     
     }
   },
@@ -121,7 +123,19 @@ export default {
     
     const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true})
     const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true})
-    console.log("look here")
+    const requestPref = axios.get(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate', {withCredentials: true})
+    const requestAvoid = axios.get(process.env.VUE_APP_BASE_API_URL + '/avoid_teammate', {withCredentials: true})
+    const requestTotalStuds = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countAll', {withCredentials: true})
+    const requestTeamStuds = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countTeam', {withCredentials: true})
+    const requestTeamProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countProj', {withCredentials: true})
+    const requestNoPref = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countNoPref', {withCredentials: true})
+    const requestSubmitted = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countSubmitted', {withCredentials: true})
+    const requestProjInPref = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countProjInPref', {withCredentials: true})
+    const requestFirstProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countFirstProj', {withCredentials: true})
+    const requestSecondProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countSecondProj', {withCredentials: true})
+    const requestThirdProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countThirdProj', {withCredentials: true})
+    const requestTeam1Mem = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countTeam1Mem', {withCredentials: true})
+    const requestNoPrefTeamOrProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/countNoPrefTeamOrProj', {withCredentials: true})
     axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true})
     .then(response => {
       console.log(response)
@@ -129,23 +143,56 @@ export default {
       self.students = response.data
     })
 
-    axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
+    axios.all([requestStud, requestProj, requestPref, requestAvoid, requestTotalStuds, requestTeamStuds, requestTeamProj, requestNoPref, requestSubmitted, requestProjInPref, requestFirstProj, requestSecondProj, requestThirdProj, requestTeam1Mem, requestNoPrefTeamOrProj]).then(axios.spread((...responses) => {
       const responseStud = responses[0]
       const responseProj = responses[1]
+      const responsePref = responses[2]
+      const responseAvoid = responses[3]
+      const responseTotalStuds = responses[4]
+      const responseTeamStuds = responses[5]
+      const responseTeamProj = responses[6]
+      const responseNoPref = responses[7]
+      const responseSubmitted = responses[8]
+      const responseProjInPref = responses[9]
+      const responseFirstProj = responses[10]
+      const responseSecondProj = responses[11]
+      const responseThirdProj = responses[12]
+      const responseTeam1Mem = responses[13]
+      const responseNoPrefTeamOrProj = responses[14]
       // use/access the results
       self.students = responseStud.data
       self.projects = responseProj.data
+      self.team_pref = responsePref.data
+      self.team_avoid = responseAvoid.data
+      self.totalStudents = responseTotalStuds.data.data
+      self.totalTeamPref = responseTeamStuds.data.data
+      self.totalProjPref = responseTeamProj.data.data
+      self.totalNoPref = responseNoPref.data.data
+      self.totalSubmitted = responseSubmitted.data.data
+      self.totalProj1Proj = responseProjInPref.data[0][0].count
+      self.totalFirstProj = responseFirstProj.data[0][0].count
+      self.totalSecondProj = responseSecondProj.data[0][0].count
+      self.totalThirdProj = responseThirdProj.data[0][0].count
+      self.totalTeam1Mem = responseTeam1Mem.data[0][0].count
+      self.totalTeamOrProj = responseNoPrefTeamOrProj.data[0][0].count
     }))
     .catch(e => {
       // react on errors.
-      self.errors.push(e)
+      console.log(e)
     })
 
   },
   
   methods: {
-    getName: function(pid) {
-      return this.projects.find(function(id) {if (id.id === pid) return id}).name
+    getProj: function(pid) {
+      if( this.projects.find(function(id) {if (id.id === pid) return id}))
+        return this.projects.find(function(id) {if (id.id === pid) return id}).name
+      else return null
+    },
+    getStud: function(sid) {
+      if(this.students.find(function(id) {if (id.id === sid) return id}))
+        return this.students.find(function(id) {if (id.id === sid) return id}).name
+      else return null
     }
   } 
 }
@@ -170,13 +217,7 @@ export default {
   }
 
   .list1 {
-    margin-left: 20px;
-    margin-right: 20px;
-  }
-
-  .list2 {
-    margin-left: 20px;
-    margin-right: 20px;
+    text-align: left;
   }
 
   .panel {

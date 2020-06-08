@@ -25,9 +25,9 @@
             <h2> Your Choices </h2>
                 <div class="projects2">
                   <h3 class="h3_1"> Project Preferences </h3>
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="First Preference" :placeholder=getName(this.firstProj)></v-text-field> 
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :placeholder=getName(this.firstProj)></v-text-field> 
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Third Preference" :placeholder=getName(this.thirdProj)></v-text-field> 
+                  <v-text-field class="text" readonly background-color="white" filled color="black" label="First Preference" :placeholder=getProj(this.firstProj)></v-text-field> 
+                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :placeholder=getProj(this.firstProj)></v-text-field> 
+                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Third Preference" :placeholder=getProj(this.thirdProj)></v-text-field> 
                 </div>
                 <div class="teams2">
                   <h3 class="h3_1"> Team Preferences </h3>
@@ -35,7 +35,7 @@
                     <v-list dense max-height=105px class="overflow-y-auto" width="250">
                       <h5><u>Preferred Team</u></h5>
                       <v-list-item v-for="(pref, i) in team_pref" :key="i">
-                        <v-list-item-title class="element" v-text="pref"></v-list-item-title>
+                        <v-list-item-title class="element" v-text=getStud(pref.preferreeId)></v-list-item-title>
                       </v-list-item>  
                     </v-list>
                   </div>
@@ -43,7 +43,7 @@
                     <v-list dense max-height=105px class="overflow-y-auto" width="250">
                       <h5><u>Avoid Team</u></h5>
                       <v-list-item v-for="(avoid, i) in team_avoid" :key="i">
-                        <v-list-item-title class="element" v-text="avoid"></v-list-item-title>
+                        <v-list-item-title class="element" v-text="getStud(avoid.avoideeId)"></v-list-item-title>
                       </v-list-item>  
                     </v-list>
                   </div>
@@ -70,18 +70,18 @@ export default {
   },
   data() {
     return {
-      preference: "Doesn't Matter",
-      projects: ['dummy1 qwertyuiopasdfghjklzxcvbnm,.'],
-      students: ['john doe', 'jane doe'],
-      firstProj: "test1",
-      secondProj: "test2",
-      thirdProj: "test3",
-      team_pref: ['good1', 'good2'],
-      team_avoid: ['bad1', 'bad2'],
+     preference: "Doesn't Matter",
+      projects: [],
+      students: [],
+      firstProj: "",
+      secondProj: "",
+      thirdProj: "",
+      team_pref: [],
+      team_avoid: [],
       valid: true,
-      minor: "test",
-      gpa: "test",
-      experience: "experience test",
+      minor: "",
+      gpa: "",
+      experience: "",
       name: ""
     }
   },
@@ -90,10 +90,16 @@ export default {
       let id = 1
       const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
       const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true})
+      const requestPref = axios.get(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate/' + id, {withCredentials: true})
+      const requestAvoid = axios.get(process.env.VUE_APP_BASE_API_URL + '/avoid_teammate/' + id, {withCredentials: true})
+      const requestStuds = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/', {withCredentials: true})
 
-      axios.all([requestStud, requestProj]).then(axios.spread((...responses) => {
+      axios.all([requestStud, requestProj, requestPref, requestStuds, requestAvoid]).then(axios.spread((...responses) => {
         const responseStud = responses[0]
         const responseProj = responses[1]
+        const responsePref = responses[2]
+        const responseStuds = responses[3]
+        const responseAvoid = responses[4]
         // use/access the results
         self.student = responseStud.data
           self.experience = self.student.experience
@@ -110,6 +116,9 @@ export default {
             self.preference = "Team"
           else self.preference = "Doesn't Matter"
         self.projects = responseProj.data
+        self.team_pref = responsePref.data
+        self.students = responseStuds.data
+        self.team_avoid = responseAvoid.data
       }))
       .catch(e => {
         // react on errors.
@@ -118,9 +127,14 @@ export default {
 
    },
   methods: {
-    getName: function(pid) {
+    getProj: function(pid) {
       if (this.projects.find(function(id) {if (id.id === pid) return id}))
         return this.projects.find(function(id) {if (id.id === pid) return id}).name
+      else return null;
+    },
+    getStud: function(pid) {
+      if (this.students.find(function(id) {if (id.id === pid) return id}))
+        return this.students.find(function(id) {if (id.id === pid) return id}).name
       else return null;
     }
   }
@@ -130,6 +144,11 @@ export default {
 
 <style type="text/css">
   body { font-family: sans-serif; }
+
+  .element {
+    border: 1px solid grey;
+    margin: 5px;
+  }
 
   .text {
   }
