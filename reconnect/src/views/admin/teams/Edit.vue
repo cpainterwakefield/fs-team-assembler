@@ -117,12 +117,6 @@ export default {
       }
     },
 
-    setItems: function() {
-      console.log("INT SET") 
-       console.log(event) 
-        console.log(this.models)
-    }
-
   },
 }
 

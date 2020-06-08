@@ -61,7 +61,7 @@ exports.findAll = (req, res) => {
     let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
     var condition = title ? conditionResult : null;
 
-    Student.findAll()
+    Student.findAll({order: ['name']})
         .then(data => {
             res.send(data);
         })
@@ -228,7 +228,6 @@ exports.countThirdProj = (req, res) => {
 }
 
 exports.countTeam1Mem = (req, res) => {
-console.log("HEREHREHRHE")
 
 //-- query to receive number of students who preferred project AND got their third project 
 //SELECT COUNT(*) FROM students s WHERE selection_preference = true AND EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id));

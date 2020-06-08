@@ -78,24 +78,24 @@
         <div class="add_element">
           <v-card>
             <v-card-text class="v-card-text1">
-              <v-form v-model="valid">
-                <v-select label="Delete Student" outlined background-color="white" :items=students item-text="name" item-value="id" v-model="del_stud"></v-select>
+              <v-form v-model="valid2">
+                <v-select :rules="[(v) => !!v || 'This is required']" required label="Delete Student" outlined background-color="white" :items=students item-text="name" item-value="id" v-model="del_stud"></v-select>
               </v-form>
             </v-card-text>
             <v-card-actions class="c1">
-              <v-btn @click="deleteStudent(del_stud)" color="primary">Submit</v-btn>
+              <v-btn @click="deleteStudent(del_stud)" color="primary" :disabled="!valid2">Submit</v-btn>
             </v-card-actions>
           </v-card>
         </div>
         <div class="add_element">
           <v-card>
             <v-card-text class="v-card-text1">
-              <v-form v-model="valid">
-                <v-select label="Delete Project" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="del_proj"></v-select>
+              <v-form v-model="valid3">
+                <v-select :rules="[(v) => !!v || 'This is required']" required label="Delete Project" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="del_proj"></v-select>
               </v-form>
             </v-card-text>
             <v-card-actions class="c1">
-              <v-btn @click="deleteProject(del_proj)" color="primary">Submit</v-btn>
+              <v-btn @click="deleteProject(del_proj)" color="primary" :disabled="!valid3">Submit</v-btn>
             </v-card-actions>
           </v-card>
         </div>
@@ -146,6 +146,8 @@ export default {
       projMax: null,
       valid0: false,
       valid1: false,
+      valid2: false,
+      valid3: false,
       studentsFile: null,
       projectsFile: null,
     }

@@ -70,18 +70,18 @@ export default {
   },
   data() {
     return {
-      preference: "Doesn't Matter",
-      projects: ['dummy1 qwertyuiopasdfghjklzxcvbnm,.'],
+     preference: "Doesn't Matter",
+      projects: [],
       students: [],
-      firstProj: "test1",
-      secondProj: "test2",
-      thirdProj: "test3",
-      team_pref: ['good1', 'good2'],
-      team_avoid: ['bad1', 'bad2'],
+      firstProj: "",
+      secondProj: "",
+      thirdProj: "",
+      team_pref: [],
+      team_avoid: [],
       valid: true,
-      minor: "test",
-      gpa: "test",
-      experience: "experience test",
+      minor: "",
+      gpa: "",
+      experience: "",
       name: ""
     }
   },
