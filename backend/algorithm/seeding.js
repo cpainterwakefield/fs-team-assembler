@@ -29,7 +29,7 @@ function seededRandom(seed) {
     let t = seed;
     t = Math.imul(t ^ t >>> 15, t | 1);
     t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-    return ((t ^ t >>> 14) >>> 0) / 4_294_967_296;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
 }
 
 /**
@@ -90,6 +90,7 @@ function greedySeedInitial(students, projects, populationSize) {
             // the first random project that the PRNG can find.
             if (student.projectPreferences.length == 0 || student.prefersTeam) {
                 let satisfied = false;
+
                 for (let projectIndex = 0; projectIndex < currentProjectList.length; projectIndex++) {
                     // If there is an avoid present in the current project,
                     // this is set to true and the loop continues to the next project.
@@ -104,7 +105,7 @@ function greedySeedInitial(students, projects, populationSize) {
                     }
 
                     // We don't want to put a student in a project with people
-                    // who they chose to avoid.
+                    // whom they chose to avoid.
                     if (avoidPresent) { continue; }
 
                     // If there is a preference in the current project, then put the
@@ -204,29 +205,14 @@ function greedySeedInitial(students, projects, populationSize) {
                 seededRandom(studentSeed) * currentStudents.length);
         }
 
-        /*
-        // The only projects pushed in currentProjectList are projects
-        // that happen to be full. This gets the rest of them to the
-        // popProjectList which makes sure that all students are included.
-        for (let remainingProject of currentProjectList) {
-            // Since we don't need projects with zero members
-            // (this is an okay constraint), we only push if
-            // there are students in the project.
-            // console.log(remainingProject);
-
-            if (remainingProject.people.length > 0) {
-                popProjectList.push(remainingProject);
-            }
-        }
-        */
-
         // An array that holds students left over from unfulfilled projects. 
         let leftoverStudents = [];
 
-        // For each one of the remaining projects with fewer people than the minimum,
-        // take the students out of that project.
-        for (let remProjIndex = 0; remProjIndex < currentProjectList.length; remProjIndex++) {
-            let remProj = currentProjectList[remProjIndex];
+        // An array that holds left over projects.
+        let leftoverProjects = [];
+
+        while (currentProjectList.length > 0) {
+            let remProj = currentProjectList.pop();
 
             // If the project doesn't have enough people, but it has *some*
             // people on it, take these people out of those projects.
@@ -239,18 +225,26 @@ function greedySeedInitial(students, projects, populationSize) {
                 // Clear the people list of the remaining project.
                 remProj.people = [];
 
-                // console.log(currentProjectList[remProjIndex].people);
+                // Put the cleared project in a "remaining" pile.
+                leftoverProjects.push(remProj);
+            } else if (remProj.people.length >= remProj.minPeople) {
+                popProjectList.push(remProj);
             }
         }
 
-        while (currentProjectList.length > 0 && leftoverStudents.length > 0) {
-            let leftoverProj = currentProjectList.pop();
+        while (leftoverProjects.length > 0 && leftoverStudents.length > 0) {
+            let leftoverProj = leftoverProjects.pop();
 
-            while (leftoverProj.people.length < leftoverProj.maxPeople && leftoverStudents.length > 0) {
+            while (leftoverProj.people.length <= leftoverProj.maxPeople && leftoverStudents.length > 0) {
                 let leftover = leftoverStudents.pop();
                 leftoverProj.people.push(leftover);
             }
+
+            popProjectList.push(leftoverProj);
         }
+
+        // console.log(`Rem projects length: ${currentProjectList.length}`);
+        // console.log(`Rem students length: ${leftoverStudents.length}`);
 
         // Push a project list to the population list.
         projectPopulation.push(popProjectList);
