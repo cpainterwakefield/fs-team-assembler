@@ -185,13 +185,40 @@ async function loadAndConvert() {
     return convertDBResponse(await dbJSON);
 }
 
+/**
+ * Updates the students table in the DB with the algorithm's results.
+ * 
+ * Starts by unpacking the list of project objects returned from the algorithm,
+ * assigning each student in each project with an updated project ID.
+ * 
+ * @param {The JSON returned from the algorithm, as a list of project objects.} populatedAlgoJSON 
+ */
+function updateStudents(populatedAlgoJSON) {
+    // For each project in the populated JSON,
+    for (let project of populatedAlgoJSON) {
+        // Update every student in the DB with their project ID.
+        for (let student of project.people) {
+            db.students.update(
+                { project_id: project.id },
+                { where: { id: student.id }}
+            ).then(res => {
+                console.log("Successfully updated students!");    
+            }).catch(err => {
+                console.log("Failed to update students.");
+                console.log(err);  
+            });
+        }
+    }
+}
+
 // Standard Sequelize util functions
 exports.helloPostgres = helloPostgres;
 exports.getAllStudents = getAllStudents;
 exports.getAllProjects = getAllProjects;
 exports.getStudentPk = getStudentPk;
 
-// DB conversions
+// DB transactions 
 exports.getDBJson = getDBJson;
 exports.convertDBResponse = convertDBResponse;
 exports.loadAndConvert = loadAndConvert;
+exports.updateStudents = updateStudents;
