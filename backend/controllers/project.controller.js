@@ -1,6 +1,9 @@
 const db = require("../models");
 const Project = db.projects;
 const Op = db.Sequelize.Op;
+const algorithm = require("../algorithm/algorithm.js");    
+    
+
 
 exports.create = (req, res) => {
     if (!req.body.name) {
@@ -146,3 +149,8 @@ exports.deleteAll = (req, res) => {
         console.log(err)
     });
 };
+
+exports.run = (req, res) => {
+    algorithm.runGeneticAlgorithm()   
+    console.log("Running genetic algorithm")
+}
