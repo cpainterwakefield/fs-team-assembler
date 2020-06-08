@@ -62,8 +62,8 @@ require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
 
-app.get('/dump', function(requests, response){
-  var envvar864 = requests.header['!~passenger-envvars'];
+app.get('/dump', function(req, res){
+  var envvar864 = req.header['!~passenger-envvars'];
     var envvarDump = new Buffer.alloc(envvar864, 'base64').toString('binary');
     var ary = envvarDump.split("\0");
     var result = {};
@@ -72,7 +72,7 @@ app.get('/dump', function(requests, response){
     for (i = 0; i < ary.length - 1; i+=2) {
       result[ary[i]] = ary[i + 1];
     }
-  response.send(result);
+  res.send(result);
 });
 
 app.get('/student', function(requests, response){
