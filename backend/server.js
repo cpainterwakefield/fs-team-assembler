@@ -8,7 +8,7 @@ const serveStatic = require("serve-static");
 //nom nom nom
 const cookieSession = require("cookie-session");
 const path = require("path");
-const csp = require('express-csp-header');
+const {expressCspHeader, INLINE, NONE, SELF} = require('express-csp-header');
 
 const app = express();
 app.use(serveStatic("./dist"));
@@ -41,10 +41,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(csp({
-  policies: {
-    'default-src': [csp.SELF],
-    'img-src': [csp.SELF]
+app.use(expressCspHeader({
+  directives: {
+    'default-src': [SELF],
+    'img-src': [SELF]
   }
 }));
 
