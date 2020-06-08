@@ -9,6 +9,7 @@ const serveStatic = require("serve-static");
 const cookieSession = require("cookie-session");
 const path = require("path");
 const {expressCspHeader, INLINE, NONE, SELF} = require('express-csp-header');
+const router = require('express').Router();
 
 const app = express();
 app.use(serveStatic("./dist"));
@@ -43,7 +44,7 @@ app.use(passport.session());
 
 app.use(expressCspHeader({
   directives: {
-    'default-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
+    'default-src': [SELF, INLINE,"https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
     'img-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
     'style-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
     'script-src': [SELF, INLINE]
@@ -53,7 +54,7 @@ app.use(expressCspHeader({
 //app.use('/student', routes);
 
 //require("./routes/routes.google")(app);
-require("./routes/shiboleth.routes")(app);
+const shib = require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
@@ -61,9 +62,11 @@ require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
 
-app.get('/dump', function(req, res){
-  var envvar864 = req.header['!~passenger-envvars'];
-    var envvarDump = new Buffer(envvar864, 'base64').toString('binary');
+app.get(shib);
+app.get('/dump', function(requests, response){
+  response.send("uwu");
+  var envvar864 = requests.header['!~passenger-envvars'];
+    var envvarDump = new Buffer.alloc(envvar864, 'base64').toString('binary');
     var ary = envvarDump.split("\0");
     var result = {};
     var i;
@@ -71,7 +74,7 @@ app.get('/dump', function(req, res){
     for (i = 0; i < ary.length - 1; i+=2) {
       result[ary[i]] = ary[i + 1];
     }
-  res.send(result.mail);
+  response.send(result.mail);
 });
 
 app.get('/student', function(requests, response){
