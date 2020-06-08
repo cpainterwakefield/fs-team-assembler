@@ -58,7 +58,6 @@ const authcheck = (req,res,next)=>{
       //If they are logged in
       next();
   }
-  res.redirect("/");
 }
 const ADMINauthcheck = (req,res,next)=>{
   if(!req['user'].user){
