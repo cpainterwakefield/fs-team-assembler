@@ -86,7 +86,7 @@ export default {
       axios.put(process.env.VUE_APP_BASE_API_URL + '/projects/run', {withCredentials: true})
       .then(response => {
         console.log(response)
-      }
+      })
       .catch(err => {
         console.log(err)
       })
