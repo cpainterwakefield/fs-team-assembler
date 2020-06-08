@@ -1,5 +1,15 @@
-/* Old greedy seed */
+/**
+ * fiddle.js
+ * 
+ * A file for testing each algorithm function by hand.
+ * This file does not export anything, nor really do anything; it may be
+ * useful for seeing examples of how everything is run.
+ * 
+ * @author Miles Claver
+ */
+
 /*
+ * The old version of the greedy seeding function.
 function greedySeedInitial(students, projects, populationSize) {
     // List of sets of projects
     let projectPopulation = [];
