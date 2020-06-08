@@ -10,9 +10,23 @@
  */
 
 var _ = require('lodash');
+
 const scoring = require('./scoring');
 const seeding = require('./seeding');
 const dbInt = require('./db_interactions');
+const verifiers = require('./tests/verifiers');
+
+// GP Parameters:
+// The amount of entropy in repopulation.
+const ENTROPY = 20;
+
+// The chance that mutation will occur.
+const MUTATION_RATE = 1;
+
+// The seed value offset for mutation to allow for added randomness.
+// If one is getting poor results from using this program, it may help to
+// change this seed.
+const MUTATION_SEED_OFFSET = 1337;
 
 /**
  * Selects the fittest individual from a generation.
@@ -45,26 +59,21 @@ function generationSelection(generation) {
  * There's very little need to "breed" two individuals together in our context due to the
  * induced coupling between students and projects. Thus we create new individuals by
  * randomly exchanging students between projects from the fittest individual.
+ * 
+ * Note: numRepeats is also the resultant generation size.
  *  
  * @param {Project list to create a new generation out of.} fittestProjectList 
  * @param {Amount of times to repeat generation.} numRepeats
  * @param {The amount of entropy the regeneration has.} entropy
  * @return {The new generation, a list of individuals.}
  */
-function generateFromFittest(fittestProjectList, numRepeats, entropy=10) {
-    // console.log(fittestProjectList);
-
+function generateFromFittest(fittestProjectList, numRepeats, entropy = 10) {
     //Create an empty generation to fill and return
     let generation = [];
-    let student1;
-    let student2;
-    let projIndex1;
-    let projIndex2;
-    let temp;
 
     // Repeat numRepeats times
     // Indices start at 1 to prevent uniformity in seeded randoms when i = 0.
-    for(let i = 0; i < numRepeats; i++) {
+    for (let i = 0; i < numRepeats; i++) {
         // Clone fittest project list so that we're not editing the original
         let currentFittest = _.cloneDeep(fittestProjectList);
 
@@ -74,22 +83,22 @@ function generateFromFittest(fittestProjectList, numRepeats, entropy=10) {
         // variation between generations.
         for (let ent = 1; ent <= entropy; ent++) {
             // Getting seeded random project indices to swap students from 
-            projIndex1 = Math.floor(seeding.seededRandom(ent*i*2) * (currentFittest.length - 1));
-            projIndex2 = Math.floor(seeding.seededRandom(ent*i*3) * (currentFittest.length - 1));
+            let projIndex1 = Math.floor(seeding.seededRandom(ent * i * 2) * (currentFittest.length));
+            let projIndex2 = Math.floor(seeding.seededRandom(ent * i * 3) * (currentFittest.length));
 
             // Getting seeded random student to swap
-            let studentIndex1 = Math.floor(seeding.seededRandom(ent*i*4)
+            let studentIndex1 = Math.floor(seeding.seededRandom(ent * i * 4)
                 * (currentFittest[projIndex1].people.length));
 
-            let studentIndex2 = Math.floor(seeding.seededRandom(ent*i*5)
+            let studentIndex2 = Math.floor(seeding.seededRandom(ent * i * 5)
                 * (currentFittest[projIndex2].people.length));
 
             // Choosing two random students from each randomly chosen project to switch
-            student1 = currentFittest[projIndex1].people[studentIndex1];
-            student2 = currentFittest[projIndex2].people[studentIndex2];
+            let student1 = currentFittest[projIndex1].people[studentIndex1];
+            let student2 = currentFittest[projIndex2].people[studentIndex2];
 
             // Swapping students
-            temp = _.cloneDeep(student1);
+            let temp = _.cloneDeep(student1);
             currentFittest[projIndex1].people[studentIndex1] = _.cloneDeep(student2);
             currentFittest[projIndex2].people[studentIndex2] = temp;
         }
@@ -102,7 +111,45 @@ function generateFromFittest(fittestProjectList, numRepeats, entropy=10) {
     return generation;
 }
 
+function mutateGeneration(oldGeneration) {
+    let generation = _.cloneDeep(oldGeneration);
 
+    // For each individual in the generation, mutate it.
+    for (let indIndex = 0; indIndex < generation.length; indIndex++) {
+        // If random is lower than the mutation rate, then do a mutation.
+        // We don't want this to be synced to seededRandom here.
+        if (Math.random() < MUTATION_RATE) {
+            let individual = generation[indIndex];
+
+            let projIndex1 = Math.floor(seeding.seededRandom(
+                (indIndex + 1) * MUTATION_SEED_OFFSET * 2
+            ) * individual.length);
+
+            let projIndex2 = Math.floor(seeding.seededRandom(
+                (indIndex + 1) * MUTATION_SEED_OFFSET * 3
+            ) * individual.length);
+
+            let studentIndex1 = Math.floor(seeding.seededRandom(
+                (indIndex + 1) * MUTATION_SEED_OFFSET * 4
+            ) * individual[projIndex1].people.length);
+
+            let studentIndex2 = Math.floor(seeding.seededRandom(
+                (indIndex + 1) * MUTATION_SEED_OFFSET * 5
+            ) * individual[projIndex2].people.length);
+
+            // Get the random students.
+            let student1 = individual[projIndex1].people[studentIndex1];
+            let student2 = individual[projIndex2].people[studentIndex2];
+
+            // Swap the students.
+            let temp = _.cloneDeep(student1);
+            individual[projIndex1].people[studentIndex1] = _.cloneDeep(student2);
+            individual[projIndex2].people[studentIndex2] = temp;
+        }
+    }
+
+    return generation;
+}
 
 /**
  * The heart of the genetic algorithm.
@@ -137,15 +184,20 @@ function generateFromFittest(fittestProjectList, numRepeats, entropy=10) {
  * perfect, a site admin has privileges to make sure that all the teams are ideal.
  * 
  * That said, the scoring function may need to be tweaked to adequately provide scoring against avoids
- * and for prefers. As of (6/1/2020), scoring returns undefined if constraints aren't met, which may
- * prove to be unrealistic.
+ * and for prefers. As of (6/8/20), scoring only has negative scoring for failed constraints.
  * 
  * @param {The population to be evolved.} population 
  */
 function evolvePopulation(population) {
-    return generateFromFittest(generationSelection(population), 100);
+    let selected = generationSelection(population);
+    let generation = generateFromFittest(selected, 100, 20);
+
+    // Generation is passed by reference, should just edit it
+    let mutated = mutateGeneration(generation);
+
+    return mutated;
 }
-  
+
 /**
  * This is where the algorithm will start executing. 
  * It will gather the information from the database here, and store them into the greedy seed function 
@@ -161,7 +213,7 @@ function evolvePopulation(population) {
  */
 async function runGeneticAlgorithm() {
     let testData = await dbInt.loadAndConvert();
-    let students = testData.students; 
+    let students = testData.students;
     let projects = testData.projects;
 
     if (students == undefined || projects == undefined) {
@@ -178,34 +230,20 @@ async function runGeneticAlgorithm() {
     const DIFFERENCE_THRESHOLD = 1.1;
 
     for (i = 0; i < maxEvolveTimes; i++) {
-        newGeneration = evolvePopulation(_.cloneDeep(generation));
-        // console.log(i);
+        newGeneration = _.cloneDeep(generation);
+        // console.log(verifiers.everyStudentAssignedOnce(students, generationSelection(generation)));
+        newGeneration = evolvePopulation(newGeneration);
 
-        /*
-        if (scoring.scoreAllProjects(generationSelection(newGeneration)) 
-            == scoring.scoreAllProjects(generationSelection(generation))) {
-            console.log("evolved");
-            console.log(i);
-            generation = newGeneration;
-        }
-        */
-
-        // Debug: print score of generation
-        // console.log(scoring.scoreAllProjects(newGeneration));
-
-        // If it reaches a point where there is not much difference in highest fit individuals, return.
-        if (Math.abs(scoring.scoreAllProjects(generationSelection(newGeneration)) -
-            scoring.scoreAllProjects(generationSelection(generation))) < DIFFERENCE_THRESHOLD) {
-            // return generationSelection(newGeneration);
-            generation = newGeneration;
-        }
-        else {
-            generation = newGeneration;
-        }
+        generation = newGeneration;
     }
 
+    // Select the fittest individual of the final generation.
     let endIndividual = generationSelection(newGeneration);
+    
+    // Update the students table in the DB.
     dbInt.updateStudents(endIndividual);
+
+    // console.log(verifiers.noAvoidsOnSameProject(endIndividual));
 
     return endIndividual;
 }
