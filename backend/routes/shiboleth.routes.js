@@ -39,7 +39,7 @@ passport.deserializeUser((id,done) => {
 passport.use(new CustomStrategy(
   function(req, done) {
     var envvar864 = req.headers['!~passenger-envvars'];
-    var envvarDump = new Buffer(envvar864, 'base64').toString('binary');
+    var envvarDump = new Buffer(envvar864, 'base64').toString();
     var ary = envvarDump.split("\0");
     var result = {};
     var i;
