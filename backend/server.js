@@ -54,7 +54,7 @@ app.use(expressCspHeader({
 //app.use('/student', routes);
 
 //require("./routes/routes.google")(app);
-const shib = require("./routes/shiboleth.routes")(app);
+require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
@@ -62,9 +62,7 @@ require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
 
-app.get(shib);
 app.get('/dump', function(requests, response){
-  response.send("uwu");
   var envvar864 = requests.header['!~passenger-envvars'];
     var envvarDump = new Buffer.alloc(envvar864, 'base64').toString('binary');
     var ary = envvarDump.split("\0");
@@ -74,7 +72,7 @@ app.get('/dump', function(requests, response){
     for (i = 0; i < ary.length - 1; i+=2) {
       result[ary[i]] = ary[i + 1];
     }
-  response.send(result.mail);
+  response.send(result);
 });
 
 app.get('/student', function(requests, response){
