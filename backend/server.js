@@ -8,6 +8,7 @@ const serveStatic = require("serve-static");
 //nom nom nom
 const cookieSession = require("cookie-session");
 const path = require("path");
+const csp = require('express-csp-header');
 
 const app = express();
 app.use(serveStatic("./dist"));
@@ -18,7 +19,7 @@ app.use(cookieSession({
   keys: [keys.cookie.keyOne]
 
 }));
-
+//Cors settigs
 var corsOptions = {
   origin: ["http://localhost:8081", "https://accounts.google.com", "https://reconnect.mines.edu"],
   methods: ["OPTIONS", "POST", "GET","PUT","DELETE"],
@@ -28,7 +29,7 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
+//sync db with sequelize
 db.sequelize.sync();
 
 // parse requests of content-type - application/json
@@ -40,11 +41,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(csp({
+  policies: {
+    'default-src': [csp.SELF],
+    'img-src': [csp.SELF]
+  }
+}));
 
 //app.use('/student', routes);
 
-require("./routes/routes.google")(app);
-//require("./routes/shiboleth.routes")(app);
+//require("./routes/routes.google")(app);
+require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);

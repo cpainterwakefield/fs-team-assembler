@@ -94,15 +94,17 @@ passport.use(new CustomStrategy(
 
 module.exports = app => {
 
-  app.get('/',
+  app.get(config.passport.path,
     passport.authenticate(config.passport.strategy,
       {
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
       }, function(req, res){
-        if(req.user.minAcc){
+        if(req['user'].user.is_admin){
           res.redirect("/admin");
+          return;
         }
         res.redirect("/student");
+
       })
   );
   
@@ -113,8 +115,9 @@ module.exports = app => {
         failureFlash: true
       }),
     function (req, res) {
-      if(req.user.minAcc){
+      if(req['user'].user.is_admin){
         res.redirect("/admin");
+        return;
       }
       res.redirect("/student");
     }
