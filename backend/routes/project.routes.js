@@ -1,5 +1,6 @@
 module.exports = app => {
     const projects = require("../controllers/project.controller.js");
+    const algorithm = require("../algorithm/algorithm.js");
 
     var router = require("express").Router();
 
@@ -30,6 +31,9 @@ module.exports = app => {
 
     // Update a project via a certain ID
     router.put("/:id", authcheck, projects.update);
+
+    // RUNS ALGORITHM
+    router.put("/run", authcheck, algorithm.runGeneticAlgorithm()); 
 
     // Delete a project with the given ID
     router.delete("/:id", authcheck, projects.delete);

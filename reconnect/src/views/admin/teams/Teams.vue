@@ -4,7 +4,7 @@
   <div class="run">
     <v-btn class="error" to="/admin/teams/edit">Edit</v-btn>
     <v-btn class="primary" @click="downloadItem">Export</v-btn>
-    <v-btn class="primary" >RUN</v-btn>
+    <v-btn class="primary" @click="runAlgorithm">RUN</v-btn>
     <hr>
     <div class="left-list">
       <h2 class="h2_2">Remaining</h2>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="right-list">
-      <span class="proj1" v-for="project in projects" :key="project.name">
+      <span class="proj1" v-for="project in projects" :key="project.id">
         <h2 class="h2_2">{{project.name}} ({{project.min_students}}, {{project.max_students}})</h2>
         <hr>
         <div class="element1" v-for="(student, i) in students" :key="i">
@@ -81,6 +81,15 @@ export default {
           link.download = 'export'
           link.click()
           URL.revokeObjectURL(link.href)
+    },
+    runAlgorithm: function() {
+      axios.put(process.env.VUE_APP_BASE_API_URL + '/projects/run', {withCredentials: true})
+      .then(response => {
+        console.log(response)
+      }
+      .catch(err => {
+        console.log(err)
+      })
     }
   }
 }
