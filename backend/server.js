@@ -50,7 +50,35 @@ app.use(expressCspHeader({
     'script-src': [SELF, INLINE]
   }
 }));
-
+const authcheck = (req,res,next)=>{
+  if(!req['user'].user){
+      // if user is not logged in this executes
+      res.redirect("/");
+      return
+  }else{
+      //If they are logged in
+      next();
+  }
+  res.redirect("/");
+  return;
+}
+const ADMINauthcheck = (req,res,next)=>{
+  if(!req['user'].user){
+      // if user is not logged in this executes
+      res.redirect("/");
+      return;
+  }else{
+      //If they are logged in
+      if(req['user'].user.is_admin){
+          next();
+          return;
+      }
+      else{
+          res.redirect("/");
+          return;
+      }
+  }
+}
 //app.use('/student', routes);
 
 //require("./routes/routes.google")(app);
@@ -75,24 +103,28 @@ app.get('/dump', function(req, res){
   }
 });
 */
-app.get('/student', function(requests, response){
+app.get('/student', authcheck,function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-app.get('/admin', function(requests, response){
+app.get('/admin', ADMINauthcheck,function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-app.get('/student/edit', function(requests, response){
+app.get('/student/edit', authcheck,function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-app.get('/admin/projects', function(requests, response){
+app.get('/admin/projects', ADMINauthcheck,function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-app.get('/admin/edit', function(requests, response){
+app.get('/admin/edit', ADMINauthcheck,function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-app.get('/admin/teams', function(requests, response){
+app.get('/admin/teams', ADMINauthcheck,function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
+app.get('/notRegistered',function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+});
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
