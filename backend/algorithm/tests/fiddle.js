@@ -252,5 +252,6 @@ const algorithm = require('../algorithm');
 // Tests genetic part
 (async () => {
     var geneticResult = await algorithm.runGeneticAlgorithm();
+    console.log(geneticResult);
     console.log(scoring.scoreAllProjects(geneticResult));
 })();

@@ -35,7 +35,7 @@ function generationSelection(generation) {
         }
     }
 
-    console.log(fitProject);
+    // console.log(fitProject);
     return _.cloneDeep(fitProject);
 }
 
@@ -68,16 +68,21 @@ function generateFromFittest(fittestProjectList, numRepeats) {
         projIndex1 = Math.floor(seeding.seededRandom(i*2) * (currentFittest.length - 1));
         projIndex2 = Math.floor(seeding.seededRandom(i*3) * (currentFittest.length - 1));
 
+        // Getting seeded random student to swap
+        let studentIndex1 = Math.floor(seeding.seededRandom(i*4)
+            * (currentFittest[projIndex1].people.length));
+
+        let studentIndex2 = Math.floor(seeding.seededRandom(i*5)
+            * (currentFittest[projIndex2].people.length));
+
         // Choosing two random students from each randomly chosen project to switch
-        student1 = currentFittest[projIndex1].people[Math.floor(
-            seeding.seededRandom(i*4) * (currentFittest[projIndex1].people.length))];
-        student2 = currentFittest[projIndex2].people[Math.floor(
-            seeding.seededRandom(i*5) * (currentFittest[projIndex2].people.length))];
+        student1 = currentFittest[projIndex1].people[studentIndex1];
+        student2 = currentFittest[projIndex2].people[studentIndex2];
 
         // Swapping students
-        temp = student1;
-        student1 = student2;
-        student2 = temp;
+        temp = _.cloneDeep(student1);
+        currentFittest[projIndex1].people[studentIndex1] = _.cloneDeep(student2);
+        currentFittest[projIndex2].people[studentIndex2] = temp;
 
         // Adding newly created project list to new generation
         generation.push(currentFittest);
@@ -157,6 +162,7 @@ async function runGeneticAlgorithm() {
 
     for (i = 0; i < maxEvolveTimes; i++) {
         newGeneration = evolvePopulation(generation);
+        console.log(i);
 
         // Debug: print score of generation
         // console.log(scoring.scoreAllProjects(newGeneration));
@@ -164,7 +170,8 @@ async function runGeneticAlgorithm() {
         // If it reaches a point where there is not much difference in highest fit individuals, return.
         if (Math.abs(scoring.scoreAllProjects(generationSelection(newGeneration)) -
             scoring.scoreAllProjects(generationSelection(generation))) < DIFFERENCE_THRESHOLD) {
-            return generationSelection(newGeneration);
+            // return generationSelection(newGeneration);
+            generation = newGeneration;
         }
         else {
             generation = newGeneration;
