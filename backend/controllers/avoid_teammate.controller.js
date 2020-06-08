@@ -71,7 +71,7 @@ exports.findAll = (req, res) => {
 // Get a single Avoid_Teammate from the database
 exports.findOne = (req, res) => {
 
-    Avoid_Teammate.findAll({where: {studentId : req.params.id} })
+    Avoid_Teammate.findAll({where: {studentId : req['user'].student.id} })
         
         .then(data => {
             res.send(data);

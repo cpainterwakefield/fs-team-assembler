@@ -53,7 +53,7 @@ exports.findAll = (req, res) => {
     let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
     var condition = title ? conditionResult : null;
 
-    Prefer_Teammate.findAll()
+    Prefer_Teammate.findAll({ where: condition })
         .then(data => {
             res.send(data);
         })
@@ -67,7 +67,7 @@ exports.findAll = (req, res) => {
 
 // Get a single Prefer_Teammate from the database
 exports.findOne = (req, res) => {
-    Prefer_Teammate.findAll({attributes: ['preferreeId'], where: {studentId : req.params.id} })
+    Prefer_Teammate.findAll({attributes: ['preferreeId'], where: {studentId : req['user'].student.id} })
         .then(data => {
             res.send(data);
         })
