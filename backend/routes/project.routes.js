@@ -7,16 +7,13 @@ module.exports = app => {
         if(!req['user'].user){
             // if user is not logged in this executes
             res.redirect("/");
-            return;
         }else{
             //If they are logged in
             if(req['user'].user.is_admin){
                 next();
-                return;
             }
             else{
                 res.redirect("/");
-                return;
             }
         }
     }
@@ -34,7 +31,7 @@ module.exports = app => {
     router.put("/:id", ADMINauthcheck, projects.update);
 
     // RUNS ALGORITHM
-    router.put("/run", authcheck, projects.run); 
+    router.put("/run", ADMINauthcheck, projects.run); 
 
     // Delete a project with the given ID
     router.delete("/:id", ADMINauthcheck, projects.delete);

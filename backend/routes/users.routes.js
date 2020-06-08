@@ -7,7 +7,6 @@ module.exports = app => {
         if(!req['user'].user){
             // if user is not logged in this executes
             res.redirect("/");
-            return;
         }else{
             //If they are logged in
             if(req.user.is_admin){
@@ -15,11 +14,8 @@ module.exports = app => {
             }
             else{
                 res.redirect("/");
-                return;
             }
         }
-        res.redirect("/");
-        return;
     }
 
     // Create a new client

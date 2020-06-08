@@ -64,25 +64,28 @@ passport.use(new CustomStrategy(
         }
         //If user is admin then they should not be added as a student
         if(userExists.is_admin){
+          console.log("admin");
           done(null,userExists);
-        }
-        //Add this user information to student table too if they exist
-        Student.findOne({where: {email: title}})
-        .then((createStudent) => {
-          //if no student exists then create one
-          if(!createStudent){
-            Student.create({
-              name: result.displayName,
-              email: result.mail
-            })
-            //student created now finish
-            done(null, userExists)
-          }
+          return;
+        }else{
+          //Add this user information to student table too if they exist
+          Student.findOne({where: {email: title}})
+          .then((createStudent) => {
+            //if no student exists then create one
+            if(!createStudent){
+              Student.create({
+                name: result.displayName,
+                email: result.mail
+              })
+              //student created now finish
+              return done(null, userExists);
+            }
           //Student already exists so finish
           else{
-            done(null,userExists)
+            done(null,userExists);
           }
-        })        
+          })        
+        }
       }
       //There is no user in the table that has that email
       //Meaning they are not in the class or have not been added yet
