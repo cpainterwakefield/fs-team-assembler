@@ -15,7 +15,7 @@ exports.create = (req, res) => {
     if (!req.body.email) {
         // If there is no name, then there's no point in storing a Client.
         res.status(400).send({
-            message: "Username cannot be empty."
+            message: "Email cannot be empty."
         });
 
         // Don't create anything.
