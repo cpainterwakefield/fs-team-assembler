@@ -7,13 +7,10 @@ module.exports = app => {
         if(!req['user'].student){
             // if user is not logged in this executes
             res.redirect("/");
-            return;
         }else{
             //If they are logged in
             next();
         }
-        res.redirect("/");
-        return;
     }
 
     // Create a new prefer_teammate 

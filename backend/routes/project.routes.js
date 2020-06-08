@@ -3,11 +3,10 @@ module.exports = app => {
 
     var router = require("express").Router();
 
-    const authcheck = (req,res,next)=>{
+    const ADMINauthcheck = (req,res,next)=>{
         if(!req['user'].user){
             // if user is not logged in this executes
             res.redirect("/");
-            return
         }else{
             //If they are logged in
             if(req['user'].user.is_admin){
@@ -15,33 +14,30 @@ module.exports = app => {
             }
             else{
                 res.redirect("/");
-                return;
             }
         }
-        res.redirect("/");
-        return;
     }
 
     // Create a new project 
-    router.post("/", authcheck ,projects.create);
+    router.post("/", ADMINauthcheck ,projects.create);
 
     // Get all the projects 
-    router.get("/", authcheck, projects.findAll);
+    router.get("/", ADMINauthcheck, projects.findAll);
 
     // Find a project by a certain ID
-    router.get("/:id", authcheck, projects.findOne);
+    router.get("/:id", ADMINauthcheck, projects.findOne);
 
     // Update a project via a certain ID
-    router.put("/:id", authcheck, projects.update);
+    router.put("/:id", ADMINauthcheck, projects.update);
 
     // RUNS ALGORITHM
-    router.put("/run", authcheck, projects.run); 
+    router.put("/run", ADMINauthcheck, projects.run); 
 
     // Delete a project with the given ID
-    router.delete("/:id", authcheck, projects.delete);
+    router.delete("/:id", ADMINauthcheck, projects.delete);
 
     // Delete all projects (ooo!)
-    router.delete("/", authcheck, projects.deleteAll);
+    router.delete("/", ADMINauthcheck, projects.deleteAll);
 
     app.use('/api/projects', router);
 }

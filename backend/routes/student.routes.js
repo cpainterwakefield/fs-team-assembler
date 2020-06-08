@@ -7,28 +7,22 @@ module.exports = app => {
         if(!req['user'].student){
             // if user is not logged in this executes
             res.redirect("/");
-            return;
         }else{
             //If they are logged in
             next();
         }
-        res.redirect("/");
-        return;
     }
     const ADMINauthcheck = (req,res,next)=>{
         if(!req['user'].user){
             // if user is not logged in this executes
             res.redirect("/");
-            return;
         }else{
             //If they are logged in
             if(req['user'].user.is_admin){
                 next();
-                return;
             }
             else{
                 res.redirect("/");
-                return;
             }
         }
     }
