@@ -15,8 +15,10 @@ passport.serializeUser((user,done) => {
 passport.deserializeUser((id,done) => {
   //recieve the id from the cookie
   //find the user in the table of users then
-  User.findByPk(id)
+  console.log(id);
+  User.findOne({where: {id: id}})
   .then((foundUser) => {
+    console.log(foundUser);
     if(foundUser.is_admin){
       //If foundUser is an admin return only foundUser since no student exists
       done(null, {user: foundUser});
@@ -67,33 +69,35 @@ function(accessToken, refreshToken, profile, done) {
         }
         //If user is admin then they should not be added as a student
         if(userExists.is_admin){
+          console.log("admin");
           done(null,userExists);
-        }
-        //Add this user information to student table too if they exist
-        Student.findOne({where: {email: title}})
-        .then((createStudent) => {
-          //if no student exists then create one
-          if(!createStudent){
-            Student.create({
-              name: result.displayName,
-              email: result.mail
-            })
-            //student created now finish
-            done(null, userExists)
-          }
+          return;
+        }else{
+          //Add this user information to student table too if they exist
+          Student.findOne({where: {email: title}})
+          .then((createStudent) => {
+            //if no student exists then create one
+            if(!createStudent){
+              Student.create({
+                name: result.displayName,
+                email: result.mail
+              })
+              //student created now finish
+              return done(null, userExists);
+            }
           //Student already exists so finish
           else{
-            done(null,userExists)
+            done(null,userExists);
           }
-        })        
+          })        
+        }
       }
       //There is no user in the table that has that email
       //Meaning they are not in the class or have not been added yet
       else{
-        done(null);
+        done();
       }
     })
-    done(null);
   })
 );
 module.exports = app => {
@@ -115,8 +119,8 @@ module.exports = app => {
   //   which, in this example, will redirect the user to the home page.
   app.get('/auth/google/callback', 
   passport.authenticate('google', {
-    failureRedirect: "http://localhost:8081/notRegistered",
-    successRedirect: "http://localhost:8081/Student"
+    failureRedirect: "http://localhost:8080/notRegistered",
+    successRedirect: "http://localhost:8080/Student"
   }),(req, res) => {
     console.log('you have logged in ^_^');
   });

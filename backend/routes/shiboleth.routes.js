@@ -11,15 +11,16 @@ passport.serializeUser((user,done) => {
   //attach the id of the user to the cookie
   done(null, user.id);
 });
-
 passport.deserializeUser((id,done) => {
   //recieve the id from the cookie
   //find the user in the table of users then
-  User.findByPk(id)
+  console.log(id);
+  User.findOne({where: {id: id}})
   .then((foundUser) => {
+    console.log(foundUser);
     if(foundUser.is_admin){
       //If foundUser is an admin return only foundUser since no student exists
-      done(null, foundUser);
+      done(null, {user: foundUser});
     }else{
       var studentEmail = foundUser.email;
       Student.findOne({where: {email: studentEmail}})
@@ -86,10 +87,9 @@ passport.use(new CustomStrategy(
       //There is no user in the table that has that email
       //Meaning they are not in the class or have not been added yet
       else{
-        done(null);
+        done();
       }
     })
-    done(null);
   })
 );
 
