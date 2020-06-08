@@ -43,8 +43,8 @@ app.use(passport.session());
 
 //app.use('/student', routes);
 
-//require("./routes/routes.google")(app);
-require("./routes/shiboleth.routes")(app);
+require("./routes/routes.google")(app);
+//require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);

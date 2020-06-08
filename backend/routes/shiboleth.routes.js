@@ -14,7 +14,7 @@ passport.serializeUser((user,done) => {
 passport.deserializeUser((id,done) => {
   //recieve the id from the cookie
   //find the user in the table of users then
-  User.findById(id)
+  User.findByPk(id)
   .then((foundUser) => {
     if(foundUser.is_admin){
       //If foundUser is an admin return only foundUser since no student exists
