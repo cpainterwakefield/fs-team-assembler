@@ -55,30 +55,45 @@ function(accessToken, refreshToken, profile, done) {
   const title = profile._json.email;
   const id = profile._json.sub.toString();
   User.findOne({where: {email: title}})
-    .then((studentExists) => {
-    if(studentExists){
-      //Student is part of the course and they can log in
-      //Student info is in studentExists
-      if(studentExists.name == null){
-        studentExists.update({
-          name: profile._json.name,
-          auth_id: id
-        })
-        //Add this student to the student table too
-        User.findOne({where: {email: title}})
-        .then((createStudent) => {
-          Student.create({
-            name: profile._json.name,
-            email: profile._json.email,
-            
+      .then((userExists) => {
+      //If they exist then add their information from the shibboleth envvar
+      if(userExists){
+        //if user.name is null then there is no info on that user yet
+        //so lets add it
+        if(userExists.name == null){
+          userExists.update({
+            name: result.displayName
           })
-        });
+        }
+        //If user is admin then they should not be added as a student
+        if(userExists.is_admin){
+          done(null,userExists);
+        }
+        //Add this user information to student table too if they exist
+        Student.findOne({where: {email: title}})
+        .then((createStudent) => {
+          //if no student exists then create one
+          if(!createStudent){
+            Student.create({
+              name: result.displayName,
+              email: result.mail
+            })
+            //student created now finish
+            done(null, userExists)
+          }
+          //Student already exists so finish
+          else{
+            done(null,userExists)
+          }
+        })        
       }
-      done(null , studentExists);
-    }
-    else{
-      done();
-    }
+      //There is no user in the table that has that email
+      //Meaning they are not in the class or have not been added yet
+      else{
+        done(null);
+      }
+    })
+    done(null);
   })
 
 }
