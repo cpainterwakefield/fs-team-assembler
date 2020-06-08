@@ -15,6 +15,7 @@
             </v-card-text>
             <v-card-actions class="c1">
               <v-btn color="primary" @click="submitStudentFile">Submit</v-btn>
+              <v-btn color="green" @click="downloadStudExample">Example</v-btn>
             </v-card-actions>
           </v-card>
         </div>
@@ -28,6 +29,7 @@
             </v-card-text>
             <v-card-actions class="c1">
               <v-btn color="primary" @click="submitProjectFile">Submit</v-btn>
+              <v-btn color="green" @click="downloadProjExample">Example</v-btn>
             </v-card-actions>
           </v-card>
         </div>
@@ -165,7 +167,7 @@ export default {
     }))
     .catch(e => {
       // react on errors.
-      self.errors.push(e)
+      console.log(e)
     })
   },
 
@@ -244,7 +246,7 @@ export default {
       
       console.log(this.projectsFile)
       const readerP = new FileReader();
-readerP.readAsText(this.projectsFile);
+      readerP.readAsText(this.projectsFile);
       console.log(this.projectsFile)
   
       readerP.onload = e => {
@@ -325,7 +327,25 @@ readerP.readAsText(this.projectsFile);
       }
 
       return result; //JavaScript object
-    }
+    },
+    downloadStudExample: function() {
+      var str = "name,email\njohn doe,john@gmail.com\njane doe,jane@gmail.com"
+      const blob = new Blob([str], { type: 'application/csv' })
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.download = 'Example Students'
+      link.click()
+      URL.revokeObjectURL(link.href)
+    },
+    downloadProjExample: function() {
+      var str = "name,client_name,client_email,client_company,min_students,max_students\nproject 1,client1,client1@gmail.com,company1,1,2\nproject2,client2,client2@gmail.com,company2,3,5"
+      const blob = new Blob([str], { type: 'application/csv' })
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(blob)
+      link.download = 'Example Projects'
+      link.click()
+      URL.revokeObjectURL(link.href)
+    },
   },
 }
 </script>
@@ -348,7 +368,7 @@ readerP.readAsText(this.projectsFile);
   }
 
   .add_element {
-    width: 40%;
+    width: 20%;
     display: inline-block;
     margin: 50px;
     background: white;

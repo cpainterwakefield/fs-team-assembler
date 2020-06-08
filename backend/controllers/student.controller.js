@@ -73,6 +73,193 @@ exports.findAll = (req, res) => {
         });
 };
 
+// Count all the Students from the database
+exports.countAll = (req, res) => {
+//    const title = req.query.title;
+//-- query to receive total numbe of students
+//SELECT COUNT(*) FROM students;
+
+    Student.count()
+        .then(data => {
+            res.send({data})
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while counting students"
+            });
+        })
+}
+
+// Count all students with selection preference team
+exports.countTeam = (req, res) => {
+
+//--query to receive total number of students who preferred team
+//SELECT COUNT(*) FROM students WHERE selection_preference = true;
+    
+    Student.count({where: {'selection_preference' : true } })
+        .then(data => {
+            res.send({data})
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || "Some error occurred while counting students with selection team"
+            })
+        })
+}
+
+// Count all students with selection preference project 
+exports.countProj = (req, res) => {
+
+//--query to receive total number of students who preferred team
+//SELECT COUNT(*) FROM students WHERE selection_preference = false;
+    
+    Student.count({where: {'selection_preference' : false } })
+        .then(data => {
+            res.send({data})
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || "Some error occurred while counting students with selection project"
+            })
+        })
+}
+
+// Count all students with selection preference neither 
+exports.countNoPref = (req, res) => {
+
+//--query to receive total number of students who preferred team
+//SELECT COUNT(*) FROM students WHERE selection_preference = false;
+    
+    Student.count({where: {'selection_preference' : null } })
+        .then(data => {
+            res.send({data})
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || "Some error occurred while counting students with selection no preference"
+            })
+        })
+}
+
+// Count all students with selection preference neither 
+exports.countSubmitted = (req, res) => {
+
+//--query to receive total number of students who preferred team
+//SELECT COUNT(*) FROM students WHERE gpa IS NOT NULL;
+    
+    Student.count({where: {'gpa' : { [Op.not] : null} } })
+        .then(data => {
+            res.send({data})
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || "Some error occurred while counting students with selection no preference"
+            })
+        })
+}
+
+exports.countProjInPref = (req, res) => {
+
+//-- query to receive number of students who preferred project AND got a preferred project
+//SELECT COUNT(*) FROM students WHERE selection_preference = false AND (project_id = first_project OR project_id = second_project OR project_id = third_project);
+    db.sequelize.query("SELECT COUNT(*) FROM students WHERE selection_preference = false AND (project_id = first_project OR project_id = second_project OR project_id = third_project)", { type: db.sequelize.SELECT })
+        .then(data => {
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || "Some error occurred while counting students"
+            })
+        })
+}
+
+exports.countFirstProj = (req, res) => {
+
+//-- query to receive number of students who preferred project AND got their first project 
+//SELECT COUNT(*) FROM students WHERE selection_preference = false AND (project_id = first_project);
+    db.sequelize.query("SELECT COUNT(*) FROM students WHERE selection_preference = false AND (project_id = first_project)" , {type: db.sequelize.SELECT })
+        .then(data => {
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || "Some error occurred while counting students"
+            })
+        })
+}
+
+exports.countSecondProj = (req, res) => {
+
+//-- query to receive number of students who preferred project AND got their second project 
+//SELECT COUNT(*) FROM students WHERE selection_preference = false AND (project_id = second_project);
+    db.sequelize.query("SELECT COUNT(*) FROM students WHERE selection_preference = false AND (project_id = second_project)" , {type: db.sequelize.SELECT })
+        .then(data => {
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || "Some error occurred while counting students"
+            })
+        })
+}
+
+exports.countThirdProj = (req, res) => {
+
+//-- query to receive number of students who preferred project AND got their third project 
+//SELECT COUNT(*) FROM students WHERE selection_preference = false AND (project_id = third_project);
+    db.sequelize.query("SELECT COUNT(*) FROM students WHERE selection_preference = false AND (project_id = third_project)" , {type: db.sequelize.SELECT })
+        .then(data => {
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || "Some error occurred while counting students"
+            })
+        })
+}
+
+exports.countTeam1Mem = (req, res) => {
+console.log("HEREHREHRHE")
+
+//-- query to receive number of students who preferred project AND got their third project 
+//SELECT COUNT(*) FROM students s WHERE selection_preference = true AND EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id));
+    db.sequelize.query("SELECT COUNT(*) FROM students s WHERE selection_preference IS NULL AND ((project_id = first_project OR project_id = second_project OR project_id = third_project) OR EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id)))" , {type: db.sequelize.SELECT })
+        .then(data => {
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || "Some error occurred while counting students"
+            })
+        })
+}
+
+exports.countNoPrefTeamOrProj = (req, res) => {
+
+//-- query to receive number of students who preferred project AND got their third project 
+//SELECT COUNT(*) FROM students s WHERE selection_preference = true AND EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id));
+    db.sequelize.query("SELECT COUNT(*) FROM students s WHERE selection_preference = true AND EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id))" , {type: db.sequelize.SELECT })
+        .then(data => {
+            res.send(data)
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: 
+                    err.message || "Some error occurred while counting students"
+            })
+        })
+}
+
 // Get a single Student from the database using id given by shibboleth
 exports.findOne = (req, res) => {
     const id = req.params.id;
