@@ -243,8 +243,7 @@ async function runGeneticAlgorithm() {
     // Update the students table in the DB.
     dbInt.updateStudents(endIndividual);
 
-    // console.log(verifiers.noAvoidsOnSameProject(endIndividual));
-
+    console.log(verifiers.noAvoidsOnSameProject(endIndividual));
     return endIndividual;
 }
 
