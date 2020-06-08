@@ -178,7 +178,8 @@ async function runGeneticAlgorithm() {
         }
     }
 
-    return generationSelection(newGeneration);
+    let endGeneration = generationSelection(newGeneration);
+    dbInt.updateStudents(endGeneration);
 }
 
 exports.generationSelection = generationSelection;
