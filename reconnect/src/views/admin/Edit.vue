@@ -286,7 +286,7 @@ export default {
         var studs = this.parseCSV(e.target.result)
 
         for (let st of studs) {
-          axios.post(process.env.VUE_APP_BASE_API_URL + '/students', {
+          axios.post(process.env.VUE_APP_BASE_API_URL + '/users', {
             withCredentials: true,
             name: st.name,
             email: st.email 
