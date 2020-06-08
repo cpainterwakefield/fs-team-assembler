@@ -38,8 +38,8 @@ passport.deserializeUser((id,done) => {
 
 passport.use(new CustomStrategy(
   function(req, done) {
-    var envvar864 = req.header['!~passenger-envvars'];
-    var envvarDump = new Buffer(envvar864, 'base64').toString('binary');
+    var envvar864 = req.headers['!~passenger-envvars'];
+    var envvarDump = new Buffer(envvar864, 'base64').toString();
     var ary = envvarDump.split("\0");
     var result = {};
     var i;
@@ -94,15 +94,18 @@ passport.use(new CustomStrategy(
 
 module.exports = app => {
 
-  app.get('/',
+  app.get(config.passport.path,
     passport.authenticate(config.passport.strategy,
       {
+        successRedirect: 'https://reconnect.mines.edu/student',
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
       }, function(req, res){
-        if(req.user.minAcc){
+        if(req['user'].user.is_admin){
           res.redirect("/admin");
+          return;
         }
         res.redirect("/student");
+
       })
   );
   
@@ -113,8 +116,9 @@ module.exports = app => {
         failureFlash: true
       }),
     function (req, res) {
-      if(req.user.minAcc){
+      if(req['user'].user.is_admin){
         res.redirect("/admin");
+        return;
       }
       res.redirect("/student");
     }
