@@ -16,7 +16,7 @@ import axios from 'axios'
     name: 'Header',
     data() {
       return {
-        projLink: "http://cs-courses.mines.edu/csci370/FS2020S/ProjectList2020S.html",
+        projLink: "",
         authLink: "https://reconnect.mines.edu/logout"
       }
     },

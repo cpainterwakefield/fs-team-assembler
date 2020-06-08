@@ -79,6 +79,7 @@ const ADMINauthcheck = (req,res,next)=>{
 require("./routes/routes.google")(app);
 //require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
+require("./routes/users.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
