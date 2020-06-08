@@ -7,6 +7,7 @@ import AdminTeams from '../views/admin/teams/Teams.vue'
 import AdminEditTeams from '../views/admin/teams/Edit.vue'
 import AdminEdit from '../views/admin/Edit.vue'
 import AdminProjects from '../views/admin/Projects.vue'
+import NotFound from '../views/notFound.vue'
 
 Vue.use(VueRouter)
 
@@ -17,7 +18,9 @@ const routes = [
   { path: '/admin/teams', name: 'Teams', component: AdminTeams, meta: {title: 'Teams'} },
   { path: '/admin/teams/edit', name: 'Edit Teams', component: AdminEditTeams, meta: {title: 'Edit'} },
   { path: '/admin/edit', name: 'Edit Info', component: AdminEdit, meta: {title: 'Edit'} },
-  { path: '/admin/projects', name: 'Projects', component: AdminProjects, meta: {title: 'Projects'} }
+  { path: '/admin/projects', name: 'Projects', component: AdminProjects, meta: {title: 'Projects'} },
+  { path: '/notRegistered', name: 'Not Registered', component: NotFound, meta: {title: 'Not Found'} }
+
 ]
 
 const router = new VueRouter({
