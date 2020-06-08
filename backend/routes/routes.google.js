@@ -95,9 +95,7 @@ function(accessToken, refreshToken, profile, done) {
     })
     done(null);
   })
-
-}
-));
+);
 module.exports = app => {
   // GET /auth/google
   //   Use passport.authenticate() as route middleware to authenticate the

@@ -48,7 +48,7 @@ exports.findAll = (req, res) => {
     let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
     var condition = title ? conditionResult : null;
 
-    Project.findAll({ where: condition })
+    Project.findAll()
         .then(data => {
             res.send(data);
         })
