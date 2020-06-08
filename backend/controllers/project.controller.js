@@ -51,7 +51,8 @@ exports.findAll = (req, res) => {
     let conditionResult = { title: { [Op.iLike]: `%${title}%` } }
     var condition = title ? conditionResult : null;
 
-    Project.findAll({ where: condition , order: ['name']})
+    Project.findAll({order: ['name']})
+
         .then(data => {
             res.send(data);
         })
