@@ -101,13 +101,6 @@ module.exports = app => {
       {
         successRedirect: 'https://reconnect.mines.edu/student',
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
-      }, function(req, res){
-        if(req['user'].user.is_admin){
-          res.redirect("/admin");
-          return;
-        }
-        res.redirect("/student");
-
       })
   );
   
