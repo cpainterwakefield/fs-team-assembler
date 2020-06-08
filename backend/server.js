@@ -63,7 +63,8 @@ require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
 
 app.get('/dump', function(req, res){
-  var envvar864 = req.header['!~passenger-envvars'];
+  //res.send(req.headers['!~passenger-envvars']);
+  var envvar864 = req.headers['!~passenger-envvars'];
     var envvarDump = new Buffer.alloc(envvar864, 'base64').toString('binary');
     var ary = envvarDump.split("\0");
     var result = {};
