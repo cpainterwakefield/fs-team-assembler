@@ -204,10 +204,10 @@ async function runGeneticAlgorithm() {
         }
     }
 
-    let endGeneration = generationSelection(newGeneration);
-    dbInt.updateStudents(endGeneration);
+    let endIndividual = generationSelection(newGeneration);
+    dbInt.updateStudents(endIndividual);
 
-    return endGeneration;
+    return endIndividual;
 }
 
 exports.generationSelection = generationSelection;
