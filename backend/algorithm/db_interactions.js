@@ -202,7 +202,7 @@ function updateStudents(populatedAlgoJSON) {
                 { project_id: project.id },
                 { where: { id: student.id }}
             ).then(res => {
-                console.log("Successfully updated students!");    
+                // console.log("Successfully updated students!");    
             }).catch(err => {
                 console.log("Failed to update students.");
                 console.log(err);  

@@ -11,6 +11,7 @@ passport.serializeUser((user,done) => {
   //attach the id of the user to the cookie
   done(null, user.id);
 });
+
 passport.deserializeUser((id,done) => {
   //recieve the id from the cookie
   //find the user in the table of users then
@@ -88,6 +89,7 @@ passport.use(new CustomStrategy(
         done(null);
       }
     })
+    done(null);
   })
 );
 

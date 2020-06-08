@@ -204,6 +204,7 @@ function greedySeedInitial(students, projects, populationSize) {
                 seededRandom(studentSeed) * currentStudents.length);
         }
 
+        /*
         // The only projects pushed in currentProjectList are projects
         // that happen to be full. This gets the rest of them to the
         // popProjectList which makes sure that all students are included.
@@ -215,6 +216,39 @@ function greedySeedInitial(students, projects, populationSize) {
 
             if (remainingProject.people.length > 0) {
                 popProjectList.push(remainingProject);
+            }
+        }
+        */
+
+        // An array that holds students left over from unfulfilled projects. 
+        let leftoverStudents = [];
+
+        // For each one of the remaining projects with fewer people than the minimum,
+        // take the students out of that project.
+        for (let remProjIndex = 0; remProjIndex < currentProjectList.length; remProjIndex++) {
+            let remProj = currentProjectList[remProjIndex];
+
+            // If the project doesn't have enough people, but it has *some*
+            // people on it, take these people out of those projects.
+            if (remProj.people.length < remProj.minPeople && remProj.people.length > 0) {
+                // Push each student into leftover arr
+                for (let person of remProj.people) {
+                    leftoverStudents.push(person);
+                }
+
+                // Clear the people list of the remaining project.
+                remProj.people = [];
+
+                // console.log(currentProjectList[remProjIndex].people);
+            }
+        }
+
+        while (currentProjectList.length > 0 && leftoverStudents.length > 0) {
+            let leftoverProj = currentProjectList.pop();
+
+            while (leftoverProj.people.length < leftoverProj.maxPeople && leftoverStudents.length > 0) {
+                let leftover = leftoverStudents.pop();
+                leftoverProj.people.push(leftover);
             }
         }
 
