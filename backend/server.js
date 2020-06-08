@@ -53,24 +53,24 @@ app.use(expressCspHeader({
 const authcheck = (req,res,next)=>{
   if(!req['user'].student){
       // if user is not logged in this executes
-      return res.redirect("/");
+      res.redirect("/");
   }else{
       //If they are logged in
       next();
   }
-  return res.redirect("/");
+  res.redirect("/");
 }
 const ADMINauthcheck = (req,res,next)=>{
   if(!req['user'].user){
       // if user is not logged in this executes
-      return res.redirect("/");
+      res.redirect("/");
   }else{
       //If they are logged in
       if(req['user'].user.is_admin){
-          return next();
+          next();
       }
       else{
-          return res.redirect("/");
+        res.redirect("/");
       }
   }
 }
