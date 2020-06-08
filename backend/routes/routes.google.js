@@ -9,14 +9,34 @@ const Student = db.students;
 const Op = db.Sequelize.Op;
 
 passport.serializeUser((user,done) => {
+  //attach the id of the user to the cookie
   done(null, user.id);
 });
 passport.deserializeUser((id,done) => {
-  User.findByPk(id).then((user) => {
-    done(null,user);
+  //recieve the id from the cookie
+  //find the user in the table of users then
+  User.findByPk(id)
+  .then((foundUser) => {
+    if(foundUser.is_admin){
+      //If foundUser is an admin return only foundUser since no student exists
+      done(null, {user: foundUser});
+    }else{
+      var studentEmail = foundUser.email;
+      Student.findOne({where: {email: studentEmail}})
+      .then((foundStudent) =>{
+        //if a student is found 
+        if(foundStudent){
+          //return user and student so we can access both of those
+          done(null, {
+            user: foundUser,
+            student: foundStudent
+          });
+        }
+      })
+    }
   })
-
 });
+
 
 
 // Use the GoogleStrategy within Passport.
@@ -39,7 +59,7 @@ function(accessToken, refreshToken, profile, done) {
     if(studentExists){
       //Student is part of the course and they can log in
       //Student info is in studentExists
-      if(studentExists.name != null){
+      if(studentExists.name == null){
         studentExists.update({
           name: profile._json.name,
           auth_id: id
@@ -57,7 +77,6 @@ function(accessToken, refreshToken, profile, done) {
       done(null , studentExists);
     }
     else{
-      User.create({email: 'michaelhumphrey@mymail.mines.edu', isAdmin: true})
       done();
     }
   })

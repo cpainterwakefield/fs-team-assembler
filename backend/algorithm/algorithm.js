@@ -35,6 +35,7 @@ function generationSelection(generation) {
         }
     }
 
+    // console.log(fitProject);
     return _.cloneDeep(fitProject);
 }
 
@@ -47,9 +48,12 @@ function generationSelection(generation) {
  *  
  * @param {Project list to create a new generation out of.} fittestProjectList 
  * @param {Amount of times to repeat generation.} numRepeats
+ * @param {The amount of entropy the regeneration has.} entropy
  * @return {The new generation, a list of individuals.}
  */
-function generateFromFittest(fittestProjectList, numRepeats) {
+function generateFromFittest(fittestProjectList, numRepeats, entropy=10) {
+    // console.log(fittestProjectList);
+
     //Create an empty generation to fill and return
     let generation = [];
     let student1;
@@ -59,29 +63,42 @@ function generateFromFittest(fittestProjectList, numRepeats) {
     let temp;
 
     // Repeat numRepeats times
+    // Indices start at 1 to prevent uniformity in seeded randoms when i = 0.
     for(let i = 0; i < numRepeats; i++) {
         // Clone fittest project list so that we're not editing the original
         let currentFittest = _.cloneDeep(fittestProjectList);
 
-        // Getting seeded random project indices to swap students from 
-        projIndex1 = Math.floor(seeding.seededRandom(i*2) * (currentFittest.length - 1));
-        projIndex2 = Math.floor(seeding.seededRandom(i*3) * (currentFittest.length - 1));
+        // For each of these loops, swap random students between groups.
+        // The amount of entropy is how many times students are swapped.
+        // Higher entropy gives longer runtime, but larger chance for positive
+        // variation between generations.
+        for (let ent = 1; ent <= entropy; ent++) {
+            // Getting seeded random project indices to swap students from 
+            projIndex1 = Math.floor(seeding.seededRandom(ent*i*2) * (currentFittest.length - 1));
+            projIndex2 = Math.floor(seeding.seededRandom(ent*i*3) * (currentFittest.length - 1));
 
-        // Choosing two random students from each randomly chosen project to switch
-        student1 = currentFittest[projIndex1].people[Math.floor(
-            seeding.seededRandom(i*4) * (currentFittest[projIndex1].people.length))];
-        student2 = currentFittest[projIndex2].people[Math.floor(
-            seeding.seededRandom(i*5) * (currentFittest[projIndex2].people.length))];
+            // Getting seeded random student to swap
+            let studentIndex1 = Math.floor(seeding.seededRandom(ent*i*4)
+                * (currentFittest[projIndex1].people.length));
 
-        // Swapping students
-        temp = student1;
-        student1 = student2;
-        student2 = temp;
+            let studentIndex2 = Math.floor(seeding.seededRandom(ent*i*5)
+                * (currentFittest[projIndex2].people.length));
+
+            // Choosing two random students from each randomly chosen project to switch
+            student1 = currentFittest[projIndex1].people[studentIndex1];
+            student2 = currentFittest[projIndex2].people[studentIndex2];
+
+            // Swapping students
+            temp = _.cloneDeep(student1);
+            currentFittest[projIndex1].people[studentIndex1] = _.cloneDeep(student2);
+            currentFittest[projIndex2].people[studentIndex2] = temp;
+        }
 
         // Adding newly created project list to new generation
         generation.push(currentFittest);
     }
 
+    // console.log(generation[0]);
     return generation;
 }
 
@@ -142,29 +159,55 @@ function evolvePopulation(population) {
  *  
  *  These values can be altered to produce a potential more fit result, however, at the cost of run time.  
  */
-function runGeneticAlgorithm() {
-    let students = dbInt.getAllStudents();
-    let projects = dbInt.getAllProjects();
+async function runGeneticAlgorithm() {
+    let testData = await dbInt.loadAndConvert();
+    let students = testData.students; 
+    let projects = testData.projects;
 
-    //Making initial greedy generation
+    if (students == undefined || projects == undefined) {
+        return;
+    }
+
+    // Making initial greedy generation
     let generation = seeding.greedySeedInitial(students, projects, 100);
+    console.log(scoring.scoreAllProjects(generationSelection(generation)));
+
     let newGeneration;
     // Set a max amount to stop at if it never reaches the threshold for stopping.
     let maxEvolveTimes = 100;
     const DIFFERENCE_THRESHOLD = 1.1;
 
     for (i = 0; i < maxEvolveTimes; i++) {
-        newGeneration = evolvePopulation(generation);
+        newGeneration = evolvePopulation(_.cloneDeep(generation));
+        // console.log(i);
+
+        /*
+        if (scoring.scoreAllProjects(generationSelection(newGeneration)) 
+            == scoring.scoreAllProjects(generationSelection(generation))) {
+            console.log("evolved");
+            console.log(i);
+            generation = newGeneration;
+        }
+        */
+
+        // Debug: print score of generation
+        // console.log(scoring.scoreAllProjects(newGeneration));
+
         // If it reaches a point where there is not much difference in highest fit individuals, return.
         if (Math.abs(scoring.scoreAllProjects(generationSelection(newGeneration)) -
             scoring.scoreAllProjects(generationSelection(generation))) < DIFFERENCE_THRESHOLD) {
-            return generationSelection(newGeneration);
+            // return generationSelection(newGeneration);
+            generation = newGeneration;
         }
         else {
             generation = newGeneration;
         }
     }
-    return generationSelection(newGeneration);
+
+    let endGeneration = generationSelection(newGeneration);
+    dbInt.updateStudents(endGeneration);
+
+    return endGeneration;
 }
 
 exports.generationSelection = generationSelection;

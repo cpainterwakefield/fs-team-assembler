@@ -4,20 +4,17 @@ module.exports = app => {
     var router = require("express").Router();
 
     const authcheck = (req,res,next)=>{
-                next(); // COMMENT OUT -- ONLY FOR DEV
-/*        if(!req.user){
+        if(!req['user'].student){
             // if user is not logged in this executes
-            res.redirect("/auth/login");
+            res.redirect("/");
+            return;
         }else{
             //If they are logged in
-            if(req.user.is_admin){
-                next();
-            }
-            else{
-                res.redirect("/auth/login");
-            }
+            next();
         }
-  */  }
+        res.redirect("/");
+        return;
+    }
 
     // Create a new prefer_teammate 
     router.post("/", authcheck ,prefer_teammates.create);

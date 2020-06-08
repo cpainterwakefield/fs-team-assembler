@@ -8,12 +8,11 @@ const serveStatic = require("serve-static");
 //nom nom nom
 const cookieSession = require("cookie-session");
 const path = require("path");
+const {expressCspHeader, INLINE, NONE, SELF} = require('express-csp-header');
+const router = require('express').Router();
 
 const app = express();
 app.use(serveStatic("./dist"));
-
-//app.use(serveStatic(path.join()))
-
 
 //cookie settings
 app.use(cookieSession({
@@ -21,7 +20,7 @@ app.use(cookieSession({
   keys: [keys.cookie.keyOne]
 
 }));
-
+//Cors settigs
 var corsOptions = {
   origin: ["http://localhost:8081", "https://accounts.google.com", "https://reconnect.mines.edu"],
   methods: ["OPTIONS", "POST", "GET","PUT","DELETE"],
@@ -31,7 +30,7 @@ var corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
+//sync db with sequelize
 db.sequelize.sync();
 
 // parse requests of content-type - application/json
@@ -43,41 +42,56 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(expressCspHeader({
+  directives: {
+    'default-src': [SELF, INLINE,"https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
+    'img-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
+    'style-src': [SELF, INLINE, "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://fonts.gstatic.com"],
+    'script-src': [SELF, INLINE]
+  }
+}));
 
 //app.use('/student', routes);
 
 //require("./routes/routes.google")(app);
-//require("./routes/shiboleth.routes")(app);
+require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/student.routes")(app);
 require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
-//require("./routes/vue.routes")(app);
-
-app.get('/',(res, req) => {
-  res.send(req);
-})
-
+/*
+app.get('/dump', function(req, res){
+  //res.send(req.headers['!~passenger-envvars']);
+  var envvar864 = req.headers['!~passenger-envvars'];
+  var envvarDump = new Buffer(envvar864, 'base64').toString();
+  var ary = envvarDump.split("\0");
+  var result = {};
+  var i;
+  for (i = 0; i < ary.length - 1; i+=2) {
+    result[ary[i]] = ary[i + 1];
+  }
+});
+*/
 app.get('/student', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 app.get('/admin', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 app.get('/student/edit', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 app.get('/admin/projects', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 app.get('/admin/edit', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 app.get('/admin/teams', function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
-})
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

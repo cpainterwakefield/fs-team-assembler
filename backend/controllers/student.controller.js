@@ -261,7 +261,7 @@ exports.countNoPrefTeamOrProj = (req, res) => {
 
 // Get a single Student from the database using id given by shibboleth
 exports.findOne = (req, res) => {
-    const id = req.params.id;
+    const id = req["user"].student.id;
 
     Student.findByPk(id)
         .then(data => {
@@ -276,7 +276,7 @@ exports.findOne = (req, res) => {
 
 // Update a single Client via its ID
 exports.update = (req, res) => {
-    const id = req.params.id;
+    const id = req['user'].student.id;
     //UPDATE STUDENT DATA BELOW
     Student.update(req.body, {
         where: { id: id }
@@ -345,3 +345,11 @@ exports.deleteAll = (req, res) => {
     });
 
 };
+//Send student id from a valid cookie
+exports.retrieve = (req, res) => {
+    Student.findAll({
+        where: {
+            email: "string"
+        }
+    })
+}
