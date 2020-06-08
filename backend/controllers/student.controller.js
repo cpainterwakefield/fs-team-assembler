@@ -99,7 +99,7 @@ exports.findOne = (req, res) => {
 
 // Update a single Client via its ID
 exports.update = (req, res) => {
-    const id = req.params.sid;
+    const id = req['user'].student.id;
     //UPDATE STUDENT DATA BELOW
     Student.update(req.body, {
         where: { id: id }

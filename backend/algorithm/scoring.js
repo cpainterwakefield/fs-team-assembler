@@ -22,7 +22,7 @@ const AVOID_PENALTY = 7;
 
 // The penalty to scoring incurred by a group not having enough
 // members, or having too many members.
-const POP_BOUND_PENALTY = 10;
+const POP_BOUND_PENALTY = 15;
 
 /** 
  * A function that checks project preferences on a person basis,
@@ -121,6 +121,7 @@ function scoreProject(project) {
     // range requested for the project, then the project doesn't meet the constraint.
     if (project.people.length < project.minPeople
         || project.people.length > project.maxPeople) {
+        total -= POP_BOUND_PENALTY;
     }
 
     for (let person of project.people) {
