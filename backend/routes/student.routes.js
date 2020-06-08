@@ -31,8 +31,6 @@ module.exports = app => {
                 return;
             }
         }
-        res.redirect("/");
-        return;
     }
     //Get the current student id
     router.get("/retrieve", authcheck, students.retrieve);
