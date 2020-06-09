@@ -75,8 +75,8 @@ const ADMINauthcheck = (req,res,next)=>{
 }
 //app.use('/student', routes);
 
-require("./routes/routes.google")(app);
-//require("./routes/shiboleth.routes")(app);
+//require("./routes/routes.google")(app);
+require("./routes/shiboleth.routes")(app);
 require("./routes/client.routes")(app);
 require("./routes/users.routes")(app);
 require("./routes/student.routes")(app);
@@ -86,22 +86,6 @@ require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
 require("./routes/run.routes")(app);
 
-app.get('/dump', function(req, res){
-  if(req['user']){
-    res.redirect('/');
-  }
-  //res.send(req['user']);
-  /*
-  //res.send(req.headers['!~passenger-envvars']);
-  var envvar864 = req.headers['!~passenger-envvars'];
-  var envvarDump = new Buffer(envvar864, 'base64').toString();
-  var ary = envvarDump.split("\0");
-  var result = {};
-  var i;
-  for (i = 0; i < ary.length - 1; i+=2) {
-    result[ary[i]] = ary[i + 1];
-  }*/
-});
 
 app.get('/student', authcheck,function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
