@@ -1,6 +1,6 @@
 <template>
   <center>
-    <v-btn x-large color='primary' @click="doLogin()">Login</v-btn>
+    <v-btn x-large color='primary' to="/login">Login</v-btn>
   </center>
 </template>
 
@@ -13,8 +13,10 @@ import axios from 'axios'
 export default {
   name: 'Profile',
   methods: {
+
     doLogin: function() {
       axios.get('/login');
+     
     }
   }
   }
