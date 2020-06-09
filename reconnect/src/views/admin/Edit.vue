@@ -261,6 +261,20 @@ export default {
         console.log(error);
         self.errors.push(error)
       });
+      axios.post(process.env.VUE_APP_BASE_API_URL + '/students', {
+        withCredentials: true,
+        name: this.studName,
+        project_id: null,
+        email: this.studEmail
+      }, {withCredentials: true})
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+        self.errors.push(error)
+      });
+
 
     },
     changeLink: function() {
@@ -325,6 +339,18 @@ export default {
           .catch (err => {
             this.errors.push(err)
           })
+          axios.post(process.env.VUE_APP_BASE_API_URL + '/students', {
+            withCredentials: true,
+            name: st.name,
+            email: st.email 
+          })
+          .then (response => { 
+            console.log(response)
+          })
+          .catch (err => {
+            this.errors.push(err)
+          })
+
         }
       }
     },
