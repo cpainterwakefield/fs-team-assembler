@@ -3,6 +3,16 @@ module.exports = app => {
 
     var router = require("express").Router();
 
+    const authcheck = (req,res,next)=>{
+        if(!req['user']){
+            // if user is not logged in this executes
+            res.redirect("/");
+        }else{
+            //If they are logged in
+            next();
+        }
+    }
+
     const ADMINauthcheck = (req,res,next)=>{
         if(!req['user']){
             // if user is not logged in this executes
@@ -22,16 +32,13 @@ module.exports = app => {
     router.post("/", ADMINauthcheck ,projects.create);
 
     // Get all the projects 
-    router.get("/", ADMINauthcheck, projects.findAll);
+    router.get("/", authcheck, projects.findAll);
 
     // Find a project by a certain ID
     router.get("/:id", ADMINauthcheck, projects.findOne);
 
     // Update a project via a certain ID
     router.put("/:id", ADMINauthcheck, projects.update);
-
-    // RUNS ALGORITHM
-    router.put("/run", ADMINauthcheck, projects.run); 
 
     // Delete a project with the given ID
     router.delete("/:id", ADMINauthcheck, projects.delete);

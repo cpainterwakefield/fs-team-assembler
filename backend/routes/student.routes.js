@@ -33,7 +33,7 @@ module.exports = app => {
     router.post("/", ADMINauthcheck ,students.create);
 
     // Get all the students 
-    router.get("/", ADMINauthcheck, students.findAll);
+    router.get("/", authcheck, students.findAll);
 
     // Get count of all students
     router.get("/countAll", ADMINauthcheck, students.countAll);
@@ -71,8 +71,10 @@ module.exports = app => {
     // Find a student by a certain ID
     router.get("/:id", authcheck, students.findOne);
 
-    // Update a student via a certain ID
+    // Update a student via cookie ID
     router.put("/:id", authcheck, students.update);
+    // Update a student via a certain ID
+    router.put("/id/:id", authcheck, students.updateTwo);
 
     // Delete a student with the given ID
     router.delete("/:id", ADMINauthcheck, students.delete);

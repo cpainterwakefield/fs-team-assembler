@@ -18,7 +18,7 @@
       <span class="proj1" v-for="model in models" :key="model.project.id">
         <h2 class="h2_2">{{model.project.name}} ({{model.project.min_students}}, {{model.project.max_students}})</h2>
         <hr>
-        <draggable :list="model.students" class="drag1" group="projects" @change="setItems">
+        <draggable :list="model.students" class="drag1" group="projects" >
           <div class="element" v-for="student in model.students" :key="student.id">
             <v-app-bar-nav-icon small class="icon1"></v-app-bar-nav-icon>
             <span class="p2" >{{student.name}}</span>
@@ -90,7 +90,7 @@ export default {
       for (let pr of this.models) {
         for (let st of pr.students) {
           st.project_id = pr.project.id
-          axios.put(process.env.VUE_APP_BASE_API_URL + '/students/' + st.id, {
+          axios.put(process.env.VUE_APP_BASE_API_URL + '/students/id/' + st.id, {
             project_id: st.project_id,
             withCredentials: true
           })
@@ -104,7 +104,7 @@ export default {
       }
       for (let st of this.nullStuds) {
         st.project_id = null
-        axios.put(process.env.VUE_APP_BASE_API_URL + '/students/' + st.id, {
+        axios.put(process.env.VUE_APP_BASE_API_URL + '/students/id/' + st.id, {
           project_id: st.project_id,
           withCredentials: true
         })
