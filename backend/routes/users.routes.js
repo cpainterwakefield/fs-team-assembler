@@ -23,5 +23,7 @@ module.exports = app => {
     router.delete("/:id", ADMINauthcheck, users.delete);
     // delete all students from users 
     router.delete("/", ADMINauthcheck, users.deleteStudents);
+    //Retrieve user ID from a student
+    router.get("/retrieve/:email", ADMINauthcheck, users.retrieve);
     app.use('/api/users', router);
 }

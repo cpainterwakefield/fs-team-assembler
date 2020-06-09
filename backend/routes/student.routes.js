@@ -27,7 +27,7 @@ module.exports = app => {
         }
     }
     //Get the current student id
-    router.get("/retrieve", authcheck, students.retrieve);
+    router.get("/retrieve/:email", authcheck, students.retrieve);
 
     // Create a new student 
     router.post("/", ADMINauthcheck ,students.create);

@@ -105,6 +105,9 @@ app.get('/admin/edit', ADMINauthcheck,function(requests, response){
 app.get('/admin/teams', ADMINauthcheck,function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
+app.get('/admin/teams/edit', ADMINauthcheck,function(requests, response){
+  response.sendFile(path.resolve(__dirname,"dist",'index.html'));
+});
 app.get('/notRegistered',function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
