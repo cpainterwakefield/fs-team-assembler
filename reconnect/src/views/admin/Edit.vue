@@ -186,7 +186,7 @@ export default {
         console.log(response)
         return response.data
       }) 
-    }
+    },
   
     deleteStudent: function (s_id) {
       var self=this;
