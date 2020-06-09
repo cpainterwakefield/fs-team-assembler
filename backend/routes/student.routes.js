@@ -33,7 +33,7 @@ module.exports = app => {
     router.post("/", ADMINauthcheck ,students.create);
 
     // Get all the students 
-    router.get("/", ADMINauthcheck, students.findAll);
+    router.get("/", authcheck, students.findAll);
 
     // Get count of all students
     router.get("/countAll", ADMINauthcheck, students.countAll);
