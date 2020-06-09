@@ -224,6 +224,11 @@ export default {
       .catch(e => {
         self.errors.push(e)
       })
+      
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/users/', {withCredentials: true})
+      .catch (e => {
+        self.errors.push(e)
+      })
     },
     newProj: function() {
       axios.post(process.env.VUE_APP_BASE_API_URL + '/projects', {
