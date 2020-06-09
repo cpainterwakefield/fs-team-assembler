@@ -1,15 +1,15 @@
 module.exports = app => {
-    const clients = require("../controllers/users.controller.js");
+    const users = require("../controllers/users.controller.js");
 
     var router = require("express").Router();
 
-    const authcheck = (req,res,next)=>{
+    const ADMINauthcheck = (req,res,next)=>{
         if(!req['user']){
             // if user is not logged in this executes
             res.redirect("/");
         }else{
             //If they are logged in
-            if(req.user.is_admin){
+            if(req['user'].user.is_admin){
                 next();
             }
             else{
@@ -17,8 +17,11 @@ module.exports = app => {
             }
         }
     }
-
     // Create a new client
-    router.post("/", authcheck ,clients.create);
+    router.post("/", ADMINauthcheck ,users.create);
+    // delete a user
+    router.delete("/:id", ADMINauthcheck, users.delete);
+    // delete all students from users 
+    router.delete("/", ADMINauthcheck, users.deleteStudents);
     app.use('/api/users', router);
 }
