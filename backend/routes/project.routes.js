@@ -4,7 +4,8 @@ module.exports = app => {
     var router = require("express").Router();
 
     const ADMINauthcheck = (req,res,next)=>{
-        if(!req['user']){
+next();
+/*        if(!req['user']){
             // if user is not logged in this executes
             res.redirect("/");
         }else{
@@ -16,7 +17,7 @@ module.exports = app => {
                 res.redirect("/");
             }
         }
-    }
+*/    }
 
     // Create a new project 
     router.post("/", ADMINauthcheck ,projects.create);
@@ -29,9 +30,6 @@ module.exports = app => {
 
     // Update a project via a certain ID
     router.put("/:id", ADMINauthcheck, projects.update);
-
-    // RUNS ALGORITHM
-    router.put("/run", ADMINauthcheck, projects.run); 
 
     // Delete a project with the given ID
     router.delete("/:id", ADMINauthcheck, projects.delete);

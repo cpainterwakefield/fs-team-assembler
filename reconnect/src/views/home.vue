@@ -1,6 +1,6 @@
 <template>
   <center>
-    <v-btn x-large color='primary' to="/login">Login</v-btn>
+    <v-btn class="primary" x-large color='primary' @click="doSubmit()" to="/login">Login</v-btn>
   </center>
 </template>
 

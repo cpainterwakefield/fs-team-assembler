@@ -83,9 +83,10 @@ export default {
           URL.revokeObjectURL(link.href)
     },
     runAlgorithm: function() {
-      axios.put(process.env.VUE_APP_BASE_API_URL + '/projects/run', {withCredentials: true})
+      axios.put(process.env.VUE_APP_BASE_API_URL + '/run', {withCredentials: true})
       .then(response => {
         console.log(response)
+        alert("Genetic Algorithm Complete!")
       })
       .catch(err => {
         console.log(err)
