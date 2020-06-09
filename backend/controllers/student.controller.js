@@ -369,11 +369,20 @@ exports.updateTwo = (req , res) => {
     });
 }
 
-//Send student id from a valid cookie
+//Send student id from an email
 exports.retrieve = (req, res) => {
-    Student.findAll({
+    var mail = req.params.email;
+    Student.findOne({
         where: {
-            email: "string"
+            email: mail
         }
     })
+    .then((foundStudent) => {
+        res.send({id: foundStudent.id})
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Could not delete students"
+        });
+    });
 }

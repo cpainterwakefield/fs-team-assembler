@@ -34,4 +34,69 @@ exports.create = (req, res) => {
             });
         });
 };
+exports.delete = (req, res) => {
+    const id = req.params.id;
+
+    User.destroy({
+        where: { id: id }
+    })
+    .then(num => {
+        if (num == 1) {
+            res.send({
+                message: "User was deleted successfully."
+            });
+        } else {
+            res.send({
+                message: `Cannot delete User with id=${id}.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Could not delete User with id=" + id
+        });
+    });
+};
+
+// Delete all Clients from the DB
+// Probably don't want this functionality for anything.
+exports.deleteStudents = (req, res) => {
+    User.destroy({
+        where: {is_admin: false}
+    })
+    .then(num => {
+        if (num == 1) {
+            res.send({
+                message: "User was deleted successfully."
+            });
+        } else {
+            res.send({
+                message: `Cannot delete User with id=${id}.`
+            });
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Could not delete User with id=" + id
+        });
+    });
+};
+
+//Send User id from an email
+exports.retrieve = (req, res) => {
+    var mail = req.params.email;
+    User.findOne({
+        where: {
+            email: mail
+        }
+    })
+    .then((foundUser) => {
+        res.send({id: foundUser.id})
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Could not delete students"
+        });
+    });
+}
 
