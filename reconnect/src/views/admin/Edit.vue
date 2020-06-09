@@ -174,7 +174,7 @@ export default {
   },
 
   methods: {
-    getUId: function(sid) {
+    getUEmail: function(sid) {
       for (let student of this.students) {
         if (student.id === sid) {
           let UEmail = student.email
@@ -194,7 +194,7 @@ export default {
       .catch(e => {
         self.errors.push(e)
       })
-      let uid = getUId(s_id)
+      let UEmail = getUEmail(s_id)
       axios.delete(process.env.VUE_APP_BASE_API_URL + '/users/' + uid, {withCredentials: true})
       .then (response => {
         console.log(response)
