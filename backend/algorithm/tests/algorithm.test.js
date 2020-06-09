@@ -322,11 +322,6 @@ test('If someone prefers teammates over projects, they should have a teammate \
     }
 });
 
-test('If someone is ambivalent, they should have at least one or another condition met.',
-    () => {
-        // TODO: Write test
-    });
-
 test('Generation selction function selects best fit project list.', () => {
     // Should select testProjectNormal
     expect(algorithm.generationSelection(generation1)).toEqual([testProjectNormal3]);
