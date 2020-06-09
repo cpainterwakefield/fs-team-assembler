@@ -1,14 +1,12 @@
-# start the backend
-start_backend(){
-    cd backend
-    exec npm start
-}
 
-# start the frontend
+# compile the frontend
 start_frontend(){
+    exec rm -r backend/dist
+    exec rm -r reconnect/dist
     cd reconnect
-    exec npm run serve
+    exec npm run build
+    cp -r dist ../backend/dist
 }
-
-start_backend &
 start_frontend &
+exec echo "restart apache now ^_^"
+
