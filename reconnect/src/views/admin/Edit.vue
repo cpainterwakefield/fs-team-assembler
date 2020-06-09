@@ -339,6 +339,18 @@ export default {
           .catch (err => {
             this.errors.push(err)
           })
+          axios.post(process.env.VUE_APP_BASE_API_URL + '/students', {
+            withCredentials: true,
+            name: st.name,
+            email: st.email 
+          })
+          .then (response => { 
+            console.log(response)
+          })
+          .catch (err => {
+            this.errors.push(err)
+          })
+
         }
       }
     },
