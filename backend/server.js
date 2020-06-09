@@ -51,7 +51,7 @@ app.use(expressCspHeader({
   }
 }));
 const authcheck = (req,res,next)=>{
-  if(!req['user'].student){
+  if(!req['user']){
       // if user is not logged in this executes
       res.redirect("/");
   }else{
@@ -60,7 +60,7 @@ const authcheck = (req,res,next)=>{
   }
 }
 const ADMINauthcheck = (req,res,next)=>{
-  if(!req['user'].user){
+  if(!req['user']){
       // if user is not logged in this executes
       res.redirect("/");
   }else{
@@ -86,7 +86,7 @@ require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
 
 app.get('/dump', function(req, res){
-  if(res.send(req['user'])){
+  if(req['user']){
     res.redirect('/');
   }
   //res.send(req['user']);
