@@ -71,8 +71,10 @@ module.exports = app => {
     // Find a student by a certain ID
     router.get("/:id", authcheck, students.findOne);
 
-    // Update a student via a certain ID
+    // Update a student via cookie ID
     router.put("/:id", authcheck, students.update);
+    // Update a student via a certain ID
+    router.put("/id/:id", authcheck, students.updateTwo);
 
     // Delete a student with the given ID
     router.delete("/:id", ADMINauthcheck, students.delete);
