@@ -191,6 +191,8 @@ async function loadAndConvert() {
  * Starts by unpacking the list of project objects returned from the algorithm,
  * assigning each student in each project with an updated project ID.
  * 
+ * Credit to user "kube" who authored the second answer to the following SO post:
+ * https://stackoverflow.com/questions/8158244/how-to-update-a-record-using-sequelize-for-node
  * @param {The JSON returned from the algorithm, as a list of project objects.} populatedAlgoJSON 
  */
 function updateStudents(populatedAlgoJSON) {
