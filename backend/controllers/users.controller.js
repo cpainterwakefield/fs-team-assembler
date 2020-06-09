@@ -16,7 +16,7 @@ exports.create = (req, res) => {
 
     const user = {
         name: req.body.name,
-        email: req.body.contact_email,
+        email: req.body.email,
     };
 
     // Create a user from the JSON object client.
