@@ -102,7 +102,8 @@ module.exports = app => {
   app.get(config.passport.path,
     passport.authenticate(config.passport.strategy,
       {
-        failureRedirect: 'https://reconnect.mines.edu/notRegistered'
+        failureRedirect: 'https://reconnect.mines.edu/notRegistered',
+        successRedirect: "https://reconnect.mines.edu/redirect"
       })
   );
   
@@ -111,15 +112,16 @@ module.exports = app => {
       {
         failureRedirect: 'https://reconnect.mines.edu/notRegistered',
         failureFlash: true
-      }),
-    function (req, res) {
-      if(req['user'].user.is_admin){
-        res.redirect("/admin");
-        return;
-      }
+      })
+  );
+  app.get('/redirect', function (req, res) {
+    console.log("NOTICE MEEEEEE");
+    if(req['user'].user.is_admin){
+      res.redirect("/admin");
+    }else{
       res.redirect("/student");
     }
-  );
+  });
 
   app.get('/logout', function (req, res) {
     req.logout();
