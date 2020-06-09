@@ -220,7 +220,7 @@ export default {
       });
     },
     newStudent: function() {
-      axios.post(process.env.VUE_APP_BASE_API_URL + '/students', {
+      axios.post(process.env.VUE_APP_BASE_API_URL + '/users', {
         withCredentials: true,
         name: this.studName,
         project_id: null,

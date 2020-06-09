@@ -102,7 +102,6 @@ module.exports = app => {
   app.get(config.passport.path,
     passport.authenticate(config.passport.strategy,
       {
-        successRedirect: 'https://reconnect.mines.edu/student',
         failureRedirect: 'https://reconnect.mines.edu/notRegistered'
       })
   );
