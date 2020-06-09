@@ -345,6 +345,30 @@ exports.deleteAll = (req, res) => {
     });
 
 };
+//Update student given id in url
+exports.updateTwo = (req , res) => {
+    const id = req.params.id;
+    //UPDATE STUDENT DATA BELOW
+    Student.update(req.body, {
+        where: { id: id }
+    })
+    .then(num => {
+        if (num == 1) {
+            res.send({
+                message: "Student was updated successfully."
+            });
+        } else {
+            res.send({
+                message: `Cannot update Client with id=${id}.`
+            });
+        }
+        
+    })
+    .catch(err => {
+        
+    });
+}
+
 //Send student id from a valid cookie
 exports.retrieve = (req, res) => {
     Student.findAll({
