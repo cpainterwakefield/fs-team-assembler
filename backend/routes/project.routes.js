@@ -3,9 +3,18 @@ module.exports = app => {
 
     var router = require("express").Router();
 
+    const authcheck = (req,res,next)=>{
+        if(!req['user']){
+            // if user is not logged in this executes
+            res.redirect("/");
+        }else{
+            //If they are logged in
+            next();
+        }
+    }
+
     const ADMINauthcheck = (req,res,next)=>{
-next();
-/*        if(!req['user']){
+        if(!req['user']){
             // if user is not logged in this executes
             res.redirect("/");
         }else{
@@ -17,13 +26,13 @@ next();
                 res.redirect("/");
             }
         }
-*/    }
+    }
 
     // Create a new project 
     router.post("/", ADMINauthcheck ,projects.create);
 
     // Get all the projects 
-    router.get("/", ADMINauthcheck, projects.findAll);
+    router.get("/", authcheck, projects.findAll);
 
     // Find a project by a certain ID
     router.get("/:id", ADMINauthcheck, projects.findOne);

@@ -13,7 +13,7 @@ import LogIn from '../views/home.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', name: 'Home', component: LogIn, meta: {title: 'login'} },
+  { path: '/', name: 'Home', component: LogIn, meta: {title: 'Information'} },
   { path: '/student/', name: 'View Profile', component: StudentProfile, meta: {title: 'Profile'} },
   { path: '/student/Edit', name: 'Edit Profile', component: StudentEdit, meta: {title: 'Edit'} },
   { path: '/admin', name: 'Students', component: AdminStudents, meta: {title:'Students'} },
