@@ -1,4 +1,8 @@
+var _ = require('lodash');
 const algorithm = require('../algorithm');
+const scoring = require('../scoring');
+const seeding = require('../seeding');
+const verifiers = require('./verifiers');
 
 /**
  * A object encoding four students in a 4-clique of preferences.
@@ -7,7 +11,7 @@ const algorithm = require('../algorithm');
  * essentially are.
  */
 var testStudentsClique = {
-    firstStudent : {
+    firstStudent: {
         id: 1,
         prefersTeam: true,
         projectPreferences: [1, 2, 3],
@@ -15,7 +19,7 @@ var testStudentsClique = {
         personAvoidances: [5, 6, 7]
     },
 
-    secondStudent : {
+    secondStudent: {
         id: 2,
         prefersTeam: true,
         projectPreferences: [3, 1, 2],
@@ -23,7 +27,7 @@ var testStudentsClique = {
         personAvoidances: [5, 6, 8]
     },
 
-    thirdStudent : {
+    thirdStudent: {
         id: 3,
         prefersTeam: true,
         projectPreferences: [3, 2, 1],
@@ -31,7 +35,7 @@ var testStudentsClique = {
         personAvoidances: [5, 7, 8]
     },
 
-    fourthStudent : {
+    fourthStudent: {
         id: 4,
         prefersTeam: true,
         projectPreferences: [2, 3, 1],
@@ -52,19 +56,19 @@ var testProjectClique = {
     minPeople: 3,
     maxPeople: 5,
     people: [testStudentsClique.firstStudent, testStudentsClique.secondStudent,
-        testStudentsClique.thirdStudent, testStudentsClique.fourthStudent]
+    testStudentsClique.thirdStudent, testStudentsClique.fourthStudent]
 };
 
 var testStudentsNormal = {
-    firstStudent : {
+    firstStudent: {
         id: 4,
         prefersTeam: false,
         projectPreferences: [1, 2, 3],
         personPreferences: [1, 2],
-        personAvoidances: [] 
+        personAvoidances: []
     },
 
-    secondStudent : {
+    secondStudent: {
         id: 3,
         prefersTeam: true,
         projectPreferences: [2, 3],
@@ -72,7 +76,7 @@ var testStudentsNormal = {
         personAvoidances: [7]
     },
 
-    thirdStudent : {
+    thirdStudent: {
         id: 2,
         prefersTeam: undefined,
         projectPreferences: [1, 2],
@@ -80,7 +84,7 @@ var testStudentsNormal = {
         personAvoidances: [5]
     },
 
-    fourthStudent : {
+    fourthStudent: {
         id: 1,
         prefersTeam: true,
         projectPreferences: [2],
@@ -94,19 +98,19 @@ var testProjectNormal = {
     minPeople: 4,
     maxPeople: 5,
     people: [testStudentsNormal.firstStudent, testStudentsNormal.secondStudent,
-        testStudentsNormal.thirdStudent, testStudentsNormal.fourthStudent]
+    testStudentsNormal.thirdStudent, testStudentsNormal.fourthStudent]
 };
 
 var testStudentsNormal2 = {
-    firstStudent : {
+    firstStudent: {
         id: 4,
         prefersTeam: false,
         projectPreferences: [1, 2, 3],
         personPreferences: [1, 2],
-        personAvoidances: [] 
+        personAvoidances: []
     },
 
-    secondStudent : {
+    secondStudent: {
         id: 3,
         prefersTeam: true,
         projectPreferences: [2, 3],
@@ -114,7 +118,7 @@ var testStudentsNormal2 = {
         personAvoidances: [2]
     },
 
-    thirdStudent : {
+    thirdStudent: {
         id: 2,
         prefersTeam: undefined,
         projectPreferences: [1, 2],
@@ -122,7 +126,7 @@ var testStudentsNormal2 = {
         personAvoidances: [8]
     },
 
-    fourthStudent : {
+    fourthStudent: {
         id: 1,
         prefersTeam: true,
         projectPreferences: [2],
@@ -135,75 +139,193 @@ var testProjectNormal2 = {
     minPeople: 4,
     maxPeople: 5,
     people: [testStudentsNormal2.firstStudent, testStudentsNormal2.secondStudent,
-        testStudentsNormal2.thirdStudent, testStudentsNormal2.fourthStudent]
+    testStudentsNormal2.thirdStudent, testStudentsNormal2.fourthStudent]
 };
 
 var testStudentsNormal3 = {
-    firstStudent : {
+    firstStudent: {
         id: 4,
         prefersTeam: false,
-        projectPreferences: [1, 2, 3], 
-        personPreferences: [1, 2], 
-        personAvoidances: [] 
+        projectPreferences: [1, 2, 3],
+        personPreferences: [1, 2],
+        personAvoidances: []
     },
 
-    secondStudent : {
+    secondStudent: {
         id: 3,
         prefersTeam: true,
-        projectPreferences: [2, 3], 
-        personPreferences: [4, 2], 
-        personAvoidances: [6] 
+        projectPreferences: [2, 3],
+        personPreferences: [4, 2],
+        personAvoidances: [6]
     },
 
-    thirdStudent : {
+    thirdStudent: {
         id: 2,
         prefersTeam: undefined,
         projectPreferences: [1, 2],
         personPreferences: [1, 3, 4],
-        personAvoidances: [8] 
+        personAvoidances: [8]
     },
 
-    fourthStudent : {
+    fourthStudent: {
         id: 1,
         prefersTeam: true,
-        projectPreferences: [2], 
-        personPreferences: [3, 2], 
+        projectPreferences: [2],
+        personPreferences: [3, 2],
         personAvoidances: [7]
     }
 };
 
 var testProjectNormal3 = {
-    id: 2, 
+    id: 2,
     minPeople: 4,
     maxPeople: 5,
     people: [testStudentsNormal3.firstStudent, testStudentsNormal3.secondStudent,
-        testStudentsNormal3.thirdStudent, testStudentsNormal3.fourthStudent]
+    testStudentsNormal3.thirdStudent, testStudentsNormal3.fourthStudent]
 };
 
 var generation1 = [[testProjectNormal], [testProjectNormal2], [testProjectNormal3]]
 
-function loadTestSet() {
 
+var firstStudent = {
+    id: 1,
+    prefersTeam: false,
+    projectPreferences: [1, 2, 3],
+    personPreferences: [7],
+    personAvoidances: []
+};
+
+var secondStudent = {
+    id: 2,
+    prefersTeam: true,
+    projectPreferences: [2, 3],
+    personPreferences: [4, 2],
+    personAvoidances: [6]
+};
+
+var thirdStudent = {
+    id: 3,
+    prefersTeam: undefined,
+    projectPreferences: [1, 2],
+    personPreferences: [1, 3, 4],
+    personAvoidances: [8]
+};
+
+var fourthStudent = {
+    id: 4,
+    prefersTeam: true,
+    projectPreferences: [2],
+    personPreferences: [3, 2],
+    personAvoidances: [7]
+};
+
+var fifthStudent = {
+    id: 5,
+    prefersTeam: false,
+    projectPreferences: [3],
+    personPreferences: [1, 2],
+    personAvoidances: []
+};
+
+var sixthStudent = {
+    id: 6,
+    prefersTeam: false,
+    projectPreferences: [3],
+    personPreferences: [1, 2],
+    personAvoidances: []
+};
+
+var seventhStudent = {
+    id: 7,
+    prefersTeam: false,
+    projectPreferences: [2],
+    personPreferences: [1, 2],
+    personAvoidances: []
+};
+
+var eightStudent = {
+    id: 8,
+    prefersTeam: false,
+    projectPreferences: [1],
+    personPreferences: [1, 2],
+    personAvoidances: []
+};
+
+
+
+var proj1 = {
+    id: 1,
+    minPeople: 2,
+    maxPeople: 3,
+    people: []
+};
+
+var proj2 = {
+    id: 2,
+    minPeople: 1,
+    maxPeople: 2,
+    people: []
+};
+
+var proj3 = {
+    id: 3,
+    minPeople: 1,
+    maxPeople: 3,
+    people: []
+};
+
+var projList = [proj1, proj2, proj3];
+var studentList = [firstStudent, secondStudent, thirdStudent, fourthStudent, fifthStudent, sixthStudent, seventhStudent, eightStudent];
+
+function loadTestSet() {
+    generationTest = seeding.greedySeedInitial(studentList,projList, 10);
+    projectTest = algorithm.generationSelection(generationTest);
+    
+    return projectTest;
 }
 
-test('Nobody should get paired with anyone that they avoid.', () => {
+function sameID(stu1, stu2) {
+    if(stu1.id == stu2.id) {
+        return true;
+    }
+}
 
+test('Each student should be assigned only once.' , () => {
+    expect(verifiers.everyStudentAssignedOnce(studentList, loadTestSet())).toBe(true);
 });
+
+test('Nobody should get paired with anyone that they avoid.', () => {
+    expect(verifiers.noAvoidsOnSameProject(loadTestSet())).toBe(false);
+}); 
 
 test('If someone prefers projects over teammates, they should be on a project \
     that they prefer.', () => {
-    // TODO: Write test
+        let isInProj = true;
+        loadTestSet();
+        for(let i = 0; i < projectTest[0].people.length; i++) {
+            if(projectTest[0].people[i].id == secondStudent.id || projectTest[1].people[i].id == secondStudent.id) {
+                isInProj = true;
+            }
+        }
+        expect(isInProj).toBe(true);
 });
 
 test('If someone prefers teammates over projects, they should have a teammate \
     that they prefer.', () => {
-    // TODO: Write test
+    let isWithPeoplePref = false;
+    loadTestSet();
+    console.log(projectTest[2]);
+    for(let i = 0; i < projectTest.length; i++) {
+        for(let j = 0; j < projectTest[i].people.length; j++) {
+            //TODO
+        }
+    }
 });
 
 test('If someone is ambivalent, they should have at least one or another condition met.',
     () => {
-    // TODO: Write test
-});
+        // TODO: Write test
+    });
 
 test('Generation selction function selects best fit project list.', () => {
     // Should select testProjectNormal
