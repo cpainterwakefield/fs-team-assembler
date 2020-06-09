@@ -1,8 +1,25 @@
 <template>
   <center>
-    <v-btn x-large color="primary" class="btn1" to="/login">login</v-btn>
+    <v-btn x-large color='primary' @click="doLogin()">Login</v-btn>
   </center>
 </template>
+
+<script>
+
+import axios from 'axios'
+//const neatCsv = require('neat-csv');
+//const fs = require('fs');
+
+export default {
+  name: 'Profile',
+  methods: {
+    doLogin: function() {
+      axios.get('/login');
+    }
+  }
+  }
+</script>
+
 
 <style>
 </style>
