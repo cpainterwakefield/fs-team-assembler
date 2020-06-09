@@ -4,8 +4,7 @@ module.exports = app => {
     var router = require("express").Router();
 
     const authcheck = (req,res,next)=>{
-next();
-/*        if(!req['user']){
+        if(!req['user']){
             // if user is not logged in this executes
             res.redirect("/");
         }else{
@@ -17,7 +16,7 @@ next();
                 res.redirect("/");
             }
         }
-*/    }
+    }
 
     // Create a new client
     router.post("/", authcheck ,clients.create);

@@ -4,18 +4,16 @@ module.exports = app => {
     var router = require("express").Router();
 
     const authcheck = (req,res,next)=>{
-next();
-/*        if(!req['user']){
+        if(!req['user']){
             // if user is not logged in this executes
             res.redirect("/");
         }else{
             //If they are logged in
             next();
         }
-*/    }
+    }
     const ADMINauthcheck = (req,res,next)=>{
-next();
-/*        if(!req['user']){
+        if(!req['user']){
             // if user is not logged in this executes
             res.redirect("/");
         }else{
@@ -27,7 +25,7 @@ next();
                 res.redirect("/");
             }
         }
-*/    }
+    }
     //Get the current student id
     router.get("/retrieve", authcheck, students.retrieve);
 
