@@ -84,6 +84,7 @@ require("./routes/project.routes")(app);
 require("./routes/prefer_teammate.routes")(app);
 require("./routes/avoid_teammate.routes")(app);
 require("./routes/project_link.routes")(app);
+require("./routes/run.routes")(app);
 
 app.get('/dump', function(req, res){
   if(req['user']){
