@@ -177,7 +177,7 @@ export default {
     getUEmail: function(sid) {
       for (let student of this.students) {
         if (student.id === sid) {
-          let UEmail = student.email
+          var UEmail = student.email
           break  
         }
       }
@@ -186,7 +186,7 @@ export default {
         console.log(response)
         return response.data
       }) 
-    }
+    },
   
     deleteStudent: function (s_id) {
       var self=this;
@@ -194,8 +194,8 @@ export default {
       .catch(e => {
         self.errors.push(e)
       })
-      let UEmail = getUEmail(s_id)
-      axios.delete(process.env.VUE_APP_BASE_API_URL + '/users/' + uid, {withCredentials: true})
+      let UEmail = this.getUEmail(s_id)
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/users/' + UEmail, {withCredentials: true})
       .then (response => {
         console.log(response)
       })
