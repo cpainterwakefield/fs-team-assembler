@@ -1,16 +1,16 @@
 module.exports = app => {
-    const clients = require("../controllers/users.controller.js");
+    const run = require("../controllers/run.controller.js");
 
     var router = require("express").Router();
 
-    const authcheck = (req,res,next)=>{
+    const ADMINauthcheck = (req,res,next)=>{
 next();
 /*        if(!req['user']){
             // if user is not logged in this executes
             res.redirect("/");
         }else{
             //If they are logged in
-            if(req.user.is_admin){
+            if(req['user'].user.is_admin){
                 next();
             }
             else{
@@ -19,7 +19,8 @@ next();
         }
 */    }
 
-    // Create a new client
-    router.post("/", authcheck ,clients.create);
-    app.use('/api/users', router);
+    // RUNS ALGORITHM
+    router.put("/", ADMINauthcheck, run.run); 
+
+    app.use('/api/run', router);
 }

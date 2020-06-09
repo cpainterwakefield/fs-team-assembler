@@ -4,14 +4,15 @@ module.exports = app => {
     var router = require("express").Router();
 
     const authcheck = (req,res,next)=>{
-        if(!req['user']){
+next();
+/*        if(!req['user']){
             // if user is not logged in this executes
             res.redirect("/");
         }else{
             //If they are logged in
             next();
         }
-    }
+ */   }
 
     // Create a new avoid_teammate 
     router.post("/", authcheck ,avoid_teammates.create);
