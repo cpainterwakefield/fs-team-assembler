@@ -120,10 +120,19 @@ module.exports = app => {
   app.get('/auth/google/callback', 
   passport.authenticate('google', {
     failureRedirect: "http://localhost:8080/notRegistered",
-    successRedirect: "http://localhost:8080/Student"
-  }),(req, res) => {
+    successRedirect: "http://localhost:8080/redirect"
+  }), (req, res) => {
     console.log('you have logged in ^_^');
   });
-  }
+
+  app.get('/redirect', function (req, res) {
+    console.log("NOTICE MEEEEEE");
+    if(req['user'].user.is_admin){
+      res.redirect("/admin");
+    }else{
+      res.redirect("/student");
+    }
+  })
+}
 
 
