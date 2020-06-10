@@ -37,10 +37,12 @@ exports.create = (req, res) => {
 };
 //Delete singular student from the db with id given in params
 exports.delete = (req, res) => {
-    const id = req.params.id;
-
+    const uID = req.params.id;
+    console.log(req.params.id);
+    console.log(uID);
+    console.log("why");
     User.destroy({
-        where: { id: id }
+        where: { id: uID }
     })
     .then(num => {
         if (num == 1) {
@@ -49,13 +51,13 @@ exports.delete = (req, res) => {
             });
         } else {
             res.send({
-                message: `Cannot delete User with id=${id}.`
+                message: `Cannot delete User with id=${uID}.`
             });
         }
     })
     .catch(err => {
         res.status(500).send({
-            message: "Could not delete User with id=" + id
+            message: "Could not delete User with id=" + uID
         });
     });
 };
@@ -86,23 +88,22 @@ exports.deleteStudents = (req, res) => {
 
 //Send User id from an email
 exports.retrieve = (req, res) => {
-    var givenID = req.params.id;
-    Student.findOne({
+    var mail = req.params.email;
+    console.log(mail);
+    User.findOne({
         where: {
-            id: givenID
+            email: mail
         }
     })
-    .then((studentFound) => {
-        var mail = studentFound.email;
-        User.findOne({where: {email: mail}})
-        .then((foundUser) => {
-            res.send({id: foundUser.id});
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Could not delete students"
-            });
+    .then((foundUser) => {
+        var id = foundUser.id;
+        console.log(id);
+        res.send({id})
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: "Could not delete students"
         });
     });
-};
+}
 
