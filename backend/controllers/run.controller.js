@@ -6,6 +6,6 @@ exports.run = (req, res) => {
         await res.send(data)
         await console.log("Genetic Algorithm Complete")
     })();
-    console.log("Running genetic algorithm")
+    console.log("Running genetic algorithm");
 }
 
