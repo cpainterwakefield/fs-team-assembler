@@ -174,35 +174,42 @@ export default {
   },
 
   methods: {
-    getUEmail: function(sid) {
+    getUId: function(sid) {
       for (let student of this.students) {
         if (student.id === sid) {
           var UEmail = student.email
           break  
         }
       }
-      axios.get(process.env.VUE_APP_BASE_API_URL + '/users/retrieve/' + UEmail, {withCredentials: true})
-      .then (response => {
-        console.log(response)
-        return response.data
-      }) 
-    },
-  
-    deleteStudent: function (s_id) {
-      var self=this;
-      axios.delete(process.env.VUE_APP_BASE_API_URL + '/students/' + s_id, {withCredentials: true})
-      .catch(e => {
-        self.errors.push(e)
-      })
-      let UEmail = this.getUEmail(s_id)
-      axios.delete(process.env.VUE_APP_BASE_API_URL + '/users/' + UEmail, {withCredentials: true})
+      var UID = 0;
+      const getUID = axios.get(process.env.VUE_APP_BASE_API_URL + '/users/retrieve/' + UEmail, {withCredentials: true})
+      axios.all([getUID]).then(axios.spread((...responses) => {
+        UID = responses[0].data.id;
+        axios.delete(process.env.VUE_APP_BASE_API_URL + '/users/' + UID, {withCredentials: true})
       .then (response => {
         console.log(response)
       })
       .catch (err => {
         console.log(err)
       })
-      
+      }));
+    },
+    deleteStudent: function (s_id) {
+      var self=this;
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/students/' + s_id, {withCredentials: true})
+      .catch(e => {
+        self.errors.push(e)
+      })
+      this.getUId(s_id)
+      /*
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/users/' + u_id, {withCredentials: true})
+      .then (response => {
+        console.log(response)
+      })
+      .catch (err => {
+        console.log(err)
+      })
+      */
     },
     deleteProject: function (p_id) {
       var self=this;
