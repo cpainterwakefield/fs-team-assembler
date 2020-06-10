@@ -24,3 +24,13 @@ The following parameters affect how fast/randomly the GP algorithm acts. "Entrop
 	- `MUTATION_ENTROPY` is 2 by default, which means that 2 students will be swapped in a mutation.
 	- `MUTATION_RATE` is 0.1 by default, which means that there is a 10% chance that mutations will occur between generations.
 	- `MUTATION_SEED_OFFSET` is 1337 by default, which means that the seed is offset by 1337 to prevent resonance with other seeds in the program. (This number is chosen by random; after one use it seemed to give us good results).
+
+## Files and Subdirectories
+Included in the `/backend/algorithm` directory is several files for defining how the algorithm works.
+	- `runners.js` Contains functions that run the algorithm at a high level. The frontend calls a function from `algorithm.js` directly, so `runners.js` isn't crucial unless you want to switch out algorithm code.
+	- `algorithm.js` Contains most of the actual algorithm code and parameters.
+	- `seeding.js` Contains the greedy seeding algorithm and a PRNG used for seeding.
+	- `scoring.js` Contains all the scoring functions.
+	- `db_interactions.js` Contains all of the code for loading student/project data from the DB and converting it to a usable format for the algorithm.
+	- `schema.js` Outlines the JSON objects that the algorithm uses.
+	- `tests/` Contains the tests for the algorithm as well as some code examples in `fiddle.js`.
