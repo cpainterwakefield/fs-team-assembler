@@ -91,21 +91,18 @@ exports.retrieve = (req, res) => {
         where: {
             id: givenID
         }
-    }).then((studentFound)){
+    })
+    .then((studentFound) => {
         var mail = studentFound.email;
-        User.findOne({
-            where: {
-                email: mail
-            }
-        })
+        User.findOne({where: {email: mail}})
         .then((foundUser) => {
-            res.send({id: foundUser.id})
+            res.send({id: foundUser.id});
         })
         .catch(err => {
             res.status(500).send({
                 message: "Could not delete students"
             });
         });
-    }
-}
+    });
+};
 
