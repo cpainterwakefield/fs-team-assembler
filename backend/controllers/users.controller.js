@@ -86,22 +86,14 @@ exports.deleteStudents = (req, res) => {
 
 //Send User id from an email
 exports.retrieve = (req, res) => {
-    var givenID = req.params.id;
-    Student.findOne({
-        where: {
-            id: givenID
-        }
+    var mail = req.params.email;
+    User.findOne({where: {email: mail}})
+    .then((foundUser) => {
+        res.send({id: foundUser.id});
     })
-    .then((studentFound) => {
-        var mail = studentFound.email;
-        User.findOne({where: {email: mail}})
-        .then((foundUser) => {
-            res.send({id: foundUser.id});
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Could not delete students"
-            });
+    .catch(err => {
+        res.status(500).send({
+            message: "Could not delete students"
         });
     });
 };
