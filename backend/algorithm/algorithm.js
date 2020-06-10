@@ -219,7 +219,7 @@ function evolvePopulation(population) {
  *  
  *  These values can be altered to produce a potential more fit result, however, at the cost of run time.  
  */
-async function runGeneticAlgorithm() {
+async function runGeneticAlgorithm(greedyOnly=false) {
     let testData = await dbInt.loadAndConvert();
     let students = testData.students;
     let projects = testData.projects;
@@ -237,35 +237,40 @@ async function runGeneticAlgorithm() {
 
     // Making initial greedy generation
     let generation = seeding.greedySeedInitial(students, projects, 100);
-    let initialScore = scoring.scoreAllProjects(generationSelection(generation));
-    console.log(`Score before genetic algorithm: ${initialScore}`);
 
-    let newGeneration;
-    // Set a max amount to stop at if it never reaches the threshold for stopping.
-    let maxEvolveTimes = 100;
-    const DIFFERENCE_THRESHOLD = 1.1;
+    if (!greedyOnly) {
+        let initialScore = scoring.scoreAllProjects(generationSelection(generation));
+        console.log(`Score before genetic algorithm: ${initialScore}`);
 
-    for (i = 0; i < maxEvolveTimes; i++) {
-        newGeneration = _.cloneDeep(generation);
-        newGeneration = evolvePopulation(newGeneration);
+        let newGeneration;
+        // Set a max amount to stop at if it never reaches the threshold for stopping.
+        let maxEvolveTimes = 100;
+        const DIFFERENCE_THRESHOLD = 1.1;
 
-        generation = newGeneration;
+        for (i = 0; i < maxEvolveTimes; i++) {
+            newGeneration = _.cloneDeep(generation);
+            newGeneration = evolvePopulation(newGeneration);
+
+            generation = newGeneration;
+        }
+
+        // Select the fittest individual of the final generation.
+        let endIndividual = generationSelection(newGeneration);
+
+        // Update the students table in the DB.
+        dbInt.updateStudents(endIndividual);
+
+        console.log("Scoring final project list...");
+        let finalScore = scoring.scoreAllProjects(endIndividual);
+        console.log(`Score after genetic algorithm: ${finalScore}`);
+
+        verifiers.noAvoidsOnSameProject(endIndividual);
+        verifiers.everyStudentAssignedOnce(students, endIndividual);
+
+        return endIndividual;
+    } else {
+        return _.cloneDeep(generationSelection(generation));
     }
-
-    // Select the fittest individual of the final generation.
-    let endIndividual = generationSelection(newGeneration);
-
-    // Update the students table in the DB.
-    dbInt.updateStudents(endIndividual);
-
-    console.log("Scoring final project list...");
-    let finalScore = scoring.scoreAllProjects(endIndividual);
-    console.log(`Score after genetic algorithm: ${finalScore}`);
-    
-    verifiers.noAvoidsOnSameProject(endIndividual);
-    verifiers.everyStudentAssignedOnce(students, endIndividual);
-
-    return endIndividual;
 }
 
 exports.generationSelection = generationSelection;
