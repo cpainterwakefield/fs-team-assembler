@@ -18,10 +18,13 @@ const verifiers = require('./tests/verifiers');
 
 // GP Parameters:
 // The amount of entropy in repopulation.
-const ENTROPY = 20;
+const ENTROPY = 10;
+
+// The amount of entropy in mutation.
+const MUTATION_ENTROPY = 2;
 
 // The chance that mutation will occur.
-const MUTATION_RATE = 1;
+const MUTATION_RATE = 0.1;
 
 // The seed value offset for mutation to allow for added randomness.
 // If one is getting poor results from using this program, it may help to
@@ -67,7 +70,7 @@ function generationSelection(generation) {
  * @param {The amount of entropy the regeneration has.} entropy
  * @return {The new generation, a list of individuals.}
  */
-function generateFromFittest(fittestProjectList, numRepeats, entropy = 10) {
+function generateFromFittest(fittestProjectList, numRepeats, entropy = ENTROPY) {
     //Create an empty generation to fill and return
     let generation = [];
 
@@ -105,46 +108,51 @@ function generateFromFittest(fittestProjectList, numRepeats, entropy = 10) {
 
         // Adding newly created project list to new generation
         generation.push(currentFittest);
+
+        // Debug: Show variety in scores
+        // console.log(scoring.scoreAllProjects(currentFittest));
     }
 
     // console.log(generation[0]);
     return generation;
 }
 
-function mutateGeneration(oldGeneration) {
+function mutateGeneration(oldGeneration, entropy = MUTATION_ENTROPY) {
     let generation = _.cloneDeep(oldGeneration);
 
     // For each individual in the generation, mutate it.
     for (let indIndex = 0; indIndex < generation.length; indIndex++) {
-        // If random is lower than the mutation rate, then do a mutation.
-        // We don't want this to be synced to seededRandom here.
-        if (Math.random() < MUTATION_RATE) {
-            let individual = generation[indIndex];
+        for (let ent = 1; ent < entropy; ent++) {
+            // If random is lower than the mutation rate, then do a mutation.
+            // We don't want this to be synced to seededRandom here.
+            if (Math.random() < MUTATION_RATE) {
+                let individual = generation[indIndex];
 
-            let projIndex1 = Math.floor(seeding.seededRandom(
-                (indIndex + 1) * MUTATION_SEED_OFFSET * 2
-            ) * individual.length);
+                let projIndex1 = Math.floor(seeding.seededRandom(
+                    (indIndex + 1) * MUTATION_SEED_OFFSET * ent * 2
+                ) * individual.length);
 
-            let projIndex2 = Math.floor(seeding.seededRandom(
-                (indIndex + 1) * MUTATION_SEED_OFFSET * 3
-            ) * individual.length);
+                let projIndex2 = Math.floor(seeding.seededRandom(
+                    (indIndex + 1) * MUTATION_SEED_OFFSET * ent * 3
+                ) * individual.length);
 
-            let studentIndex1 = Math.floor(seeding.seededRandom(
-                (indIndex + 1) * MUTATION_SEED_OFFSET * 4
-            ) * individual[projIndex1].people.length);
+                let studentIndex1 = Math.floor(seeding.seededRandom(
+                    (indIndex + 1) * MUTATION_SEED_OFFSET * ent * 4
+                ) * individual[projIndex1].people.length);
 
-            let studentIndex2 = Math.floor(seeding.seededRandom(
-                (indIndex + 1) * MUTATION_SEED_OFFSET * 5
-            ) * individual[projIndex2].people.length);
+                let studentIndex2 = Math.floor(seeding.seededRandom(
+                    (indIndex + 1) * MUTATION_SEED_OFFSET * ent * 5
+                ) * individual[projIndex2].people.length);
 
-            // Get the random students.
-            let student1 = individual[projIndex1].people[studentIndex1];
-            let student2 = individual[projIndex2].people[studentIndex2];
+                // Get the random students.
+                let student1 = individual[projIndex1].people[studentIndex1];
+                let student2 = individual[projIndex2].people[studentIndex2];
 
-            // Swap the students.
-            let temp = _.cloneDeep(student1);
-            individual[projIndex1].people[studentIndex1] = _.cloneDeep(student2);
-            individual[projIndex2].people[studentIndex2] = temp;
+                // Swap the students.
+                let temp = _.cloneDeep(student1);
+                individual[projIndex1].people[studentIndex1] = _.cloneDeep(student2);
+                individual[projIndex2].people[studentIndex2] = temp;
+            }
         }
     }
 
@@ -216,7 +224,14 @@ async function runGeneticAlgorithm() {
     let students = testData.students;
     let projects = testData.projects;
 
+    // If the DB is empty, the algorithm shouldn't be able to run.
     if (students == undefined || projects == undefined) {
+        return;
+    }
+
+    // If there are fewer students than can be on any project, the
+    // algorithm shouldn't be able to run.
+    if (students.length < 2) {
         return;
     }
 
@@ -232,7 +247,6 @@ async function runGeneticAlgorithm() {
 
     for (i = 0; i < maxEvolveTimes; i++) {
         newGeneration = _.cloneDeep(generation);
-        // console.log(verifiers.everyStudentAssignedOnce(students, generationSelection(generation)));
         newGeneration = evolvePopulation(newGeneration);
 
         generation = newGeneration;
@@ -240,7 +254,7 @@ async function runGeneticAlgorithm() {
 
     // Select the fittest individual of the final generation.
     let endIndividual = generationSelection(newGeneration);
-    
+
     // Update the students table in the DB.
     dbInt.updateStudents(endIndividual);
 
