@@ -258,6 +258,7 @@ async function runGeneticAlgorithm() {
     // Update the students table in the DB.
     dbInt.updateStudents(endIndividual);
 
+    console.log("Scoring final project list...");
     let finalScore = scoring.scoreAllProjects(endIndividual);
     console.log(`Score after genetic algorithm: ${finalScore}`);
     
