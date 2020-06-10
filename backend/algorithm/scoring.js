@@ -175,6 +175,10 @@ function scoreProject(project) {
  * @param {The array of projects to be scored.} projects 
  */
 function scoreAllProjects(projects) {
+    if (projects == undefined) {
+        return 0;
+    }
+    
     let totalScore = 0;
 
     for (let project of projects) {
