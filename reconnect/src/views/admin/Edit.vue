@@ -174,12 +174,35 @@ export default {
   },
 
   methods: {
+    getUEmail: function(sid) {
+      for (let student of this.students) {
+        if (student.id === sid) {
+          var UEmail = student.email
+          break  
+        }
+      }
+      axios.get(process.env.VUE_APP_BASE_API_URL + '/users/retrieve/' + UEmail, {withCredentials: true})
+      .then (response => {
+        console.log(response)
+        return response.data
+      }) 
+    },
+  
     deleteStudent: function (s_id) {
       var self=this;
       axios.delete(process.env.VUE_APP_BASE_API_URL + '/students/' + s_id, {withCredentials: true})
       .catch(e => {
         self.errors.push(e)
       })
+      let UEmail = this.getUEmail(s_id)
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/users/' + UEmail, {withCredentials: true})
+      .then (response => {
+        console.log(response)
+      })
+      .catch (err => {
+        console.log(err)
+      })
+      
     },
     deleteProject: function (p_id) {
       var self=this;
@@ -199,6 +222,11 @@ export default {
       var self=this;
       axios.delete(process.env.VUE_APP_BASE_API_URL + '/students/', {withCredentials: true})
       .catch(e => {
+        self.errors.push(e)
+      })
+      
+      axios.delete(process.env.VUE_APP_BASE_API_URL + '/users/', {withCredentials: true})
+      .catch (e => {
         self.errors.push(e)
       })
     },
@@ -233,6 +261,20 @@ export default {
         console.log(error);
         self.errors.push(error)
       });
+      axios.post(process.env.VUE_APP_BASE_API_URL + '/students', {
+        withCredentials: true,
+        name: this.studName,
+        project_id: null,
+        email: this.studEmail
+      }, {withCredentials: true})
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+        self.errors.push(error)
+      });
+
 
     },
     changeLink: function() {
@@ -297,6 +339,18 @@ export default {
           .catch (err => {
             this.errors.push(err)
           })
+          axios.post(process.env.VUE_APP_BASE_API_URL + '/students', {
+            withCredentials: true,
+            name: st.name,
+            email: st.email 
+          })
+          .then (response => { 
+            console.log(response)
+          })
+          .catch (err => {
+            this.errors.push(err)
+          })
+
         }
       }
     },

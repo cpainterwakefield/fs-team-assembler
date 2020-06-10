@@ -230,7 +230,8 @@ async function runGeneticAlgorithm() {
 
     // Making initial greedy generation
     let generation = seeding.greedySeedInitial(students, projects, 100);
-    console.log(scoring.scoreAllProjects(generationSelection(generation)));
+    let initialScore = scoring.scoreAllProjects(generationSelection(generation));
+    console.log(`Score before genetic algorithm: ${initialScore}`);
 
     let newGeneration;
     // Set a max amount to stop at if it never reaches the threshold for stopping.
@@ -250,8 +251,11 @@ async function runGeneticAlgorithm() {
     // Update the students table in the DB.
     dbInt.updateStudents(endIndividual);
 
-    console.log(verifiers.noAvoidsOnSameProject(endIndividual));
-    console.log(verifiers.everyStudentAssignedOnce(students, endIndividual));
+    let finalScore = scoring.scoreAllProjects(endIndividual);
+    console.log(`Score after genetic algorithm: ${finalScore}`);
+    
+    verifiers.noAvoidsOnSameProject(endIndividual);
+    verifiers.everyStudentAssignedOnce(students, endIndividual);
 
     return endIndividual;
 }
