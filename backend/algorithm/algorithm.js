@@ -224,7 +224,14 @@ async function runGeneticAlgorithm() {
     let students = testData.students;
     let projects = testData.projects;
 
+    // If the DB is empty, the algorithm shouldn't be able to run.
     if (students == undefined || projects == undefined) {
+        return;
+    }
+
+    // If there are fewer students than can be on any project, the
+    // algorithm shouldn't be able to run.
+    if (students.length < 2) {
         return;
     }
 
