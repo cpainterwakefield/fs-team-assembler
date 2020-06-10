@@ -42,7 +42,7 @@ const MUTATION_SEED_OFFSET = 1337;
  */
 function generationSelection(generation) {
     let fittest = 0;
-    let fitProject;
+    let fitProject = generation[0];
 
     for (let projectList of generation) {
         if (scoring.scoreAllProjects(projectList) > fittest) {
