@@ -15,10 +15,8 @@ passport.serializeUser((user,done) => {
 passport.deserializeUser((id,done) => {
   //recieve the id from the cookie
   //find the user in the table of users then
-  console.log(id);
   User.findOne({where: {id: id}})
   .then((foundUser) => {
-    console.log(foundUser);
     if(foundUser.is_admin){
       //If foundUser is an admin return only foundUser since no student exists
       done(null, {user: foundUser});
@@ -52,7 +50,6 @@ passport.use(new GoogleStrategy({
   callbackURL: "/auth/google/callback"
 },
 function(accessToken, refreshToken, profile, done) {
-  console.log(profile._json.email);
   //check if user exists in DB
   const title = profile._json.email;
   const id = profile._json.sub.toString();
@@ -69,7 +66,6 @@ function(accessToken, refreshToken, profile, done) {
         }
         //If user is admin then they should not be added as a student
         if(userExists.is_admin){
-          console.log("admin");
           done(null,userExists);
           return;
         }else{
@@ -126,7 +122,6 @@ module.exports = app => {
   });
 
   app.get('/redirect', function (req, res) {
-    console.log("NOTICE MEEEEEE");
     if(req['user'].user.is_admin){
       res.redirect("/admin");
     }else{

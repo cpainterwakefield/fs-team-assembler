@@ -22,7 +22,7 @@ app.use(cookieSession({
 }));
 //Cors settigs
 var corsOptions = {
-  origin: ["http://localhost:8081", "https://accounts.google.com", "https://reconnect.mines.edu"],
+  origin: ["http://localhost:8080", "http://localhost:8081", "https://accounts.google.com", "https://reconnect.mines.edu"],
   methods: ["OPTIONS", "POST", "GET","PUT","DELETE"],
   credentials: true,
   allowedHeaders: ["Origin", "Content-Type", "Authorization", "Accept", "X-Requested-With"],
