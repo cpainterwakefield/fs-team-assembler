@@ -4,7 +4,7 @@
     <v-spacer/>
     <v-btn class="btn1" to="/student/">Profile</v-btn>
     <v-btn class="btn1" to="/student/edit">Edit</v-btn>
-    <v-btn class="btn1" :href=projLink target="_blank" >Projects</v-btn>
+    <v-btn class="btn1" :href=projLink.link target="_blank" >Projects</v-btn>
     <v-btn class="btn1" :href=authLink target="_blank">Logout</v-btn>
   </v-app-bar>
 </template>
