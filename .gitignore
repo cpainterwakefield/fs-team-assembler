@@ -3,6 +3,8 @@ package-lock.json
 keys.js
 db.config.js
 
+*/dist
+
 # swapfiles, etc.
 .DS_Store
 *.swp
