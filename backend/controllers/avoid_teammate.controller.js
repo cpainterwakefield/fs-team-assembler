@@ -4,8 +4,8 @@ const Op = db.Sequelize.Op;
 
 // Create and save a new Avoid_Teammate table
 exports.create = (req, res) => {
-    console.log(req.body.avoider_id + "AVOIDER")
-    console.log(req.body.avoidee_id + "AVOIDEE")
+    //console.log(req.body.avoider_id + "AVOIDER")
+    //console.log(req.body.avoidee_id + "AVOIDEE")
 
     if (!req.body.avoider_id) {
         // If there is no name, then there's no point in storing a Avoid_Teammate.
@@ -28,7 +28,7 @@ exports.create = (req, res) => {
 
     const avoid_teammate = {
         avoideeId: req.body.avoidee_id,
-        studentId: req.body.avoider_id,
+        studentId: req['user'].student.id,
 
     };
 
@@ -110,11 +110,11 @@ exports.update = (req, res) => {
 
 // Delete a Avoid_Teammate via its ID
 exports.delete = (req, res) => {
-    console.log("ID: " + req.params.id)
-    const id = req.params.id;
+    //console.log("ID: " + req.params.id)
+    const id = req['user'].student.id;
 
     Avoid_Teammate.destroy({
-        where: { studentId : req.params.id }
+        where: { studentId : id }
     })
     .then(num => {
         if (num == 1) {

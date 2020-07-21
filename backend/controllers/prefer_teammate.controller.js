@@ -7,7 +7,7 @@ exports.create = (req, res) => {
     if (!req.body.preferrer_id) {
         // If there is no name, then there's no point in storing a Prefer_Teammate.
         res.status(400).send({
-            message: "Prefferrer cannot be empty."
+            message: "Preferrer cannot be empty."
         });
 
         // Don't create anything.
@@ -25,7 +25,7 @@ exports.create = (req, res) => {
 
     const prefer_teammate = {
         preferreeId: req.body.preferree_id,
-        studentId: req.body.preferrer_id,
+        studentId: req['user'].student.id,
 
     };
 
@@ -105,7 +105,7 @@ exports.update = (req, res) => {
 
 // Delete a Prefer_Teammate via its ID
 exports.delete = (req, res) => {
-    const id = req.params.id;
+    const id = req['user'].student.id;
 
     Prefer_Teammate.destroy({
         where: { studentId: id }
