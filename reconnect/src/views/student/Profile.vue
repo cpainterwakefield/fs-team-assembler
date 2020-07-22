@@ -26,7 +26,7 @@
                 <div class="projects2">
                   <h3 class="h3_1"> Project Preferences </h3>
                   <v-text-field class="text" readonly background-color="white" filled color="black" label="First Preference" :placeholder=getProj(this.firstProj)></v-text-field> 
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :placeholder=getProj(this.firstProj)></v-text-field> 
+                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :placeholder=getProj(this.secondProj)></v-text-field>
                   <v-text-field class="text" readonly background-color="white" filled color="black" label="Third Preference" :placeholder=getProj(this.thirdProj)></v-text-field> 
                 </div>
                 <div class="teams2">
