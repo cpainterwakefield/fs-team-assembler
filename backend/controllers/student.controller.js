@@ -229,9 +229,9 @@ exports.countThirdProj = (req, res) => {
 
 exports.countTeam1Mem = (req, res) => {
 
-//-- query to receive number of students who preferred project AND got their third project 
+//-- query to receive number of students who preferred team AND got at least 1 preferred teammate
 //SELECT COUNT(*) FROM students s WHERE selection_preference = true AND EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id));
-    db.sequelize.query("SELECT COUNT(*) FROM students s WHERE selection_preference IS NULL AND ((project_id = first_project OR project_id = second_project OR project_id = third_project) OR EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id)))" , {type: db.sequelize.SELECT })
+    db.sequelize.query("SELECT COUNT(*) FROM students s WHERE selection_preference = true AND EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id))" , {type: db.sequelize.SELECT })
         .then(data => {
             res.send(data)
         })
@@ -245,9 +245,9 @@ exports.countTeam1Mem = (req, res) => {
 
 exports.countNoPrefTeamOrProj = (req, res) => {
 
-//-- query to receive number of students who preferred project AND got their third project 
-//SELECT COUNT(*) FROM students s WHERE selection_preference = true AND EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id));
-    db.sequelize.query("SELECT COUNT(*) FROM students s WHERE selection_preference = true AND EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id))" , {type: db.sequelize.SELECT })
+//-- query to receive number of students who had no preference of team vs project, and who got either a teammate they wanted, or a project they wanted
+//SELECT COUNT(*) FROM students s WHERE selection_preference IS NULL AND (EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id)) OR project_id = first_project OR project_id = second_project OR project_id = third_project);
+    db.sequelize.query("SELECT COUNT(*) FROM students s WHERE selection_preference IS NULL AND (EXISTS (SELECT 1 FROM prefer_teammate_xrefs ptx WHERE ptx.student_id = s.id AND ptx.preferree_id IN (SELECT s2.id FROM students s2 WHERE s2.id != s.id AND s2.project_id = s.project_id)) OR project_id = first_project OR project_id = second_project OR project_id = third_project)" , {type: db.sequelize.SELECT })
         .then(data => {
             res.send(data)
         })
