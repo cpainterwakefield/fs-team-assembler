@@ -1,9 +1,9 @@
-*/node_modules/*
+/*/node_modules/*
 package-lock.json
 keys.js
 db.config.js
 
-*/dist
+/*/dist/*
 
 # swapfiles, etc.
 .DS_Store
