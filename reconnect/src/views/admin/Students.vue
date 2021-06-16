@@ -1,7 +1,7 @@
 <template>
 <center>
   <Header />
-  <div class="students"> 
+  <div class="students">
     <h2>Statistics</h2>
     <div class="stats">
       <hr>
@@ -28,61 +28,63 @@
       <hr>
     </div>
     <h2>Students</h2>
-    <div class="table">
-      <h3 class="head1">Name</h3> 
-      <h3 class="head1">Email</h3> 
-      <h3 class="head1">Minor</h3> 
-      <h3 class="head1">GPA</h3> 
-      <h3 class="head1">P/T</h3> 
-      <h3 class="head1">Projects</h3> 
-      <h3 class="head1">Prefers</h3> 
-      <h3 class="head1">Avoids</h3> 
-      <h3 class="head1">Assigned</h3> 
-      <hr>
-      <div class="row" v-for="student in students" :key="student.id">
-        <div class="panel">
-          <div class="list1">{{student.name}}</div>
-        </div>
-        <div class="panel">
-          <div class="list1">{{student.email}}</div>
-        </div>
-        <div class="panel">
-          <div class="list1">{{student.minor}}</div>
-        </div>
-        <div class="panel">
-          <div class="list1">{{student.gpa}}</div>
-        </div>
-        <div class="panel">
-          <div class="list1" v-if="student.selection_preference == null"><font color="red">N/A</font></div>
-          <div class="list1" v-else>
-            <div class="list1" v-if="student.selection_preference"><font color="blue">T</font></div>
-            <div class="list1" v-else><font color="green">P</font></div>
+    <table width="98%">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Minor</th>
+        <th>GPA</th>
+        <th>P/T</th>
+        <th>Projects</th>
+        <th>Prefers</th>
+        <th>Avoids</th>
+        <th>Assigned</th>
+      </tr>
+      <tr v-for="student in students" :key="student.id">
+        <td>
+          <div>{{student.name}}</div>
+        </td>
+        <td>
+          <div>{{student.email}}</div>
+        </td>
+        <td>
+          <div>{{student.minor}}</div>
+        </td>
+        <td>
+          <div>{{student.gpa}}</div>
+        </td>
+        <td>
+          <div v-if="student.selection_preference == null"><font color="red">N/A</font></div>
+          <div v-else>
+            <div v-if="student.selection_preference"><font color="blue">T</font></div>
+            <div v-else><font color="green">P</font></div>
           </div>
-        </div>
-        <div class="panel">
-          <div class="list2" v-if="student.first_project">{{getProj(student.first_project)}}</div>
-          <hr>
-          <div class="list2" v-if="student.second_project">{{getProj(student.second_project)}}</div>
-          <hr>
-          <div class="list2" v-if="student.third_project">{{getProj(student.third_project)}}</div>
-        </div>
-        <div class="panel">
-          <div class="list1" v-for="(prefer, i) in team_pref" :key="i">
+        </td>
+        <td>
+          <div>
+            <span v-if="student.first_project">1. {{getProj(student.first_project)}}</span>
+            <hr v-if="student.second_project">
+            <span v-if="student.second_project">2. {{getProj(student.second_project)}}</span>
+            <hr v-if="student.third_project">
+            <span v-if="student.third_project">3. {{getProj(student.third_project)}}</span>
+          </div>
+        </td>
+        <td>
+          <div v-for="(prefer, i) in team_pref" :key="i">
             <span v-if="prefer.studentId === student.id"><font color="green">{{getStud(prefer.preferreeId)}}</font><hr></span>
           </div>
-        </div>
-        <div class="panel">
-          <div class="list1" v-for="(av, i) in team_avoid" :key="i">
+        </td>
+        <td>
+          <div v-for="(av, i) in team_avoid" :key="i">
             <span v-if="av.studentId === student.id"><font color="red">{{getStud(av.avoideeId)}}</font><hr></span>
           </div>
-        </div>
-        <div class="panel">
-         <div class="list1" v-if="student.project_id"><font color="green">{{getProj(student.project_id)}}</font></div> 
-         <div class="list1" v-else><font color="red">X</font></div> 
-        </div>
-      </div>
-      <hr>
-    </div>
+        </td>
+        <td>
+          <div v-if="student.project_id"><font color="green">{{getProj(student.project_id)}}</font></div>
+          <div v-else><font color="red">X</font></div>
+        </td>
+      </tr>
+    </table>
   </div>
 </center>
 </template>
@@ -252,6 +254,12 @@ export default {
   .row {
     width: 100%;
     border-bottom: 1px solid grey;
+  }
+
+  td {
+    padding: 15px;
+    border: 1px solid grey;
+    background-color: white;
   }
 
   .prompt {

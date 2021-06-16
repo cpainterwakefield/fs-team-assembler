@@ -1,37 +1,38 @@
 <template>
 <center>
   <Header />
-  <div class="projects"> 
+  <div class="projects">
     <h1>Projects</h1>
-    <div class="table">
-      <h3 class="head2">Project Name</h3> 
-      <h3 class="head2">Company Name</h3> 
-      <h3 class="head2">Contact Name</h3> 
-      <h3 class="head2">Contact Email</h3> 
-      <h3 class="head2">Min</h3> 
-      <h3 class="head2">Max</h3> 
-      <hr>
-      <div class="row" v-for="(project, i) in projects" :key="i">
-        <div class="panel1">
-          <div class="list1">{{project.name}}</div>
-        </div>
-        <div class="panel1">
-          <div class="list1">{{project.client_company}}</div>
-        </div>
-        <div class="panel1">
-          <div class="list1">{{project.client_name}}</div>
-        </div>
-        <div class="panel1">
-          <div class="list1">{{project.client_email}}</div>
-        </div>
-        <div class="panel1">
-          <div class="list1">{{project.min_students}}</div>
-        </div>
-        <div class="panel1">
-          <div class="list1">{{project.max_students}}</div>
-        </div>
-      </div>
-    </div>
+    <table width="100%">
+      <tr>
+        <th>Project Name</th>
+        <th>Company Name</th>
+        <th>Contact Name</th>
+        <th>Contact Email</th>
+        <th>Min</th>
+        <th>Max</th>
+      </tr>
+      <tr v-for="(project, i) in projects" :key="i">
+        <td>
+          <div>{{project.name}}</div>
+        </td>
+        <td>
+          <div>{{project.client_company}}</div>
+        </td>
+        <td>
+          <div>{{project.client_name}}</div>
+        </td>
+        <td>
+          <div>{{project.client_email}}</div>
+        </td>
+        <td>
+          <div>{{project.min_students}}</div>
+        </td>
+        <td>
+          <div>{{project.max_students}}</div>
+        </td>
+      </tr>
+    </table>
   </div>
 </center>
 </template>
@@ -109,8 +110,8 @@ export default {
   }
 
   .list1 {
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 
   .list2 {
@@ -154,4 +155,11 @@ export default {
     display: inline;
     border-bottom: 1px solid grey;
   }
+
+  td {
+    padding: 15px;
+    border: 1px solid grey;
+    background-color: white;
+  }
+
 </style>
