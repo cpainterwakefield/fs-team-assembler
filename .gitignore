@@ -4,6 +4,7 @@ keys.js
 db.config.js
 
 /*/dist/*
+/backend/dist/index.html
 
 # swapfiles, etc.
 .DS_Store
