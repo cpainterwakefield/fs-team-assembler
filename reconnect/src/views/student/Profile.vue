@@ -1,61 +1,47 @@
 <template>
-<center>
-<Header />
-  <div class="profile_main">
-    <h1>Profile </h1>
-    <hr>
-          <div class="top">
-            <v-layout wrap>
-              <v-flex>
-                <div class="left-questions">
-                  <v-text-field class="text3" readonly background-color="white" filled color="black" label="Preferred Name" :placeholder="name"></v-text-field>
-                  <v-text-field class="text3" readonly background-color="white" filled color="black" label="Minor" :placeholder="minor"></v-text-field>
-                  <v-text-field class="text3" readonly background-color="white" filled color="black" label="GPA" :placeholder="gpa"></v-text-field>
-                </div>
-              </v-flex>
-              <v-flex>
-                <div class="right-pref">
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Project/Team Preference" :placeholder="preference"></v-text-field> 
-                </div>
-              </v-flex>
-            </v-layout>
-          </div>
-           <hr>
-          <div class="bottom">
-            <h2> Your Choices </h2>
+    <v-main>
+        <Header />
+        <div class="profile_main">
+            <h1>Profile </h1>
+            <hr>
+            <div class="top">
+                <v-layout wrap>
+                    <v-flex>
+                        <div class="left-questions">
+                            <v-text-field class="text3" readonly background-color="white" filled color="black" label="Preferred Name" :value="name"></v-text-field>
+                            <v-text-field class="text3" readonly background-color="white" filled color="black" label="Minor" :value="minor"></v-text-field>
+                            <v-text-field class="text3" readonly background-color="white" filled color="black" label="GPA" :value="gpa"></v-text-field>
+                        </div>
+                    </v-flex>
+                    <v-flex>
+                        <div class="right-pref">
+                            <v-text-field class="text" readonly background-color="white" filled color="black" label="Project/Team Preference" :value="preference"></v-text-field>
+                        </div>
+                    </v-flex>
+                </v-layout>
+            </div>
+            <hr>
+            <div class="bottom">
+                <h2> Your Choices </h2>
                 <div class="projects2">
-                  <h3 class="h3_1"> Project Preferences </h3>
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="First Preference" :placeholder=getProj(this.firstProj)></v-text-field> 
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :placeholder=getProj(this.secondProj)></v-text-field>
-                  <v-text-field class="text" readonly background-color="white" filled color="black" label="Third Preference" :placeholder=getProj(this.thirdProj)></v-text-field> 
+                    <h3 class="h3_1"> Project Preferences </h3>
+                    <v-text-field class="text" readonly background-color="white" filled color="black" label="First Preference" :value="getProj(this.firstProj)"></v-text-field>
+                    <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :value="getProj(this.secondProj)"></v-text-field>
+                    <v-text-field class="text" readonly background-color="white" filled color="black" label="Third Preference" :value="getProj(this.thirdProj)"></v-text-field>
                 </div>
                 <div class="teams2">
-                  <h3 class="h3_1"> Team Preferences </h3>
-                  <div class="pref2">
-                    <v-list dense max-height=105px class="overflow-y-auto" width="250">
-                      <h5><u>Preferred Team</u></h5>
-                      <v-list-item v-for="(pref, i) in team_pref" :key="i">
-                        <v-list-item-title class="element" v-text=getStud(pref.preferreeId)></v-list-item-title>
-                      </v-list-item>  
-                    </v-list>
-                  </div>
-                  <div class="pref2">
-                    <v-list dense max-height=105px class="overflow-y-auto" width="250">
-                      <h5><u>Avoid Team</u></h5>
-                      <v-list-item v-for="(avoid, i) in team_avoid" :key="i">
-                        <v-list-item-title class="element" v-text="getStud(avoid.avoideeId)"></v-list-item-title>
-                      </v-list-item>  
-                    </v-list>
-                  </div>
+                    <h3 class="h3_1"> Team Preferences </h3>
+                    <v-select width=50px multiple label="Preferred Teammates" outlined background-color="white" readonly :value="team_pref" :items=students item-text="name" item-value="id" v-model="team_pref"></v-select>
+                    <v-select width=50px multiple label="Avoided Teammates" outlined background-color="white" readonly :value="team_avoid" :items=students item-text="name" item-value="id" v-model="team_avoid"></v-select>
                 </div>
-          </div>
-          <hr> 
-          <div class="experience">
-            <h2> Experience/Rationale: </h2>
-            <v-text-field background-color="white" readonly filled color="black" label="Experience/Rationale" :placeholder="experience"></v-text-field>
-          </div>
-  </div>
-</center>
+            </div>
+            <hr>
+            <div class="experience">
+                <h2> Experience/Rationale: </h2>
+                <v-textarea background-color="white" readonly filled color="black" label="Experience/Rationale" :value="experience"></v-textarea>
+            </div>
+        </div>
+    </v-main>
 </template>
 
 <script>
@@ -64,98 +50,89 @@ import Header from '@/components/HeaderStudent.vue'
 import axios from 'axios'
 
 export default {
-  name: 'Home',
-  components: {
-    Header
-  },
-  data() {
-    return {
-     preference: "Doesn't Matter",
-      projects: [],
-      students: [],
-      firstProj: "",
-      secondProj: "",
-      thirdProj: "",
-      team_pref: [],
-      team_avoid: [],
-      valid: true,
-      minor: "",
-      gpa: "",
-      experience: "",
-      name: ""
-    }
-  },
-    mounted() {
-      var self=this;
-      let id = 1
-      const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
-      const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true})
-      const requestPref = axios.get(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate/' + id, {withCredentials: true})
-      const requestAvoid = axios.get(process.env.VUE_APP_BASE_API_URL + '/avoid_teammate/' + id, {withCredentials: true})
-      const requestStuds = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/', {withCredentials: true})
-
-      axios.all([requestStud, requestProj, requestPref, requestStuds, requestAvoid]).then(axios.spread((...responses) => {
-        const responseStud = responses[0]
-        const responseProj = responses[1]
-        const responsePref = responses[2]
-        const responseStuds = responses[3]
-        const responseAvoid = responses[4]
-        // use/access the results
-        self.student = responseStud.data
-          self.experience = self.student.experience
-          self.gpa = self.student.gpa
-          self.minor = self.student.minor
-          self.name = self.student.username
-          self.firstProj = self.student.first_project
-          self.secondProj = self.student.second_project
-          self.thirdProj = self.student.third_project
-          self.preference = self.student.selection_preference
-          if (self.preference === false)
-            self.preference = "Project"
-          else if (self.preference === true)
-            self.preference = "Team"
-          else self.preference = "Doesn't Matter"
-        self.projects = responseProj.data
-        self.team_pref = responsePref.data
-        self.students = responseStuds.data
-        self.team_avoid = responseAvoid.data
-      }))
-      .catch(e => {
-        // react on errors.
-        self.errors.push(e)
-      })
-
-   },
-  methods: {
-    getProj: function(pid) {
-      if (this.projects.find(function(id) {if (id.id === pid) return id}))
-        return this.projects.find(function(id) {if (id.id === pid) return id}).name
-      else return null;
+    name: 'Home',
+    components: {
+        Header
     },
-    getStud: function(pid) {
-      if (this.students.find(function(id) {if (id.id === pid) return id}))
-        return this.students.find(function(id) {if (id.id === pid) return id}).name
-      else return null;
-    }
-  }
-}
+    data() {
+        return {
+            preference: "Doesn't Matter",
+            projects: [],
+            students: [],
+            firstProj: "",
+            secondProj: "",
+            thirdProj: "",
+            team_pref: [],
+            team_avoid: [],
+            valid: true,
+            minor: "",
+            gpa: "",
+            experience: "",
+            name: ""
+        }
+    },
+    mounted() {
+        var self=this;
+        let id = 1
+        const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
+        const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true})
+        const requestPref = axios.get(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate/' + id, {withCredentials: true})
+        const requestAvoid = axios.get(process.env.VUE_APP_BASE_API_URL + '/avoid_teammate/' + id, {withCredentials: true})
+        const requestStuds = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/', {withCredentials: true})
 
+        axios.all([requestStud, requestProj, requestPref, requestStuds, requestAvoid]).then(axios.spread((...responses) => {
+            const responseStud = responses[0]
+            const responseProj = responses[1]
+            const responsePref = responses[2]
+            const responseStuds = responses[3]
+            const responseAvoid = responses[4]
+            // use/access the results
+            self.student = responseStud.data
+            self.experience = self.student.experience
+            self.gpa = self.student.gpa
+            self.minor = self.student.minor
+            self.name = self.student.username
+            self.firstProj = self.student.first_project
+            self.secondProj = self.student.second_project
+            self.thirdProj = self.student.third_project
+            self.preference = self.student.selection_preference
+            if (self.preference === false)
+                self.preference = "Project"
+            else if (self.preference === true)
+                self.preference = "Team"
+            else self.preference = "Doesn't Matter"
+            self.projects = responseProj.data
+            //self.team_pref = responsePref.data
+            self.students = responseStuds.data
+            //self.team_avoid = responseAvoid.data
+            for (let i of responsePref.data)
+                self.team_pref.push(i.preferreeId)
+            for (let i of responseAvoid.data)
+                self.team_avoid.push(i.avoideeId)
+        }))
+            .catch(e => {
+                // react on errors.
+                self.errors.push(e)
+            })
+
+    },
+    methods: {
+        getProj: function(pid) {
+            if (this.projects.find(function(id) {if (id.id === pid) return id}))
+                return this.projects.find(function(id) {if (id.id === pid) return id}).name
+            else return null;
+        },
+        getStud: function(pid) {
+            if (this.students.find(function(id) {if (id.id === pid) return id}))
+                return this.students.find(function(id) {if (id.id === pid) return id}).name
+            else return null;
+        }
+    }
+}
 </script>
 
-<style type="text/css">
+<style>
   body { font-family: sans-serif; }
-
-  .element {
-    border: 1px solid grey;
-    margin: 5px;
-  }
-
-  .text {
-  }
-
-  .pref2 {
-    margin-bottom: 10px;
-  }
 
   h5 {
     color: black;
@@ -182,6 +159,7 @@ export default {
 
   .h3_1 {
     margin-left: 50px;
+    margin-bottom: 12px;
   }
 
   p {
@@ -193,10 +171,6 @@ export default {
     padding: 25px;
   }
   
-  .v-card-text1 {
-    background: #D3D3D3;
-  }
-
   .profile_main {
     display: inline-block;
     width: 90%;
@@ -230,11 +204,6 @@ export default {
 
   .bottom {
     margin: 10px; 
-  }
-
-  .experience {
-    margin-left: 30px;
-    margin-right: 30px;
   }
 
   .teams2 {
