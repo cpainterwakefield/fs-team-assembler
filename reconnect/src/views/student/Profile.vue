@@ -1,21 +1,25 @@
 <template>
     <v-main>
-        <Header />
+        <Header/>
         <div class="profile_main">
-            <h1>Profile </h1>
+            <h1>Profile (Click "Edit" to Modify)</h1>
             <hr>
             <div class="top">
                 <v-layout wrap>
                     <v-flex>
                         <div class="left-questions">
-                            <v-text-field class="text3" readonly background-color="white" filled color="black" label="Preferred Name" :value="name"></v-text-field>
-                            <v-text-field class="text3" readonly background-color="white" filled color="black" label="Minor" :value="minor"></v-text-field>
-                            <v-text-field class="text3" readonly background-color="white" filled color="black" label="GPA" :value="gpa"></v-text-field>
+                            <v-text-field class="text3" readonly background-color="white" filled color="black"
+                                          label="Preferred Name" :value="name"></v-text-field>
+                            <v-text-field class="text3" readonly background-color="white" filled color="black"
+                                          label="Minor" :value="minor"></v-text-field>
+                            <v-text-field class="text3" readonly background-color="white" filled color="black"
+                                          label="GPA" :value="gpa"></v-text-field>
                         </div>
                     </v-flex>
                     <v-flex>
                         <div class="right-pref">
-                            <v-text-field class="text" readonly background-color="white" filled color="black" label="Project/Team Preference" :value="preference"></v-text-field>
+                            <v-text-field class="text" readonly background-color="white" filled color="black"
+                                          label="Project/Team Preference" :value="preference"></v-text-field>
                         </div>
                     </v-flex>
                 </v-layout>
@@ -25,20 +29,30 @@
                 <h2> Your Choices </h2>
                 <div class="projects2">
                     <h3 class="h3_1"> Project Preferences </h3>
-                    <v-text-field class="text" readonly background-color="white" filled color="black" label="First Preference" :value="getProj(this.firstProj)"></v-text-field>
-                    <v-text-field class="text" readonly background-color="white" filled color="black" label="Second Preference" :value="getProj(this.secondProj)"></v-text-field>
-                    <v-text-field class="text" readonly background-color="white" filled color="black" label="Third Preference" :value="getProj(this.thirdProj)"></v-text-field>
+                    <v-text-field class="text" readonly background-color="white" filled color="black"
+                                  label="First Preference" :value="getProj(this.firstProj)"></v-text-field>
+                    <v-text-field class="text" readonly background-color="white" filled color="black"
+                                  label="Second Preference" :value="getProj(this.secondProj)"></v-text-field>
+                    <v-text-field class="text" readonly background-color="white" filled color="black"
+                                  label="Third Preference" :value="getProj(this.thirdProj)"></v-text-field>
                 </div>
                 <div class="teams2">
                     <h3 class="h3_1"> Team Preferences </h3>
-                    <v-select width=50px multiple label="Preferred Teammates" outlined background-color="white" readonly :value="team_pref" :items=students item-text="name" item-value="id" v-model="team_pref"></v-select>
-                    <v-select width=50px multiple label="Avoided Teammates" outlined background-color="white" readonly :value="team_avoid" :items=students item-text="name" item-value="id" v-model="team_avoid"></v-select>
+                    <v-select multiple label="Preferred Teammates" outlined background-color="white" readonly
+                              :value="team_pref" :items=students item-text="name" item-value="id"
+                              v-model="team_pref"></v-select>
+                    <v-select multiple label="Avoided Teammates" outlined background-color="white" readonly
+                              :value="team_avoid" :items=students item-text="name" item-value="id"
+                              v-model="team_avoid"></v-select>
                 </div>
             </div>
             <hr>
-            <div class="experience">
+            <div class="bottom">
                 <h2> Experience/Rationale: </h2>
-                <v-textarea background-color="white" readonly filled color="black" label="Experience/Rationale" :value="experience"></v-textarea>
+                <div class="left-questions">
+                    <v-textarea background-color="white" readonly filled color="black" label="Experience/Rationale"
+                                :value="experience" class="mt-2"></v-textarea>
+                </div>
             </div>
         </div>
     </v-main>
@@ -132,85 +146,78 @@ export default {
 </script>
 
 <style>
-  body { font-family: sans-serif; }
+    body {
+        font-family: sans-serif;
+    }
 
-  h5 {
-    color: black;
-  }
+    h5 {
+        color: black;
+    }
 
-  h1 {
-    font-family: serif;
-    margin-bottom: 0;
-    color: black;
-    font-weight: bold; 
-  }
+    h1 {
+        margin-bottom: 0;
+        color: black;
+        font-weight: bold;
+    }
 
-  h2 {
-    text-align: left;
-    color: black;
-    font-weight: bold;
-  }  
+    h2 {
+        text-align: left;
+        color: black;
+        font-weight: bold;
+    }
 
-  h3 {
-    text-align: left;
-    color: black;
-    font-weight: bold;
-  }
+    h3 {
+        text-align: left;
+        color: black;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
 
-  .h3_1 {
-    margin-left: 50px;
-    margin-bottom: 12px;
-  }
+    p {
+        text-align: left;
+        color: black;
+    }
 
-  p {
-    text-align: left;
-    color: black;
-  }
+    .profile_main {
+        display: inline-block;
+        border: 2px solid black;
+        border-radius: 10px;
+        text-align: center;
+        background: #D3D3D3;
+        margin: 0 35px 35px 35px;
+    }
 
-  center {
-    padding: 25px;
-  }
-  
-  .profile_main {
-    display: inline-block;
-    width: 90%;
-    border: 2px solid black;
-    border-radius: 10px;
-    text-align: center;
-    background: #D3D3D3; 
-    margin: 35px;
-  }
+    .left-questions {
+        float: left;
+        width: 90%;
+        display: inline-block;
+        padding: 10px;
+        margin: 10px;
+    }
 
-  .left-questions {
-    float: left;
-    width: 90%;
-    display: inline-block;
-    padding: 10px;
-    margin: 10px;
-  }
+    .right-pref {
+        float: right;
+        width: 90%;
+        display: inline-block;
+        padding: 10px;
+        margin: 10px;
+    }
 
-  .right-pref {
-    float: right;
-    width: 90%;
-    display: inline-block;
-    padding: 10px;
-    margin: 10px;
-  }
+    .projects2 {
+        width: 40%;
+        display: inline-block;
+        margin: 10px;
+    }
 
-  .projects2 {
-    width: 40%;
-    display: inline-block;
-  }
+    .bottom {
+        margin: 10px;
+    }
 
-  .bottom {
-    margin: 10px; 
-  }
-
-  .teams2 {
-    width: 40%;
-    margin-top: 20px;
-    margin-left: 50px;
-    display: inline-block;
-  }
+    .teams2 {
+        width: 40%;
+        float: right;
+        display: inline-block;
+        margin: 10px;
+    }
 
 </style>
