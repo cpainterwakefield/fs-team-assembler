@@ -1,44 +1,55 @@
 <template>
-  <v-app>
-<v-content class="content">
-    <router-view/>
-  </v-content>
-  <footer padding=10px>
-    <span>
-      &copy; Colorado School of Mines 2021
-    </span>
-  </footer>
-        
-
-  </v-app>
+    <v-app>
+        <router-view/>
+        <footer>
+            <span>
+                &copy; Colorado School of Mines 2021
+            </span>
+        </footer>
+    </v-app>
 </template>
 
 <script>
-export default {
-  name: 'App',
-  components: {
-  }
-};
+    export default {
+        name: 'App',
+        components: {}
+    };
 </script>
 
 <style>
-  footer {
-    padding: 15px;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 50px;
-    background-color: Navy;
-    color: white;
-    text-align: center;
-}
-  .content {
-    padding: 15px;
-  }
+    body {
+        font-family: Roboto, sans-serif;
+        padding: 25px;
+    }
 
-  .btn1 {
-    margin: 10px;
-  }
+    footer {
+        padding: 15px;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 50px;
+        background-color: #263F6A;
+        color: white;
+        text-align: center;
+    }
 
+    .btn1 {
+        margin-right: 10px;
+    }
+
+    .full {
+        width: 100%;
+    }
+
+    .half {
+        width: 50%;
+    }
+
+    .centered {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 </style>

@@ -1,54 +1,66 @@
 <template>
     <v-main>
-        <Header> </Header>
-        <div class="edit_main">
-            <h1>Edit Your Profile </h1>
-            <hr>
-            <v-form v-model="valid">
-                <div class="top">
-                    <v-layout wrap>
-                        <v-flex>
-                            <div class="left-questions">
-                                <v-text-field class="text" v-model="username" background-color="white" outlined label="Preferred Name (Full)"></v-text-field>
-                                <v-text-field class="text" v-model="minor" background-color="white" outlined label="Minor"></v-text-field>
-                                <v-text-field class="text" v-model="gpa" :rules="[v => !!v || 'This is required', v => Number.isFinite(parseFloat(v)) || 'Must be a number']" required background-color="white" outlined label="GPA"></v-text-field>
-                            </div>
-                        </v-flex>
-                        <v-flex>
-                            <div class="right-pref">
-                                <v-radio-group v-model="preference" label="I Prefer" >
-                                    <v-radio name="selection_preference" label="Doesn't Matter" value="Doesn't Matter"></v-radio>
-                                    <v-radio name="selection_preference" label="My Chosen Projects" value="Project"></v-radio>
-                                    <v-radio name="selection_preference" label="My Chosen Teammates" value="Team"></v-radio>
-                                </v-radio-group>
-                            </div>
-                        </v-flex>
-                    </v-layout>
-                </div>
-                <hr>
-                <div class="bottom">
-                    <h2> Your Choices </h2>
-                    <div class="project_pref ma-10">
-                        <h3> Project Preferences </h3>
-                        <v-select class="sel1" label="First Preference" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="firstProj"></v-select>
-                        <v-select class="sel1" label="Second Preference" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="secondProj"></v-select>
-                        <v-select class="sel1" label="Third Preference" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="thirdProj"></v-select>
+        <Header/>
+        <div class="centered">
+            <v-card outlined width="90%" color="#CED5DD" class="pa-5">
+                <v-form v-model="valid">
+                    <div class="d-flex flex-row">
+                        <div class="d-flex flex-column full">
+                            <p class="text-h4">Edit Your Profile</p>
+                        </div>
                     </div>
-                    <div class="teammate_pref ma-10">
-                        <h3> Team Preferences </h3>
-                        <v-select width=50px multiple label="Prefer Teammates" outlined background-color="white" :value="team_pref" :items=students item-text="name" item-value="id" v-model="team_pref"></v-select>
-                        <v-select width=50px multiple label="Avoid Teammates" outlined background-color="white" :value="team_avoid" :items=students item-text="name" item-value="id" v-model="team_avoid"></v-select>
+                    <div class="d-flex flex-row">
+                        <div class="d-flex flex-column half mx-10">
+                            <v-text-field v-model="username" background-color="white" outlined label="Preferred Name (Full)"></v-text-field>
+                            <v-text-field v-model="minor" background-color="white" outlined label="Minor"></v-text-field>
+                            <v-text-field v-model="gpa" :rules="[v => !!v || 'This is required', v => Number.isFinite(parseFloat(v)) || 'Must be a number']" required background-color="white" outlined label="GPA"></v-text-field>
+                        </div>
+                        <div class="d-flex flex-column half mx-10">
+                            <v-radio-group class="radio-container" v-model="preference" label="I Prefer">
+                                <v-radio name="selection_preference" label="Doesn't Matter" value="Doesn't Matter"></v-radio>
+                                <v-radio name="selection_preference" label="My Chosen Projects" value="Project"></v-radio>
+                                <v-radio name="selection_preference" label="My Chosen Teammates" value="Team"></v-radio>
+                            </v-radio-group>
+                        </div>
                     </div>
-                </div>
-                <hr>
-                <div class="bottom">
-                    <h2> Experience/Rationale: </h2>
-                    <p><b> Enter any additional information that should be considered. </b></p>
-                    <p> Note: This is simply read by an advisor, not by clients or potential employers. </p>
-                    <v-textarea background-color="white" outlined auto-grow v-model="experience" label="Experience/Rationale"></v-textarea>
-                </div>
-                <v-btn class="primary" :disabled="!valid" @click="doSubmit()">Submit</v-btn>
-            </v-form>
+                    <div class="d-flex flex-row">
+                        <div class="d-flex flex-column full">
+                            <p class="text-h5">Your Choices</p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <div class="d-flex flex-column half mx-10">
+                            <p class="text-overline">Project Preferences</p>
+                                <v-select label="First Preference" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="firstProj"></v-select>
+                                <v-select label="Second Preference" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="secondProj"></v-select>
+                                <v-select label="Third Preference" outlined background-color="white" :items=projects item-text="name" item-value="id" v-model="thirdProj"></v-select>
+                        </div>
+                        <div class="d-flex flex-column half mx-10">
+                            <p class="text-overline">Team Preferences</p>
+                                <v-select multiple label="Prefer These Teammates" outlined background-color="white" :value="team_pref" :items=students item-text="name" item-value="id" v-model="team_pref"></v-select>
+                                <v-select multiple label="Avoid These Teammates" outlined background-color="white" :value="team_avoid" :items=students item-text="name" item-value="id" v-model="team_avoid"></v-select>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <div class="d-flex flex-column full">
+                            <p class="text-h5">Experience/Rationale</p>
+                            <p class="text-subtitle-1">Enter any additional information that should be considered. (This is simply read by the course coordinator, not by clients or potential employers.)</p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row">
+                        <div class="d-flex flex-column full mx-10">
+                            <v-textarea background-color="white" outlined auto-grow v-model="experience" label="Experience/Rationale"></v-textarea>
+                        </div>
+                    </div>
+                    <div class="centered">
+                        <v-btn class="primary" :disabled="!valid" @click="doSubmit()">Submit</v-btn>
+                    </div>
+                </v-form>
+            </v-card>
+            <p/>
+            <p/>
+            <p/>
+            <p/>
         </div>
         <v-snackbar v-model="error_snackbar" multi-line color="failure" timeout="6000" top>
             {{ error_message }}
@@ -124,7 +136,7 @@
                 else self.preference = "Doesn't Matter"
                 self.projects = responseProj.data
                 //self.team_pref = responsePref.data
-                self.students = responseStuds.data
+                self.students = responseStuds.data.filter(el => el.id !== self.student.id)
                 //self.team_avoid = responseAvoid.data
                 for (let i of responsePref.data)
                     self.team_pref.push(i.preferreeId)
@@ -134,7 +146,6 @@
                 .catch(() => {
                     self.$router.push({name: "Error"})
                 })
-
         },
 
         methods: {
@@ -150,6 +161,16 @@
                 document.body.style.cursor = "wait"
 
                 try {
+                    await axios.put(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {
+                        name: this.name,
+                        minor: this.minor,
+                        gpa: this.gpa,
+                        username: this.username,
+                        experience: this.experience,
+                        first_project: this.firstProj,
+                        second_project: this.secondProj,
+                        third_project: this.thirdProj,
+                        selection_preference: this.preference })
                     await axios.delete(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate/' + id, {withCredentials: true})
                     for (let pref of this.team_pref) {
                         await axios.post(process.env.VUE_APP_BASE_API_URL + '/prefer_teammate', {
@@ -183,85 +204,5 @@
     }
 </script>
 
-<style type="text/css">
-    body { font-family: sans-serif; }
-
-    h1 {
-        font-family: serif;
-        margin-bottom: 0;
-        color: black;
-        font-weight: bold;
-    }
-
-    h2 {
-        text-align: left;
-        color: black;
-        font-weight: bold;
-    }
-
-    h3 {
-        text-align: left;
-        color: black;
-        font-weight: bold;
-    }
-
-    p {
-        text-align: left;
-        color: black;
-    }
-
-    center {
-        padding: 25px;
-    }
-
-    .sel1 {
-        width: 520px;
-    }
-
-    .edit_main {
-        width: 90%;
-        border: 2px solid black;
-        border-radius: 10px;
-        text-align: center;
-        background: #D3D3D3;
-        margin: 35px;
-        height: 100%;
-        overflow: visible;
-    }
-
-    .left-questions {
-        max-width: 90%;
-        display: inline-block;
-        padding: 10px;
-        margin: 10px;
-    }
-
-    .right-pref {
-        max-width: 90%;
-        display: inline-block;
-        padding: 10px;
-        margin: 10px;
-    }
-
-    .project_pref {
-        width: 40%;
-        display: inline-block;
-    }
-
-    .bottom {
-        margin: 10px;
-        width: 90%;
-    }
-
-    .teammate_pref {
-        display: inline-block;
-        float: right;
-        width: 40%;
-    }
-
-    .spinner {
-        position: sticky;
-        top: 150px;
-        text-align: center;
-    }
+<style>
 </style>
