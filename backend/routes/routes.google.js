@@ -33,8 +33,10 @@ passport.deserializeUser((id,done) => {
           });
         }
       })
+      .catch((e) => { done(e); })
     }
   })
+  .catch((e) => { done(e); })
 });
 
 
@@ -51,6 +53,7 @@ passport.use(new GoogleStrategy({
 },
 function(accessToken, refreshToken, profile, done) {
   //check if user exists in DB
+  console.log(profile)
   const title = profile._json.email;
   const id = profile._json.sub.toString();
   User.findOne({where: {email: title}})
@@ -61,13 +64,12 @@ function(accessToken, refreshToken, profile, done) {
         //so lets add it
         if(userExists.name == null){
           userExists.update({
-            name: result.displayName
+            name: profile._json.displayName
           })
         }
         //If user is admin then they should not be added as a student
         if(userExists.is_admin){
           done(null,userExists);
-          return;
         }else{
           //Add this user information to student table too if they exist
           Student.findOne({where: {email: title}})
@@ -75,8 +77,8 @@ function(accessToken, refreshToken, profile, done) {
             //if no student exists then create one
             if(!createStudent){
               Student.create({
-                name: result.displayName,
-                email: result.mail
+                name: profile.displayName,
+                email: profile._json.email
               })
               //student created now finish
               return done(null, userExists);
@@ -85,7 +87,8 @@ function(accessToken, refreshToken, profile, done) {
           else{
             done(null,userExists);
           }
-          })        
+          })
+          .catch((e) => { done(e); })
         }
       }
       //There is no user in the table that has that email
@@ -94,6 +97,7 @@ function(accessToken, refreshToken, profile, done) {
         done();
       }
     })
+      .catch((e) => { done(e); } )
   })
 );
 module.exports = app => {

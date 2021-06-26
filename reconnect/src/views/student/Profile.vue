@@ -86,7 +86,7 @@ export default {
         }
     },
     mounted() {
-        var self=this;
+        let self=this;
         let id = 1
         const requestStud = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/' + id, {withCredentials: true})
         const requestProj = axios.get(process.env.VUE_APP_BASE_API_URL + '/projects', {withCredentials: true})
@@ -94,41 +94,40 @@ export default {
         const requestAvoid = axios.get(process.env.VUE_APP_BASE_API_URL + '/avoid_teammate/' + id, {withCredentials: true})
         const requestStuds = axios.get(process.env.VUE_APP_BASE_API_URL + '/students/', {withCredentials: true})
 
-        axios.all([requestStud, requestProj, requestPref, requestStuds, requestAvoid]).then(axios.spread((...responses) => {
-            const responseStud = responses[0]
-            const responseProj = responses[1]
-            const responsePref = responses[2]
-            const responseStuds = responses[3]
-            const responseAvoid = responses[4]
-            // use/access the results
-            self.student = responseStud.data
-            self.experience = self.student.experience
-            self.gpa = self.student.gpa
-            self.minor = self.student.minor
-            self.name = self.student.username
-            self.firstProj = self.student.first_project
-            self.secondProj = self.student.second_project
-            self.thirdProj = self.student.third_project
-            self.preference = self.student.selection_preference
-            if (self.preference === false)
-                self.preference = "Project"
-            else if (self.preference === true)
-                self.preference = "Team"
-            else self.preference = "Doesn't Matter"
-            self.projects = responseProj.data
-            //self.team_pref = responsePref.data
-            self.students = responseStuds.data
-            //self.team_avoid = responseAvoid.data
-            for (let i of responsePref.data)
-                self.team_pref.push(i.preferreeId)
-            for (let i of responseAvoid.data)
-                self.team_avoid.push(i.avoideeId)
-        }))
-            .catch(e => {
-                // react on errors.
-                self.errors.push(e)
+        axios.all([requestStud, requestProj, requestPref, requestStuds, requestAvoid])
+            .then(axios.spread((...responses) => {
+                const responseStud = responses[0]
+                const responseProj = responses[1]
+                const responsePref = responses[2]
+                const responseStuds = responses[3]
+                const responseAvoid = responses[4]
+                // use/access the results
+                self.student = responseStud.data
+                self.experience = self.student.experience
+                self.gpa = self.student.gpa
+                self.minor = self.student.minor
+                self.name = self.student.username
+                self.firstProj = self.student.first_project
+                self.secondProj = self.student.second_project
+                self.thirdProj = self.student.third_project
+                self.preference = self.student.selection_preference
+                if (self.preference === false)
+                    self.preference = "Project"
+                else if (self.preference === true)
+                    self.preference = "Team"
+                else self.preference = "Doesn't Matter"
+                self.projects = responseProj.data
+                //self.team_pref = responsePref.data
+                self.students = responseStuds.data
+                //self.team_avoid = responseAvoid.data
+                for (let i of responsePref.data)
+                    self.team_pref.push(i.preferreeId)
+                for (let i of responseAvoid.data)
+                    self.team_avoid.push(i.avoideeId)
+            }))
+            .catch(() => {
+                self.$router.push({ name: "Error" })
             })
-
     },
     methods: {
         getProj: function(pid) {
@@ -219,5 +218,4 @@ export default {
         display: inline-block;
         margin: 10px;
     }
-
 </style>

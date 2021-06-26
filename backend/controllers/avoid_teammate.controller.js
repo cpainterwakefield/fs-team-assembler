@@ -43,7 +43,7 @@ exports.create = (req, res) => {
             // or generic error message.
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating a Avoid_Teammate."
+                    err.message || "Some error occurred while creating an Avoid_Teammate."
             });
         });
 };
@@ -77,8 +77,9 @@ exports.findOne = (req, res) => {
             res.send(data);
         })
         .catch(err => {
-            res.status(501).send({
-                message: "Error retrieving Avoid_Teammate with id=" + id
+            res.status(500).send({
+                message:
+                    err.message || "Error retrieving Avoid_Teammate"
             });
         });
 };
@@ -103,7 +104,8 @@ exports.update = (req, res) => {
     })
     .catch(err => {
         res.status(500).send({
-            message: "Error updating Avoid_Teammate with id=" + id
+            message:
+                err.message || "Error updating Avoid_Teammate"
         });
     });
 };
@@ -129,7 +131,8 @@ exports.delete = (req, res) => {
     })
     .catch(err => {
         res.status(500).send({
-            message: "Could not delete Tutorial with id=" + id
+            message:
+                err.message || "Could not delete Avoid_Teammate"
         });
     });
 };

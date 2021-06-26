@@ -72,8 +72,9 @@ exports.findOne = (req, res) => {
             res.send(data);
         })
         .catch(err => {
-            res.status(501).send({
-                message: "Error retrieving Prefer_Teammate with id=" + id
+            res.status(500).send({
+                message:
+                    err.message || "Error retrieving Prefer_Teammate"
             });
         });
 };
@@ -98,7 +99,8 @@ exports.update = (req, res) => {
     })
     .catch(err => {
         res.status(500).send({
-            message: "Error updating Prefer_Teammate with id=" + id
+            message:
+                err.message || "Error updating Prefer_Teammate"
         });
     });
 };
@@ -123,7 +125,8 @@ exports.delete = (req, res) => {
     })
     .catch(err => {
         res.status(500).send({
-            message: "Could not delete Tutorial with id=" + id
+            message:
+                err.message || "Could not delete Prefer_Teammate"
         });
     });
 };

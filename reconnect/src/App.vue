@@ -5,7 +5,7 @@
   </v-content>
   <footer padding=10px>
     <span>
-      Colorado School of Mines 2020
+      &copy; Colorado School of Mines 2021
     </span>
   </footer>
         
