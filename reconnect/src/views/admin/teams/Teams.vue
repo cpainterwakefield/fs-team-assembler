@@ -2,32 +2,44 @@
     <v-main>
         <Header/>
         <div class="centered mt-25">
-            <div class="d-flex flex-row">
-                <v-btn class="error" to="/admin/teams/edit">Edit</v-btn>
+            <div class="d-flex flex-row align-center">
+                <v-btn class="error" to="/admin/teams/edit">Edit Teams</v-btn>
                 <v-btn class="primary" @click="downloadItem">Export</v-btn>
                 <v-btn class="primary" @click="runAlgorithm">RUN</v-btn>
             </div>
-            <hr/>
-            <div class="left-list">
-                <h2 class="h2_2">Not yet assigned</h2>
-                <div class="element1" v-for="(student, i) in students" :key="i">
-                    <div v-if="student.project_id == null">&middot; {{student.name}}</div>
-                </div>
-            </div>
-            <div class="right-list">
-                <div class="proj1" v-for="project in projects" :key="project.id">
-                    <h2 class="h2_2">{{project.name}} ({{project.min_students}}, {{project.max_students}})</h2>
-                    <hr>
-                    <div class="element1" v-for="(student, i) in students" :key="i">
-                        <div v-if="student.project_id === project.id && isPairedWithAvoid(student)" class="unhappy">
-                            &middot; {{student.name}}
+            <div class="d-flex flex-row">
+                <v-card width="15%" class="ma-5 pa-3">
+                    <v-card-text>
+                        <p class="text-subtitle-2">Not yet assigned</p>
+                        <div v-for="student in unassigned_students" :key="'student_' + student.id">
+                            &middot; {{ student.name }}
                         </div>
-                        <div v-else-if="student.project_id === project.id && isSatisfied(student)" class="satisfied">
-                            &middot; {{student.name}}
-                        </div>
-                        <div v-else-if="student.project_id === project.id">&middot; {{student.name}}</div>
+                    </v-card-text>
+                </v-card>
+                <v-card outlined width="85%" color="#CED5DD" class="ma-5 pa-3">
+                    <div class="d-flex flex-row flex-wrap justify-lg-space-around">
+                        <v-card width="15%" class="ma-2 pa-0" v-for="project in projects" :key="'project_' + project.id">
+                            <v-card-text>
+                                <p class="text-subtitle-2">
+                                    {{ project.name }} ({{ project.min_students }}, {{ project.max_students }})
+                                </p>
+                                <hr/>
+                                <div
+                                    v-for="student in students.filter(e => e.project_id === project.id)"
+                                    :key="'student_' + student.id"
+                                >
+                                    <div v-if="isPairedWithAvoid(student)" class="unhappy">
+                                        &middot; {{ student.name }}
+                                    </div>
+                                    <div v-else-if="isSatisfied(student)" class="satisfied">
+                                        &middot; {{ student.name }}
+                                    </div>
+                                    <div v-else>&middot; {{ student.name }}</div>
+                                </div>
+                            </v-card-text>
+                        </v-card>
                     </div>
-                </div>
+                </v-card>
             </div>
         </div>
     </v-main>
@@ -52,6 +64,11 @@
                 models: [],
                 avoids: [],
                 prefers: []
+            }
+        },
+        computed: {
+            unassigned_students: function () {
+                return this.students.filter(el => el.project_id === null)
             }
         },
         mounted() {
@@ -152,63 +169,6 @@
 </script>
 
 <style>
-
-    .proj1 {
-        display: inline-block;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        margin-left: 3px;
-        margin-right: 3px;
-        border: 2px solid black;
-        border-radius: 10px;
-        padding: 10px;
-        background: white;
-        width: 18%;
-        word-wrap: break-word;
-        height: 200px;
-        overflow: auto;
-    }
-
-    .element1 {
-        margin: 2px;
-        text-align: left;
-        padding-left: 0px;
-        padding-right: 0px;
-    }
-
-    .left-list {
-        float: left;
-        display: inline;
-        border: 2px solid black;
-        border-radius: 10px;
-        background: white;
-        width: 15%;
-        margin: 15px;
-    }
-
-    .right-list {
-        display: inline;
-        float: right;
-        margin: 15px;
-        border: 2px solid black;
-        border-radius: 10px;
-        width: 80%;
-    }
-
-    .primary {
-        margin: 15px;
-    }
-
-    .p1 {
-        font-size: 12px;
-        display: inline-block;
-        width: 100%;
-    }
-
-    .h2_2 {
-        font-size: 15px;
-    }
-
     .satisfied {
         color: green;
     }
@@ -216,5 +176,4 @@
     .unhappy {
         color: red;
     }
-
 </style>

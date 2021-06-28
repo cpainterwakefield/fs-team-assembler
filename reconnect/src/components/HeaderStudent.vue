@@ -2,7 +2,7 @@
     <v-app-bar app color="#263F6A" dark>
         <span class="headline text-uppercase font-weight-light">Reconnect</span>
         <v-spacer/>
-        <v-btn class="btn1" to="/student/">Profile</v-btn>
+        <v-btn class="btn1" to="/student/profile">Profile</v-btn>
         <v-btn class="btn1" to="/student/edit">Edit</v-btn>
         <v-btn class="btn1" :href=projLink.link target="_blank">Projects</v-btn>
         <v-btn class="btn1" :href=authLink target="_blank">Logout</v-btn>

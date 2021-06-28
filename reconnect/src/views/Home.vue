@@ -36,7 +36,7 @@ export default {
     width: 70%;
     border: 2px solid black;
     border-radius: 10px;
-    background: #D3D3D3;
+    background: #CED5DD;
   }
 
   .main {

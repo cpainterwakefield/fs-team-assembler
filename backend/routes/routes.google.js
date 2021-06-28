@@ -127,9 +127,9 @@ module.exports = app => {
 
   app.get('/redirect', function (req, res) {
     if(req['user'].user.is_admin){
-      res.redirect("/admin");
+      res.redirect("/admin/students");
     }else{
-      res.redirect("/student");
+      res.redirect("/student/profile");
     }
   })
 }
