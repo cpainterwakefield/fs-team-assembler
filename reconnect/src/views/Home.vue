@@ -1,7 +1,7 @@
 <template>
   <center>
-    <div class = "message">
-      <div class = "main">
+    <div class="message">
+      <div class="main">
         <h3> Welcome to CS@Mines Reconnect! This website asks you and your classmates for preferences about what team you want to work on, then sorts everyone into teams based on who you want to work with, who you want to avoid working with, whether you'd rather work with teammates or on
 a particular project, and, of course, the projects that you would like to work on.</h3>
       </div>
@@ -36,7 +36,7 @@ export default {
     width: 70%;
     border: 2px solid black;
     border-radius: 10px;
-    background: #CED5DD;
+    background-color: #CED5DD;
   }
 
   .main {

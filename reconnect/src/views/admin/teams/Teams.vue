@@ -10,7 +10,7 @@
             <div class="d-flex flex-row">
                 <v-card width="15%" class="ma-5 pa-3">
                     <v-card-text>
-                        <p class="text-subtitle-2">Not yet assigned</p>
+                        <p class="text-subtitle-2">Unassigned</p>
                         <div v-for="student in unassigned_students" :key="'student_' + student.id">
                             &middot; {{ student.name }}
                         </div>

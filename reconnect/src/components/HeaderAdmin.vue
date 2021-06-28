@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="#263F6A" dark>
+  <v-app-bar app color="#263F6A" dark height="70px">
     <span class="headline text-uppercase font-weight-light">Reconnect</span>
     <v-spacer/>
     <v-btn class="btn1" to="/admin/students">Students</v-btn>
