@@ -3,9 +3,9 @@
         <Header/>
         <div class="centered mt-25">
             <div class="d-flex flex-row align-center">
-                <v-btn class="error" to="/admin/teams/edit">Edit Teams</v-btn>
-                <v-btn class="primary" @click="downloadItem">Export</v-btn>
-                <v-btn class="primary" @click="runAlgorithm">RUN</v-btn>
+                <v-btn class="error mx-3" to="/admin/teams/edit">Edit Teams</v-btn>
+                <v-btn class="primary mx-3" @click="downloadItem">Export</v-btn>
+                <v-btn class="primary mx-3" @click="runAlgorithm">RUN</v-btn>
             </div>
             <div class="d-flex flex-row">
                 <v-card width="15%" class="ma-5 pa-3">
@@ -135,14 +135,22 @@
 
                 axios.put(process.env.VUE_APP_BASE_API_URL + '/run', {withCredentials: true})
                     .then(response => {
-                        alert("Genetic algorithm completed with a fitness score of " + response.data)
+                        alert("Genetic algorithm completed with a fitness score of " + response.data.score)
+                        document.body.style.cursor = "default"
+
+                        axios.get(process.env.VUE_APP_BASE_API_URL + '/students', {withCredentials: true})
+                            .then(res => {
+                                this.students = res.data
+                            })
+                            .catch(() => {
+                                this.$router.push({name: "Error"})
+                            })
                     })
                     .catch(err => {
                         console.log(err)
+                        document.body.style.cursor = "default"
                         alert("Something went wrong: " + err.toString())
                     })
-
-                document.body.style.cursor = "default"
             },
             isPairedWithAvoid: function (student) {
                 return this.avoids.some(avoid =>

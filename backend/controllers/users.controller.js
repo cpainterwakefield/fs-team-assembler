@@ -69,19 +69,13 @@ exports.deleteStudents = (req, res) => {
         where: {is_admin: false}
     })
     .then(num => {
-        if (num == 1) {
-            res.send({
-                message: "User was deleted successfully."
-            });
-        } else {
-            res.send({
-                message: `Cannot delete User with id=${id}.`
-            });
-        }
+        res.send({
+            message: "Student users deleted successfully."
+        });
     })
     .catch(err => {
         res.status(500).send({
-            message: "Could not delete User with id=" + id
+            message: "Could not delete student users."
         });
     });
 };
