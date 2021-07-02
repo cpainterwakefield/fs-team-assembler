@@ -87,10 +87,10 @@ require("./routes/project_link.routes")(app);
 require("./routes/run.routes")(app);
 
 
-app.get('/student', authcheck,function(requests, response){
+app.get('/student/profile', authcheck,function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
-app.get('/admin', ADMINauthcheck,function(requests, response){
+app.get('/admin/students', ADMINauthcheck,function(requests, response){
   response.sendFile(path.resolve(__dirname,"dist",'index.html'));
 });
 app.get('/student/edit', authcheck,function(requests, response){
